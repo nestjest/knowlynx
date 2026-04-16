@@ -19,7 +19,7 @@ export function CourseSection() {
   return (
     <section className="course-section" aria-label="Курсы">
       <div className="course-section__header">
-        <h2 className="course-section__title">Курсы</h2>
+        <h2 className="course-section__title">Мои курсы</h2>
         <span className="course-section__count">{filteredCourses.length}</span>
       </div>
 
