@@ -15,9 +15,6 @@ export function DashboardLayout() {
           </div>
 
           <div className="dashboard__actions">
-            <button type="button" className="dashboard__icon-button" aria-label="Уведомления">
-              ⌁
-            </button>
             <button type="button" className="dashboard__icon-button" aria-label="Редактировать">
               ✎
             </button>
