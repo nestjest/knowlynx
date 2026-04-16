@@ -22,7 +22,7 @@ const headerNavItems: NavItem[] = [
 
 const bottomNavItems: NavItem[] = [
   { id: 'courses', label: 'Курсы', active: true },
-  { id: 'collections', label: 'Подборки' },
+  { id: 'collections', label: 'Треды' },
   { id: 'teachers', label: 'Преподаватели' },
   { id: 'market', label: 'Маркет' },
   { id: 'community', label: 'Сообщество' }
