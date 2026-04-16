@@ -1,21 +1,41 @@
-import type { PanelLayout } from '../model/panelData';
+import type { DashboardEditorPanel } from '../model/dashboardEditorData';
 
-type ContentPanelProps = {
-  panel: PanelLayout;
+type DashboardBlockCardProps = {
+  panel: DashboardEditorPanel;
+  isEditMode?: boolean;
+  onRemove?: () => void;
+  onResize?: () => void;
 };
 
-export function ContentPanel({ panel }: ContentPanelProps) {
+export function DashboardBlockCard({
+  panel,
+  isEditMode = false,
+  onRemove,
+  onResize
+}: DashboardBlockCardProps) {
   return (
     <section className={`content-panel ${panel.accent === 'soft' ? 'content-panel--soft' : ''}`}>
       <header className="content-panel__header">
-        <h3>{panel.title}</h3>
+        <div>
+          <h3>{panel.title}</h3>
+        </div>
+        {isEditMode ? (
+          <div className="content-panel__actions">
+            <button type="button" className="content-panel__size-button" onClick={onResize} aria-label="Изменить размер блока">
+              {panel.size === 'small' ? 'S' : panel.size === 'medium' ? 'M' : 'L'}
+            </button>
+            <button type="button" className="content-panel__remove-button" onClick={onRemove} aria-label="Удалить блок">
+              ×
+            </button>
+          </div>
+        ) : null}
       </header>
 
       {panel.type === 'notifications' && (
         <div className="content-panel__stack">
           <article className="content-panel__note">
             <span className="content-panel__tag">Система</span>
-            <p>Открыт новый модуль по веб-разработке. Доступ к заданиям до 20 апреля.</p>
+            <p>Открыт новый модуль по веб-разработке. Доступ к заданиям активен до 20 апреля.</p>
           </article>
           <article className="content-panel__note">
             <span className="content-panel__tag">Преподаватель</span>
@@ -102,9 +122,30 @@ export function ContentPanel({ panel }: ContentPanelProps) {
 
       {panel.type === 'recommendations' && (
         <div className="content-panel__chips">
-          <span>Финальный тренажёр по JS</span>
+          <span>Финальный тренажер по JS</span>
           <span>Повторение по БД</span>
           <span>Воркшоп по soft skills</span>
+        </div>
+      )}
+
+      {panel.type === 'webinars' && (
+        <div className="content-panel__stack">
+          <article className="content-panel__deadline">
+            <strong>Live Q&amp;A по итоговому проекту</strong>
+            <span>Сегодня, 19:00. Подключение по ссылке из курса.</span>
+          </article>
+          <article className="content-panel__deadline">
+            <strong>Разбор типичных ошибок</strong>
+            <span>Пятница, 18:30. Сессия с преподавателем и разбором кейсов.</span>
+          </article>
+        </div>
+      )}
+
+      {panel.type === 'certificates' && (
+        <div className="content-panel__chips">
+          <span>Сертификат: SQL Basics</span>
+          <span>Достижение: 30 дней подряд</span>
+          <span>Бейдж: Лучший прогресс недели</span>
         </div>
       )}
     </section>

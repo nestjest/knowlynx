@@ -7,7 +7,7 @@ type SectionState = {
   setActiveSection: (section: string, index: number) => void;
 };
 
-const defaultSections = ['Раздел 1', 'Раздел 1', 'Раздел 1', 'Раздел 1', 'Раздел 1', 'Раздел 1'];
+const defaultSections = ['Главная страница', 'Мои задания', 'Расписание', 'Сообщения', 'Библиотека', 'Поддержка'];
 
 export const useSectionStore = create<SectionState>((set) => ({
   sections: defaultSections,

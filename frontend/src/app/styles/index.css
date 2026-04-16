@@ -18,6 +18,19 @@
   --shadow-soft: 0 18px 45px rgba(164, 182, 204, 0.12);
 }
 
+:root[data-theme="dark"] {
+  color: #e8f0f7;
+  background:
+    radial-gradient(circle at top left, rgba(54, 104, 122, 0.34), transparent 28%),
+    linear-gradient(180deg, #0f1419 0%, #141c24 100%);
+  --border-color: #253544;
+  --panel-bg: rgba(20, 28, 36, 0.92);
+  --soft-blue: #183746;
+  --soft-blue-strong: #235165;
+  --nav-bg: linear-gradient(180deg, #111922 0%, #19222c 100%);
+  --shadow-soft: 0 18px 45px rgba(4, 8, 12, 0.34);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -31,6 +44,17 @@ body,
 body {
   margin: 0;
   min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(194, 238, 248, 0.6), transparent 28%),
+    linear-gradient(180deg, #fbfdff 0%, #f7f9fc 100%);
+  color: #212b36;
+}
+
+body[data-theme="dark"] {
+  background:
+    radial-gradient(circle at top left, rgba(54, 104, 122, 0.34), transparent 28%),
+    linear-gradient(180deg, #0f1419 0%, #141c24 100%);
+  color: #e8f0f7;
 }
 
 button,

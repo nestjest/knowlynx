@@ -1,14 +1,33 @@
-import type { PanelLayout } from '../model/panelData';
+import {
+  widgetPresets,
+  type EditableDashboardPanel
+} from '../model/dashboardPanelData';
 
-type ContentPanelProps = {
-  panel: PanelLayout;
+type DashboardPanelCardProps = {
+  panel: EditableDashboardPanel;
+  isEditMode?: boolean;
+  onEditWidget?: () => void;
 };
 
-export function ContentPanel({ panel }: ContentPanelProps) {
+export function DashboardPanelCard({
+  panel,
+  isEditMode = false,
+  onEditWidget
+}: DashboardPanelCardProps) {
+  const widget = widgetPresets.find((item) => item.id === panel.widgetId);
+
   return (
     <section className={`content-panel ${panel.accent === 'soft' ? 'content-panel--soft' : ''}`}>
       <header className="content-panel__header">
-        <h3>{panel.title}</h3>
+        <div>
+          <h3>{panel.title}</h3>
+          {widget ? <p className="content-panel__widget-label">{widget.title}</p> : null}
+        </div>
+        {isEditMode ? (
+          <button type="button" className="content-panel__edit-button" onClick={onEditWidget} aria-label="Редактировать виджет">
+            ✎
+          </button>
+        ) : null}
       </header>
 
       {panel.type === 'notifications' && (
@@ -105,6 +124,27 @@ export function ContentPanel({ panel }: ContentPanelProps) {
           <span>Финальный тренажёр по JS</span>
           <span>Повторение по БД</span>
           <span>Воркшоп по soft skills</span>
+        </div>
+      )}
+
+      {panel.type === 'webinars' && (
+        <div className="content-panel__stack">
+          <article className="content-panel__deadline">
+            <strong>Live Q&A по итоговому проекту</strong>
+            <span>Сегодня, 19:00. Подключение по ссылке из курса.</span>
+          </article>
+          <article className="content-panel__deadline">
+            <strong>Разбор типичных ошибок</strong>
+            <span>Пятница, 18:30. Сессия с преподавателем и разбором кейсов.</span>
+          </article>
+        </div>
+      )}
+
+      {panel.type === 'certificates' && (
+        <div className="content-panel__chips">
+          <span>Сертификат: SQL Basics</span>
+          <span>Достижение: 30 дней подряд</span>
+          <span>Бейдж: Лучший прогресс недели</span>
         </div>
       )}
     </section>

@@ -1,15 +1,15 @@
 export type PanelLayout = {
   id: string;
-  minHeight: string;
-  className: string;
   accent: 'soft' | 'plain';
+  title: string;
+  type: 'notifications' | 'progress' | 'performance' | 'deadlines' | 'activity' | 'recommendations';
 };
 
 export const panels: PanelLayout[] = [
-  { id: 'panel-a', minHeight: '230px', className: '', accent: 'soft' },
-  { id: 'panel-b', minHeight: '230px', className: 'xl:col-span-2', accent: 'plain' },
-  { id: 'panel-c', minHeight: '232px', className: '', accent: 'plain' },
-  { id: 'panel-d', minHeight: '232px', className: '', accent: 'plain' },
-  { id: 'panel-e', minHeight: '96px', className: '', accent: 'plain' },
-  { id: 'panel-f', minHeight: '96px', className: '', accent: 'plain' }
+  { id: 'panel-a', accent: 'soft', title: 'Уведомления системы и преподавателей', type: 'notifications' },
+  { id: 'panel-b', accent: 'plain', title: 'Текущий курс и прогресс', type: 'progress' },
+  { id: 'panel-c', accent: 'plain', title: 'Успеваемость студента', type: 'performance' },
+  { id: 'panel-d', accent: 'plain', title: 'Ближайшие дедлайны', type: 'deadlines' },
+  { id: 'panel-e', accent: 'plain', title: 'Активность за неделю', type: 'activity' },
+  { id: 'panel-f', accent: 'plain', title: 'Рекомендовано к изучению', type: 'recommendations' }
 ];
