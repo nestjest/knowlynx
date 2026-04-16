@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { HomePage } from '../pages/home/ui/HomePage';
+import { SettingsPage } from '../pages/settings/ui/SettingsPage';
 import { useAppStore } from '../shared/model/useAppStore';
 import { createDashboardSocket } from '../shared/lib/ws/createDashboardSocket';
 
@@ -16,5 +18,10 @@ export function App() {
     return () => socket.disconnect();
   }, [setConnectionStatus]);
 
-  return <HomePage />;
+  return (
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/settings" element={<SettingsPage />} />
+    </Routes>
+  );
 }

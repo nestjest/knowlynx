@@ -1,4 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Settings, Sun, Moon, ArrowRight } from 'lucide-react';
 import {
   dashboardEditorPanelTemplates
 } from '../../../entities/panel/model/dashboardEditorData';
@@ -8,24 +10,23 @@ import { useDashboardEditorStore } from '../../../shared/model/useDashboardEdito
 type NavItem = {
   id: string;
   label: string;
-  active?: boolean;
+  path?: string;
 };
 
 const headerNavItems: NavItem[] = [
-  { id: 'home', label: 'Главная', active: true },
+  { id: 'home', label: 'Главная', path: '/' },
+  { id: 'courses', label: 'Курсы' },
   { id: 'assignments', label: 'Задания' },
-  { id: 'schedule', label: 'Расписание' },
-  { id: 'messages', label: 'Сообщения' },
+  { id: 'practice', label: 'Практика' },
   { id: 'library', label: 'Библиотека' },
-  { id: 'support', label: 'Поддержка' }
+  { id: 'faq', label: 'FAQ' }
 ];
 
 const bottomNavItems: NavItem[] = [
-  { id: 'courses', label: 'Курсы', active: true },
-  { id: 'collections', label: 'Треды' },
+  { id: 'best', label: 'Лучшие' },
+  { id: 'threads', label: 'Треды' },
   { id: 'teachers', label: 'Преподаватели' },
-  { id: 'market', label: 'Маркет' },
-  { id: 'community', label: 'Сообщество' }
+  { id: 'analytics', label: 'Аналитика' }
 ];
 
 type DashboardEditorShellProps = {
@@ -51,7 +52,7 @@ const siteSearchSuggestions: SiteSearchSuggestion[] = [
   { id: 'search-web', title: 'Веб-разработка', meta: 'Текущий курс' },
   { id: 'search-messages', title: 'Сообщения преподавателей', meta: 'Коммуникации' },
   { id: 'search-library', title: 'Библиотека материалов', meta: 'Учебные ресурсы' },
-  { id: 'search-support', title: 'Поддержка платформы', meta: 'Сервисный раздел' }
+  { id: 'search-faq', title: 'Часто задаваемые вопросы', meta: 'FAQ' }
 ];
 
 function renderDrawerPreview(preview: DrawerPreview) {
@@ -132,10 +133,11 @@ function renderDrawerPreview(preview: DrawerPreview) {
 }
 
 export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
+  const navigate = useNavigate();
+  const location = useLocation();
   const theme = useDashboardEditorStore((state) => state.theme);
   const drawerMode = useDashboardEditorStore((state) => state.drawerMode);
   const drawerSearch = useDashboardEditorStore((state) => state.drawerSearch);
-  const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
   const editingQuickItemId = useDashboardEditorStore((state) => state.editingQuickItemId);
   const toggleTheme = useDashboardEditorStore((state) => state.toggleTheme);
   const closeDrawer = useDashboardEditorStore((state) => state.closeDrawer);
@@ -183,79 +185,87 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
         <nav className="site-header__nav">
           {headerNavItems.map((item) => (
-            <div key={item.id} className="site-header__nav-item">
-              {item.id === 'messages' ? (
-                <div className="site-header__search">
-                  <input
-                    type="search"
-                    className="site-header__search-input"
-                    placeholder="Поиск по сайту"
-                    value={siteSearchQuery}
-                    onFocus={() => setIsSearchOpen(true)}
-                    onBlur={() => {
-                      window.setTimeout(() => setIsSearchOpen(false), 120);
-                    }}
-                    onChange={(event) => {
-                      setSiteSearchQuery(event.target.value);
-                      setIsSearchOpen(true);
-                    }}
-                  />
-                  {siteSearchQuery ? (
-                    <button
-                      type="button"
-                      className="site-header__search-clear"
-                      aria-label="Очистить поиск"
-                      onMouseDown={() => {
-                        setSiteSearchQuery('');
-                        setIsSearchOpen(false);
-                      }}
-                    >
-                      <span />
-                      <span />
-                    </button>
-                  ) : null}
-
-                  {isSearchOpen && normalizedSiteSearch ? (
-                    <div className="site-header__search-dropdown">
-                      {filteredSiteSuggestions.length ? (
-                        filteredSiteSuggestions.map((suggestion) => (
-                          <button
-                            key={suggestion.id}
-                            type="button"
-                            className="site-header__search-suggestion"
-                            onMouseDown={() => {
-                              setSiteSearchQuery(suggestion.title);
-                              setIsSearchOpen(false);
-                            }}
-                          >
-                            <strong>{suggestion.title}</strong>
-                            <span>{suggestion.meta}</span>
-                          </button>
-                        ))
-                      ) : (
-                        <div className="site-header__search-empty">Ничего не найдено</div>
-                      )}
-                    </div>
-                  ) : null}
-                </div>
-              ) : null}
-
-              <button
-                className={`site-header__link ${item.active ? 'site-header__link--active' : ''}`}
-                type="button"
-              >
-                {item.label}
-              </button>
-            </div>
+            <button
+              key={item.id}
+              className={`site-header__link ${location.pathname === (item.path ?? `/${item.id}`) ? 'site-header__link--active' : ''}`}
+              type="button"
+              onClick={() => item.path ? navigate(item.path) : undefined}
+            >
+              {item.label}
+            </button>
           ))}
         </nav>
 
+        <div className="site-header__search">
+          <input
+            type="search"
+            className="site-header__search-input"
+            placeholder="Поиск по сайту"
+            value={siteSearchQuery}
+            onFocus={() => setIsSearchOpen(true)}
+            onBlur={() => {
+              window.setTimeout(() => setIsSearchOpen(false), 120);
+            }}
+            onChange={(event) => {
+              setSiteSearchQuery(event.target.value);
+              setIsSearchOpen(true);
+            }}
+          />
+          {siteSearchQuery ? (
+            <button
+              type="button"
+              className="site-header__search-clear"
+              aria-label="Очистить поиск"
+              onMouseDown={() => {
+                setSiteSearchQuery('');
+                setIsSearchOpen(false);
+              }}
+            >
+              <span />
+              <span />
+            </button>
+          ) : null}
+
+          {isSearchOpen && normalizedSiteSearch ? (
+            <div className="site-header__search-dropdown">
+              {filteredSiteSuggestions.length ? (
+                filteredSiteSuggestions.map((suggestion) => (
+                  <button
+                    key={suggestion.id}
+                    type="button"
+                    className="site-header__search-suggestion"
+                    onMouseDown={() => {
+                      setSiteSearchQuery(suggestion.title);
+                      setIsSearchOpen(false);
+                    }}
+                  >
+                    <strong>{suggestion.title}</strong>
+                    <span>{suggestion.meta}</span>
+                  </button>
+                ))
+              ) : (
+                <div className="site-header__search-empty">Ничего не найдено</div>
+              )}
+            </div>
+          ) : null}
+        </div>
+
         <div className="site-header__actions">
-          <button type="button" className="site-header__ghost site-header__theme" onClick={toggleTheme}>
-            {theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+          <button
+            type="button"
+            className="site-header__icon-button"
+            aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
-          <button type="button" className="site-header__primary">
-            Личный кабинет
+          <button
+            type="button"
+            className={`site-header__icon-button ${location.pathname === '/settings' ? 'site-header__icon-button--active' : ''}`}
+            aria-label="Настройки"
+            onClick={() => navigate('/settings')}
+          >
+            <Settings size={20} />
           </button>
         </div>
       </header>
@@ -365,7 +375,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           {bottomNavItems.map((item) => (
             <button
               key={item.id}
-              className={`bottom-dock__link ${item.active ? 'bottom-dock__link--active' : ''}`}
+              className="bottom-dock__link"
               type="button"
             >
               {item.label}
@@ -373,8 +383,9 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           ))}
         </nav>
 
-        <button type="button" className="bottom-dock__cta">
-          {isEditMode ? 'Режим редактирования' : 'Открыть портал'}
+        <button type="button" className="bottom-dock__cta bottom-dock__cta--accent">
+          К работам
+          <ArrowRight size={16} />
         </button>
       </div>
     </div>
