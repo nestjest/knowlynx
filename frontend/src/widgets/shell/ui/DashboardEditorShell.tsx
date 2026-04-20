@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Settings, Sun, Moon, ArrowRight } from 'lucide-react';
+import logoUrl from '../../../app/logo.svg';
 import {
   dashboardEditorPanelTemplates
 } from '../../../entities/panel/model/dashboardEditorData';
@@ -23,8 +24,8 @@ const headerNavItems: NavItem[] = [
 ];
 
 const bottomNavItems: NavItem[] = [
-  { id: 'best', label: 'Лучшие' },
-  { id: 'threads', label: 'Треды' },
+  { id: 'best', label: 'Лучшие', path: '/' },
+  { id: 'threads', label: 'Треды', path: '/threads' },
   { id: 'teachers', label: 'Преподаватели' },
   { id: 'analytics', label: 'Аналитика' }
 ];
@@ -179,7 +180,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
     <div className={`layout ${theme === 'dark' ? 'layout--dark' : ''}`}>
       <header className="site-header">
         <div className="site-header__brand">
-          <img src="../../../src/app/logo.svg" alt="logo" className="brand-mark" />
+          <img src={logoUrl} alt="logo" className="brand-mark" />
           <span className="site-header__brand-text">Knowlynx</span>
         </div>
 
@@ -261,7 +262,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           </button>
           <button
             type="button"
-            className={`site-header__icon-button ${location.pathname === '/settings' ? 'site-header__icon-button--active' : ''}`}
+            className={`site-header__icon-button ${location.pathname.startsWith('/settings') ? 'site-header__icon-button--active' : ''}`}
             aria-label="Настройки"
             onClick={() => navigate('/settings')}
           >
@@ -368,15 +369,16 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
       <div className="bottom-dock">
         <div className="bottom-dock__brand">
-          <img src="../../../src/app/logo.svg" alt="logo" className="brand-mark" />
+          <img src={logoUrl} alt="logo" className="brand-mark" />
         </div>
 
         <nav className="bottom-dock__nav">
           {bottomNavItems.map((item) => (
             <button
               key={item.id}
-              className="bottom-dock__link"
+              className={`bottom-dock__link ${item.path && (location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)) ? 'bottom-dock__link--active' : ''}`}
               type="button"
+              onClick={() => item.path ? navigate(item.path) : undefined}
             >
               {item.label}
             </button>

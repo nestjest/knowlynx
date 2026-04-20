@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { HomePage } from '../pages/home/ui/HomePage';
-import { SettingsPage } from '../pages/settings/ui/SettingsPage';
+import { SettingsControlsPage } from '../pages/settings/ui/SettingsControlsPage';
+import { SettingsOverviewPage } from '../pages/settings/ui/SettingsOverviewPage';
+import { ThreadsPage } from '../pages/threads/ui/ThreadsPage';
 import { useAppStore } from '../shared/model/useAppStore';
 import { createDashboardSocket } from '../shared/lib/ws/createDashboardSocket';
 
@@ -21,7 +23,10 @@ export function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/settings" element={<SettingsPage />} />
+      <Route path="/threads" element={<ThreadsPage />} />
+      <Route path="/threads/:threadId" element={<ThreadsPage />} />
+      <Route path="/settings" element={<SettingsOverviewPage />} />
+      <Route path="/settings/:sectionId" element={<SettingsControlsPage />} />
     </Routes>
   );
 }
