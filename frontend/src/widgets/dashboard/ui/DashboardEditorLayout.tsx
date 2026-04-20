@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { CourseSection } from '../../../features/section-navigation/ui/SectionMenu';
-import { QuickAccessEditorCard } from '../../../entities/quick-access/ui/QuickAccessEditorCard';
+import { QuickAccessWidgetCard } from '../../../entities/quick-access/ui/QuickAccessWidgetCard';
 import { DashboardBlockCard } from '../../../entities/panel/ui/DashboardBlockCard';
 import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
 
@@ -45,7 +45,7 @@ export function DashboardEditorLayout() {
 
         <section className="dashboard__quick-grid" aria-label="Быстрый доступ">
           {quickItems.map((card) => (
-            <QuickAccessEditorCard
+            <QuickAccessWidgetCard
               key={card.id}
               item={card}
               isEditMode={isEditMode}
