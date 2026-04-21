@@ -898,50 +898,50 @@ export function ThreadsPage() {
   return (
     <DashboardEditorShell>
       <div className="flex flex-col gap-6 px-0 py-2 pb-4">
-        <section className="grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] p-7 shadow-(--shadow-soft) max-xl:grid-cols-1 max-sm:p-5 dark:border-[rgba(41,57,70,0.95)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <section className="shadow-card grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] p-7 max-xl:grid-cols-1 max-sm:p-5 dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)]">
           <div className="flex flex-col gap-3.5">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(155,232,247,0.22)] px-3 py-2 text-xs font-bold uppercase tracking-[0.06em] text-[#215c69] dark:bg-[rgba(57,148,173,0.24)] dark:text-[#97e5f5]">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(155,232,247,0.22)] px-3 py-2 text-xs font-bold tracking-[0.06em] text-[#215c69] uppercase dark:text-[#97e5f5]">
               <Sparkles size={14} />
               <span>Threads</span>
             </div>
-            <h1 className="m-0 max-w-[700px] text-[clamp(28px,4vw,40px)] leading-[1.05] text-[#24313b] dark:text-[#eef5fb]">
+            <h1 className="text-text-primary m-0 max-w-[700px] text-[clamp(28px,4vw,40px)] leading-[1.05]">
               Ваши треды по профилю и рабочим сценариям
             </h1>
-            <p className="m-0 max-w-[620px] text-sm leading-[1.6] text-[#6c7a87] dark:text-[#9eb1c2]">
+            <p className="text-text-secondary m-0 max-w-[620px] text-sm leading-[1.6]">
               Пока это визуальная заглушка: здесь можно оценить список тредов,
               карточки и просмотр истории внутри выбранного диалога.
             </p>
 
             <div className="mt-1.5 grid max-w-[720px] grid-cols-2 gap-3.5 max-sm:grid-cols-1">
-              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-                <span className="mb-2.5 inline-block text-[11px] font-bold uppercase tracking-[0.12em] text-[#6f8293] dark:text-[#9eb1c2]">
+              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:bg-[rgba(21,31,40,0.82)]">
+                <span className="text-text-muted mb-2.5 inline-block text-[11px] font-bold tracking-[0.12em] uppercase">
                   Главный фокус
                 </span>
-                <strong className="mb-2 block text-lg leading-[1.25] text-[#24313b] dark:text-[#eef5fb]">
+                <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
                   {topCategory?.[0] ?? 'Без категории'}
                 </strong>
-                <p className="m-0 text-[13px] leading-[1.55] text-[#70808f] dark:text-[#9eb1c2]">
+                <p className="text-text-muted m-0 text-[13px] leading-[1.55]">
                   {topCategory
                     ? `${topCategory[1]} треда в этой группе`
                     : 'Категории появятся позже'}
                 </p>
               </article>
 
-              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-                <span className="mb-2.5 inline-block text-[11px] font-bold uppercase tracking-[0.12em] text-[#6f8293] dark:text-[#9eb1c2]">
+              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:bg-[rgba(21,31,40,0.82)]">
+                <span className="text-text-muted mb-2.5 inline-block text-[11px] font-bold tracking-[0.12em] uppercase">
                   Последний апдейт
                 </span>
-                <strong className="mb-2 block text-lg leading-[1.25] text-[#24313b] dark:text-[#eef5fb]">
+                <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
                   {latestThread?.title ?? 'Новый тред'}
                 </strong>
-                <p className="m-0 text-[13px] leading-[1.55] text-[#70808f] dark:text-[#9eb1c2]">
+                <p className="text-text-muted m-0 text-[13px] leading-[1.55]">
                   {latestThread?.summary ??
                     'Здесь будет краткое описание активности.'}
                 </p>
               </article>
             </div>
 
-            <div className="flex w-fit max-w-full items-center gap-4 rounded-full border border-[rgba(207,220,231,0.88)] bg-white/72 px-4 py-3 dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+            <div className="flex w-fit max-w-full items-center gap-4 rounded-full border border-[rgba(207,220,231,0.88)] bg-white/72 px-4 py-3 dark:bg-[rgba(21,31,40,0.82)]">
               <div className="flex items-center" aria-hidden="true">
                 {threadMocks.slice(0, 3).map((thread, idx) => (
                   <ThreadAvatar
@@ -954,10 +954,10 @@ export function ThreadsPage() {
               </div>
 
               <div className="flex min-w-0 flex-col gap-1">
-                <strong className="text-sm leading-[1.3] text-[#24313b] dark:text-[#eef5fb]">
+                <strong className="text-text-primary text-sm leading-[1.3]">
                   {uniquePeopleCount} участников уже в моках
                 </strong>
-                <span className="text-xs leading-[1.45] text-[#70808f] dark:text-[#9eb1c2]">
+                <span className="text-text-muted text-xs leading-[1.45]">
                   Быстрый обзор тредов, авторов и сценариев прямо из профиля.
                 </span>
               </div>
@@ -965,30 +965,24 @@ export function ThreadsPage() {
           </div>
 
           <div className="grid gap-3.5">
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
-                Всего тредов
-              </span>
-              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-text-muted text-xs">Всего тредов</span>
+              <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {threadMocks.length}
               </strong>
             </article>
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
-                Активных сейчас
-              </span>
-              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-text-muted text-xs">Активных сейчас</span>
+              <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {
                   threadMocks.filter((thread) => thread.status === 'active')
                     .length
                 }
               </strong>
             </article>
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
-                Новых сообщений
-              </span>
-              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-text-muted text-xs">Новых сообщений</span>
+              <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {threadMocks.reduce(
                   (count, thread) => count + thread.unreadCount,
                   0,
@@ -998,23 +992,21 @@ export function ThreadsPage() {
           </div>
         </section>
 
-        <section className="min-w-0 rounded-[26px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <section className="shadow-card min-w-0 rounded-[26px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)]">
           <div className="mb-[18px] flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
-                Список тредов
-              </p>
-              <h2 className="m-0 mt-1 text-[21px] text-[#24313b] dark:text-[#eef5fb]">
+              <p className="text-text-muted text-xs">Список тредов</p>
+              <h2 className="text-text-primary m-0 mt-1 text-[21px]">
                 Созданные пользователем обсуждения
               </h2>
             </div>
-            <span className="whitespace-nowrap rounded-full bg-[rgba(155,232,247,0.14)] px-2.5 py-[7px] text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+            <span className="text-text-muted rounded-full bg-[rgba(155,232,247,0.14)] px-2.5 py-[7px] text-xs whitespace-nowrap">
               Мок-данные
             </span>
           </div>
 
           <div className="mb-[18px] flex flex-col gap-4">
-            <label className="flex h-12 items-center gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/86 px-4 text-[#61707d] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
+            <label className="flex h-12 items-center gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/86 px-4 text-[#61707d] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
               <Search size={16} />
               <input
                 type="search"
@@ -1042,7 +1034,7 @@ export function ThreadsPage() {
                   <button
                     key={value}
                     type="button"
-                    className={`h-10 rounded-full border px-3.5 transition-[0.18s_ease] hover:border-[rgba(93,199,222,0.48)] hover:bg-[rgba(155,232,247,0.2)] hover:text-[#1f4f5a] dark:hover:bg-[rgba(48,114,132,0.22)] ${active ? 'border-[rgba(93,199,222,0.48)] bg-[rgba(155,232,247,0.2)] text-[#1f4f5a]' : 'border-[rgba(209,221,235,0.92)] bg-white/76 text-[#53606c] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]'}`}
+                    className={`h-10 rounded-full border px-3.5 transition-[0.18s_ease] hover:border-[rgba(93,199,222,0.48)] hover:bg-[rgba(155,232,247,0.2)] hover:text-[#1f4f5a] dark:hover:bg-[rgba(48,114,132,0.22)] ${active ? 'border-[rgba(93,199,222,0.48)] bg-[rgba(155,232,247,0.2)] text-[#1f4f5a]' : 'border-[rgba(209,221,235,0.92)] bg-white/76 text-[#53606c] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]'}`}
                     onClick={() => setSelectedCategory(value)}
                   >
                     {label}
@@ -1064,7 +1056,7 @@ export function ThreadsPage() {
                   <button
                     key={thread.id}
                     type="button"
-                    className={`relative grid w-full grid-cols-[6px_minmax(0,1fr)] items-stretch gap-3.5 rounded-[20px] border p-4 text-left transition-[transform,border-color,box-shadow] duration-[0.18s] hover:-translate-y-0.5 hover:border-[rgba(93,199,222,0.55)] hover:shadow-[0_16px_30px_rgba(164,182,204,0.16)] dark:bg-[rgba(21,31,40,0.82)] ${isActive ? '-translate-y-0.5 border-[rgba(93,199,222,0.55)] shadow-[0_16px_30px_rgba(164,182,204,0.16)]' : 'border-[rgba(219,229,238,0.9)] bg-white/74 dark:border-[rgba(41,57,70,0.95)]'}`}
+                    className={`relative grid w-full grid-cols-[6px_minmax(0,1fr)] items-stretch gap-3.5 rounded-[20px] border p-4 text-left transition-[transform,border-color,box-shadow] duration-[0.18s] hover:-translate-y-0.5 hover:border-[rgba(93,199,222,0.55)] hover:shadow-[0_16px_30px_rgba(164,182,204,0.16)] dark:bg-[rgba(21,31,40,0.82)] ${isActive ? '-translate-y-0.5 border-[rgba(93,199,222,0.55)] shadow-[0_16px_30px_rgba(164,182,204,0.16)]' : 'border-[rgba(219,229,238,0.9)] bg-white/74'}`}
                     onClick={() => openThread(thread.id)}
                   >
                     <div
@@ -1079,24 +1071,24 @@ export function ThreadsPage() {
                             name={thread.creator.name}
                           />
                           <div className="min-w-0">
-                            <h3 className="m-0 mt-2.5 mb-2 text-[17px] text-[#24313b] dark:text-[#eef5fb]">
+                            <h3 className="text-text-primary m-0 mt-2.5 mb-2 text-[17px]">
                               {thread.title}
                             </h3>
-                            <p className="m-0 text-[13px] leading-[1.55] text-[#657380] dark:text-[#9eb1c2]">
+                            <p className="text-text-secondary m-0 text-[13px] leading-[1.55]">
                               {thread.summary}
                             </p>
                           </div>
                         </div>
                         <div className="flex flex-shrink-0 flex-col items-end gap-2">
                           <ThreadStatusBadge status={thread.status} />
-                          <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                          <span className="text-text-muted text-xs">
                             {thread.updatedAt}
                           </span>
                         </div>
                       </div>
 
                       {threadPinnedMessage ? (
-                        <div className="mt-3.5 flex items-start gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.85)] bg-[rgba(155,232,247,0.12)] p-2.5 px-3 text-xs text-[#46606e] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
+                        <div className="mt-3.5 flex items-start gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.85)] bg-[rgba(155,232,247,0.12)] p-2.5 px-3 text-xs text-[#46606e] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
                           <Pin size={14} />
                           <span>{threadPinnedMessage.text}</span>
                         </div>
@@ -1107,12 +1099,12 @@ export function ThreadsPage() {
                           <span className="inline-flex w-fit items-center justify-center rounded-full bg-[rgba(44,49,55,0.08)] px-2.5 py-1 text-[11px] font-bold text-[#42515d] dark:bg-white/6 dark:text-[#c6d7e4]">
                             {thread.category}
                           </span>
-                          <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                          <span className="text-text-muted text-xs">
                             {thread.creator.name} ·{' '}
                             {thread.participants.join(' · ')}
                           </span>
                         </div>
-                        <div className="flex flex-row items-center gap-2.5 text-[#7b8995] dark:text-[#9eb1c2]">
+                        <div className="text-text-muted flex flex-row items-center gap-2.5">
                           {thread.unreadCount ? (
                             <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-[#2d3137] px-2 text-xs font-bold text-white">
                               {thread.unreadCount}
@@ -1126,8 +1118,8 @@ export function ThreadsPage() {
                 );
               })
             ) : (
-              <div className="rounded-[20px] border border-dashed border-[rgba(155,232,247,0.6)] bg-white/66 p-[22px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
-                <strong className="mb-1.5 block text-[#24313b] dark:text-[#eef5fb]">
+              <div className="rounded-[20px] border border-dashed border-[rgba(155,232,247,0.6)] bg-white/66 p-[22px] dark:bg-[rgba(21,31,40,0.82)]">
+                <strong className="text-text-primary mb-1.5 block">
                   Ничего не найдено
                 </strong>
                 <p className="m-0 text-[13px] text-[#738290] dark:text-[#9eb1c2]">

@@ -5,9 +5,9 @@ import {
 } from '../../../entities/course/model/courseData';
 
 const INPUT_BASE =
-  'w-full rounded-[14px] border border-[var(--control-border)] bg-[var(--control-bg)] px-3.5 py-3 text-[var(--control-text)] dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
+  'w-full rounded-[14px] border border-border-strong bg-surface-raised px-3.5 py-3 text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
 
-const META_TEXT = 'text-xs text-[#72808d] dark:text-[#9eb1c2]';
+const META_TEXT = 'text-xs text-text-muted';
 
 export function CourseSection() {
   const [search, setSearch] = useState('');
@@ -28,10 +28,10 @@ export function CourseSection() {
   return (
     <section className="flex flex-col gap-[18px] pb-5" aria-label="Курсы">
       <div className="flex items-center justify-between">
-        <h2 className="m-0 text-[22px] font-semibold text-[#2b3640] dark:text-[#eef5fb]">
+        <h2 className="text-text-primary m-0 text-[22px] font-semibold">
           Мои курсы
         </h2>
-        <span className="rounded-full bg-white/78 px-2.5 py-1.5 text-xs text-[#6d7b88] dark:border dark:border-[rgba(42,60,74,0.95)] dark:bg-[rgba(22,34,44,0.92)] dark:text-[#c7d6e3]">
+        <span className="rounded-full bg-white/78 px-2.5 py-1.5 text-xs text-[#6d7b88] dark:border dark:text-[#c7d6e3]">
           {filteredCourses.length}
         </span>
       </div>
@@ -63,10 +63,10 @@ export function CourseSection() {
         {filteredCourses.map((course) => (
           <article
             key={course.id}
-            className="rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/84 p-4 shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+            className="shadow-card rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/84 p-4"
           >
             <div className="mb-2 flex items-start justify-between gap-3">
-              <h3 className="m-0 text-[15px] font-semibold text-[#2b3640] dark:text-[#eef5fb]">
+              <h3 className="text-text-primary m-0 text-[15px] font-semibold">
                 {course.title}
               </h3>
               <span className={META_TEXT}>{course.progress}%</span>

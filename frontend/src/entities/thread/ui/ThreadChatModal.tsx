@@ -225,7 +225,7 @@ function ThreadMessageMenu({
 
   return (
     <div
-      className={`fixed z-[80] flex w-[248px] flex-col gap-0.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/96 p-2 shadow-[0_18px_36px_rgba(37,50,63,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[18px] dark:border-[rgba(57,78,95,0.95)] dark:bg-[rgba(15,23,30,0.96)] dark:shadow-[0_18px_36px_rgba(4,8,12,0.36)] ${placementClass}`}
+      className={`fixed z-[80] flex w-[248px] flex-col gap-0.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/96 p-2 shadow-[0_18px_36px_rgba(37,50,63,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[18px] dark:bg-[rgba(15,23,30,0.96)] dark:shadow-[0_18px_36px_rgba(4,8,12,0.36)] ${placementClass}`}
       style={style}
       role="menu"
       aria-label="Действия с сообщением"
@@ -841,11 +841,11 @@ export function ThreadChatModal() {
       />
 
       <section
-        className={`fixed left-1/2 bottom-[96px] z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-5 shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] [animation:drawer-slide-up_240ms_ease] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:bottom-[84px] max-lg:h-[78vh] max-lg:max-h-[78vh] max-lg:rounded-[26px] max-lg:p-4 dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)] ${isMinimizingThread ? 'pointer-events-none opacity-0 [animation:threads-modal-minimize-soft_320ms_ease_forwards]' : ''}`}
+        className={`fixed bottom-[96px] left-1/2 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-5 shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] max-lg:bottom-[84px] max-lg:h-[78vh] max-lg:max-h-[78vh] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:rounded-[26px] max-lg:p-4 dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)] ${isMinimizingThread ? 'pointer-events-none [animation:threads-modal-minimize-soft_320ms_ease_forwards] opacity-0' : ''}`}
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[rgba(155,232,247,0.22)] px-2 py-1 text-[11px] font-bold uppercase tracking-[0.06em] text-[#b9eef8]">
+            <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[rgba(155,232,247,0.22)] px-2 py-1 text-[11px] font-bold tracking-[0.06em] text-[#b9eef8] uppercase">
               <Sparkles size={14} />
               <span>Thread Opened</span>
             </div>
@@ -867,7 +867,7 @@ export function ThreadChatModal() {
 
         <button
           type="button"
-          className="absolute right-[52px] top-[18px] size-[34px] rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:border-[rgba(60,82,98,0.46)] dark:bg-[rgba(22,30,40,0.72)] dark:text-[#dbe8f2]"
+          className="absolute top-[18px] right-[52px] size-[34px] rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:border-[rgba(60,82,98,0.46)] dark:bg-[rgba(22,30,40,0.72)] dark:text-[#dbe8f2]"
           aria-label="Свернуть тред"
           onClick={minimizeThreadWindow}
         >
@@ -980,7 +980,7 @@ export function ThreadChatModal() {
 
               <button
                 type="button"
-                className="absolute right-3 top-3 grid size-7 place-items-center rounded-full border-0 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:bg-[rgba(22,30,40,0.62)]"
+                className="absolute top-3 right-3 grid size-7 place-items-center rounded-full border-0 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:bg-[rgba(22,30,40,0.62)]"
                 aria-label="Закрыть подтверждение удаления"
                 onClick={() => setDeleteDialogMessageId(null)}
               >
@@ -1014,7 +1014,7 @@ export function ThreadChatModal() {
         ) : null}
 
         <form
-          className={`flex flex-col gap-2.5 rounded-[18px] border border-white/14 bg-white/6 p-3 dark:border-[rgba(60,82,98,0.38)] dark:bg-[rgba(22,30,40,0.62)] ${isComposerCollapsed ? '[&_textarea]:min-h-10 [&_textarea]:max-h-10' : ''}`}
+          className={`flex flex-col gap-2.5 rounded-[18px] border border-white/14 bg-white/6 p-3 dark:border-[rgba(60,82,98,0.38)] dark:bg-[rgba(22,30,40,0.62)] ${isComposerCollapsed ? '[&_textarea]:max-h-10 [&_textarea]:min-h-10' : ''}`}
           onSubmit={handleSubmit}
         >
           <div className="flex items-center justify-between gap-2">
@@ -1090,7 +1090,7 @@ export function ThreadChatModal() {
                 onKeyDown={handleComposerKeyDown}
               />
               <span
-                className={`absolute bottom-2 right-3 text-xs ${remainingCharacters <= 80 ? 'text-[#ffb0b0]' : 'text-white/48'}`}
+                className={`absolute right-3 bottom-2 text-xs ${remainingCharacters <= 80 ? 'text-[#ffb0b0]' : 'text-white/48'}`}
               >
                 {draftMessage.length}/{THREAD_MESSAGE_LIMIT}
               </span>

@@ -14,7 +14,7 @@ import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorS
 import { settingsSectionsMap } from '../model/settingsSections';
 
 const CARD_BASE =
-  'overflow-hidden rounded-[22px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]';
+  'overflow-hidden rounded-[22px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) shadow-card';
 
 const CARD_LABS =
   'border-dashed border-[rgba(93,199,222,0.4)] dark:border-[rgba(93,199,222,0.25)]';
@@ -28,9 +28,9 @@ const ROW_ICON =
 const ROW_LABEL =
   'flex items-center gap-2 text-[15px] font-medium text-[#31404d] dark:text-[#e8f0f7]';
 
-const ROW_DESC = 'mt-0.5 text-xs text-[#80909f] dark:text-[#9eb1c2]';
+const ROW_DESC = 'mt-0.5 text-xs text-text-muted';
 
-const ROW_CHEVRON = 'flex-shrink-0 text-[#b0bec5] dark:text-[#4a5f6e]';
+const ROW_CHEVRON = 'flex-shrink-0 text-text-muted opacity-60';
 
 const DIVIDER =
   'mx-4 ml-16 h-px bg-[rgba(219,229,238,0.6)] dark:bg-[rgba(42,60,74,0.6)]';
@@ -70,21 +70,21 @@ export function SettingsOverviewPage() {
   return (
     <DashboardEditorShell>
       <div className="mx-auto flex max-w-[600px] flex-col gap-4 px-0 py-2 max-lg:max-w-none max-lg:px-0">
-        <div className="flex items-center gap-[18px] rounded-3xl border border-[rgba(219,229,238,0.95)] bg-[linear-gradient(180deg,rgba(155,232,247,0.08)_0%,transparent_60%),var(--panel-bg)] p-6 px-6 shadow-(--shadow-soft) max-sm:rounded-[18px] max-sm:p-5 max-sm:px-4 dark:border-[rgba(41,57,70,0.95)] dark:bg-[linear-gradient(180deg,rgba(54,104,122,0.12)_0%,transparent_60%),rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div className="shadow-card flex items-center gap-[18px] rounded-3xl border border-[rgba(219,229,238,0.95)] bg-[linear-gradient(180deg,rgba(155,232,247,0.08)_0%,transparent_60%),var(--panel-bg)] p-6 px-6 max-sm:rounded-[18px] max-sm:p-5 max-sm:px-4 dark:bg-[linear-gradient(180deg,rgba(54,104,122,0.12)_0%,transparent_60%),rgba(18,26,34,0.92)]">
           <div className="grid size-[72px] flex-shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-white max-lg:size-[60px] dark:from-[#235165] dark:to-[#1d7f95]">
             <User size={28} />
           </div>
           <div className="min-w-0 flex-1">
-            <h2 className="m-0 mb-1 text-xl font-semibold text-[#26313b] dark:text-[#eef5fb]">
+            <h2 className="text-text-primary m-0 mb-1 text-xl font-semibold">
               Максим Каревский
             </h2>
-            <p className="m-0 text-[13px] text-[#80909f] dark:text-[#9eb1c2]">
+            <p className="text-text-muted m-0 text-[13px]">
               @nestjest · Студент · Web Engineering
             </p>
           </div>
           <Link
             to="/settings/profile"
-            className="grid size-9 flex-shrink-0 place-items-center rounded-[10px] border border-[rgba(219,229,238,0.9)] bg-white/78 text-[#80909f] transition-[background,color] duration-150 hover:bg-[rgba(155,232,247,0.12)] hover:text-[#3d4b58] dark:border-[rgba(57,78,95,0.95)] dark:bg-[rgba(21,31,40,0.96)] dark:text-[#9eb1c2] dark:hover:bg-[rgba(48,114,132,0.22)] dark:hover:text-[#dbe8f2]"
+            className="grid size-9 flex-shrink-0 place-items-center rounded-[10px] border border-[rgba(219,229,238,0.9)] bg-white/78 text-[#80909f] transition-[background,color] duration-150 hover:bg-[rgba(155,232,247,0.12)] hover:text-[#3d4b58] dark:text-[#9eb1c2] dark:hover:bg-[rgba(48,114,132,0.22)] dark:hover:text-[#dbe8f2]"
             aria-label="Открыть настройки профиля"
           >
             <ChevronRight size={16} />
@@ -140,7 +140,9 @@ export function SettingsOverviewPage() {
             desc={appearance.summary}
           />
           <div className={DIVIDER} />
-          <div className={`${ROW_BASE} cursor-default hover:bg-transparent dark:hover:bg-transparent`}>
+          <div
+            className={`${ROW_BASE} cursor-default hover:bg-transparent dark:hover:bg-transparent`}
+          >
             <span className={ROW_ICON}>
               <Palette size={18} />
             </span>
@@ -171,7 +173,7 @@ export function SettingsOverviewPage() {
             <span className="min-w-0 flex-1">
               <span className={ROW_LABEL}>
                 {labs.title}
-                <span className="inline-flex rounded-md bg-[rgba(155,232,247,0.25)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em] text-[#1e4b57] dark:bg-[rgba(57,148,173,0.24)] dark:text-[#97e5f5]">
+                <span className="inline-flex rounded-md bg-[rgba(155,232,247,0.25)] px-2 py-0.5 text-[10px] font-semibold tracking-[0.04em] text-[#1e4b57] uppercase dark:text-[#97e5f5]">
                   Beta
                 </span>
               </span>

@@ -49,11 +49,27 @@ type SiteSearchSuggestion = {
 };
 
 const siteSearchSuggestions: SiteSearchSuggestion[] = [
-  { id: 'search-schedule', title: 'Расписание на неделю', meta: 'Раздел расписания' },
-  { id: 'search-sql', title: 'Лабораторная по SQL', meta: 'Ближайшие дедлайны' },
+  {
+    id: 'search-schedule',
+    title: 'Расписание на неделю',
+    meta: 'Раздел расписания',
+  },
+  {
+    id: 'search-sql',
+    title: 'Лабораторная по SQL',
+    meta: 'Ближайшие дедлайны',
+  },
   { id: 'search-web', title: 'Веб-разработка', meta: 'Текущий курс' },
-  { id: 'search-messages', title: 'Сообщения преподавателей', meta: 'Коммуникации' },
-  { id: 'search-library', title: 'Библиотека материалов', meta: 'Учебные ресурсы' },
+  {
+    id: 'search-messages',
+    title: 'Сообщения преподавателей',
+    meta: 'Коммуникации',
+  },
+  {
+    id: 'search-library',
+    title: 'Библиотека материалов',
+    meta: 'Учебные ресурсы',
+  },
   { id: 'search-faq', title: 'Часто задаваемые вопросы', meta: 'FAQ' },
 ];
 
@@ -64,7 +80,7 @@ const HEADER_LINK_ACTIVE_BORDER =
   'dark:border-[rgba(88,174,199,0.4)] dark:text-[#eaf8fd]';
 
 const ICON_BUTTON_BASE =
-  'grid size-[42px] place-items-center rounded-xl border border-[var(--control-border)] bg-[var(--control-bg)] text-[var(--control-text)] transition-[background,color,border-color] duration-200 hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-[var(--accent-soft-border)] hover:text-[var(--accent-soft-text)] dark:border-[rgba(57,78,95,0.95)] dark:bg-[rgba(21,31,40,0.96)] dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
+  'grid size-[42px] place-items-center rounded-xl border border-border-strong bg-surface-raised text-text-primary transition-[background,color,border-color] duration-200 hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-accent-soft-border hover:text-accent-soft-text dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
 
 const PREVIEW_BOX =
   'h-[34px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92';
@@ -154,20 +170,28 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
   const theme = useDashboardEditorStore((state) => state.theme);
   const drawerMode = useDashboardEditorStore((state) => state.drawerMode);
   const drawerSearch = useDashboardEditorStore((state) => state.drawerSearch);
-  const editingQuickItemId = useDashboardEditorStore((state) => state.editingQuickItemId);
+  const editingQuickItemId = useDashboardEditorStore(
+    (state) => state.editingQuickItemId,
+  );
   const toggleTheme = useDashboardEditorStore((state) => state.toggleTheme);
   const closeDrawer = useDashboardEditorStore((state) => state.closeDrawer);
-  const setDrawerSearch = useDashboardEditorStore((state) => state.setDrawerSearch);
+  const setDrawerSearch = useDashboardEditorStore(
+    (state) => state.setDrawerSearch,
+  );
   const addPanel = useDashboardEditorStore((state) => state.addPanel);
   const assignWidget = useDashboardEditorStore((state) => state.assignWidget);
   const activeThreadId = useThreadWindowsStore((state) => state.activeThreadId);
   const openThread = useThreadWindowsStore((state) => state.openThread);
-  const minimizedThreads = useThreadWindowsStore((state) => state.minimizedThreads);
+  const minimizedThreads = useThreadWindowsStore(
+    (state) => state.minimizedThreads,
+  );
   const restoreThread = useThreadWindowsStore((state) => state.restoreThread);
   const removeMinimizedThread = useThreadWindowsStore(
     (state) => state.removeMinimizedThread,
   );
-  const [hoveredPreview, setHoveredPreview] = useState<DrawerPreview | null>(null);
+  const [hoveredPreview, setHoveredPreview] = useState<DrawerPreview | null>(
+    null,
+  );
   const [siteSearchQuery, setSiteSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
@@ -205,21 +229,29 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
   }, [theme]);
 
   return (
-    <div className={`min-h-screen px-5 pt-[18px] pb-28 max-lg:px-3.5 max-lg:pt-3.5 max-lg:pb-[102px] ${theme === 'dark' ? 'layout--dark' : ''}`}>
-      <header className="relative z-20 mb-6 flex min-h-[78px] items-center justify-between gap-[18px] overflow-visible rounded-3xl border border-[rgba(209,221,235,0.82)] bg-white/82 p-[14px_18px] shadow-(--shadow-soft) backdrop-blur-[18px] max-xl:flex-wrap max-lg:min-h-0 max-lg:p-3.5 max-sm:gap-1.5 dark:border-[rgba(57,78,95,0.82)] dark:bg-[rgba(15,21,28,0.82)]">
+    <div
+      className={`min-h-screen px-5 pt-[18px] pb-28 max-lg:px-3.5 max-lg:pt-3.5 max-lg:pb-[102px] ${theme === 'dark' ? 'layout--dark' : ''}`}
+    >
+      <header className="shadow-card relative z-20 mb-6 flex min-h-[78px] items-center justify-between gap-[18px] overflow-visible rounded-3xl border border-[rgba(209,221,235,0.82)] bg-white/82 p-[14px_18px] backdrop-blur-[18px] max-xl:flex-wrap max-lg:min-h-0 max-lg:p-3.5 max-sm:gap-1.5 dark:border-[rgba(57,78,95,0.82)] dark:bg-[rgba(15,21,28,0.82)]">
         <div className="flex shrink-0 items-center gap-3">
-          <img src={logoUrl} alt="logo" className="size-[60px] min-h-11 min-w-11 shrink-0 grid place-items-center rounded-[14px] bg-[#2d3137] text-lg font-extrabold text-white shadow-(--shadow-soft)" />
-          <span className="text-2xl font-bold tracking-[0.01em] text-[#25323d] dark:text-[#eef5fb]">Knowlynx</span>
+          <img
+            src={logoUrl}
+            alt="logo"
+            className="shadow-card grid size-[60px] min-h-11 min-w-11 shrink-0 place-items-center rounded-[14px] bg-[#2d3137] text-lg font-extrabold text-white"
+          />
+          <span className="text-text-primary text-2xl font-bold tracking-[0.01em]">
+            Knowlynx
+          </span>
         </div>
 
-        <nav className="flex shrink-0 items-center gap-2 overflow-visible max-xl:order-4 max-xl:w-full max-xl:flex-nowrap max-xl:overflow-x-auto [-webkit-overflow-scrolling:touch] [&::-webkit-scrollbar]:hidden">
+        <nav className="flex shrink-0 items-center gap-2 overflow-visible [-webkit-overflow-scrolling:touch] max-xl:order-4 max-xl:w-full max-xl:flex-nowrap max-xl:overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {headerNavItems.map((item) => {
             const isActive = location.pathname === (item.path ?? `/${item.id}`);
             return (
               <button
                 key={item.id}
                 type="button"
-                className={`h-[42px] whitespace-nowrap rounded-[14px] border border-transparent bg-transparent px-4 text-[#53606c] transition-[background,color,border-color] duration-200 hover:${HEADER_LINK_ACTIVE_BG} dark:text-[#b6c6d4] ${isActive ? `${HEADER_LINK_ACTIVE_BG} ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
+                className={`h-[42px] rounded-[14px] border border-transparent bg-transparent px-4 whitespace-nowrap text-[#53606c] transition-[background,color,border-color] duration-200 hover:${HEADER_LINK_ACTIVE_BG} dark:text-[#b6c6d4] ${isActive ? `${HEADER_LINK_ACTIVE_BG} ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
                 onClick={() => (item.path ? navigate(item.path) : undefined)}
               >
                 {item.label}
@@ -228,10 +260,10 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           })}
         </nav>
 
-        <div className="relative z-[42] min-w-[200px] max-w-[500px] flex-1 max-xl:order-3 max-xl:w-full max-xl:max-w-none max-xl:flex-[unset]">
+        <div className="relative z-[42] max-w-[500px] min-w-[200px] flex-1 max-xl:order-3 max-xl:w-full max-xl:max-w-none max-xl:flex-[unset]">
           <input
             type="search"
-            className="h-[42px] w-full rounded-[14px] border border-[var(--control-border)] bg-[var(--control-bg)] px-3.5 pr-11 text-[var(--control-text)] placeholder:text-[#80909f] [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none dark:border-[rgba(57,78,95,0.92)] dark:bg-[rgba(18,28,36,0.96)] dark:text-[#e7f1f8] dark:placeholder:text-[#8fa4b5]"
+            className="border-border-strong bg-surface-raised text-text-primary h-[42px] w-full rounded-[14px] border px-3.5 pr-11 placeholder:text-[#80909f] dark:bg-[rgba(18,28,36,0.96)] dark:text-[#e7f1f8] dark:placeholder:text-[#8fa4b5] [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
             placeholder="Поиск по сайту"
             value={siteSearchQuery}
             onFocus={() => setIsSearchOpen(true)}
@@ -259,7 +291,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           ) : null}
 
           {isSearchOpen && normalizedSiteSearch ? (
-            <div className="absolute top-[calc(100%+10px)] left-0 z-[60] w-full rounded-[18px] border border-[rgba(209,221,235,0.92)] bg-white/96 p-2.5 shadow-(--shadow-soft) dark:border-[rgba(57,78,95,0.92)] dark:bg-[rgba(14,22,29,0.98)]">
+            <div className="shadow-card absolute top-[calc(100%+10px)] left-0 z-[60] w-full rounded-[18px] border border-[rgba(209,221,235,0.92)] bg-white/96 p-2.5 dark:bg-[rgba(14,22,29,0.98)]">
               {filteredSiteSuggestions.length ? (
                 filteredSiteSuggestions.map((suggestion) => (
                   <button
@@ -271,8 +303,12 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                       setIsSearchOpen(false);
                     }}
                   >
-                    <strong className="text-sm font-semibold">{suggestion.title}</strong>
-                    <span className="text-xs text-[#7e8d9a] dark:text-[#9eb1c2]">{suggestion.meta}</span>
+                    <strong className="text-sm font-semibold">
+                      {suggestion.title}
+                    </strong>
+                    <span className="text-xs text-[#7e8d9a] dark:text-[#9eb1c2]">
+                      {suggestion.meta}
+                    </span>
                   </button>
                 ))
               ) : (
@@ -295,7 +331,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           </button>
           <button
             type="button"
-            className={`${ICON_BUTTON_BASE} ${location.pathname.startsWith('/settings') ? `${HEADER_LINK_ACTIVE_BG} border-[var(--accent-soft-border)] text-[var(--accent-soft-text)] ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
+            className={`${ICON_BUTTON_BASE} ${location.pathname.startsWith('/settings') ? `${HEADER_LINK_ACTIVE_BG} border-accent-soft-border text-accent-soft-text ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
             aria-label="Настройки"
             onClick={() => navigate('/settings')}
           >
@@ -307,11 +343,13 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
       <div className="relative px-2">{children}</div>
 
       {drawerMode ? (
-        <div className="fixed left-1/2 bottom-24 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-[18px] shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] [backdrop-filter:blur(22px)_saturate(135%)] [animation:drawer-slide-up_240ms_ease] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:bottom-[88px] max-lg:max-h-[74vh] dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)]">
+        <div className="fixed bottom-24 left-1/2 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-[18px] shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))] dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)]">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="m-0 mb-1 text-xl text-white">
-                {drawerMode === 'blocks' ? 'Добавить новый блок' : 'Выбрать виджет'}
+                {drawerMode === 'blocks'
+                  ? 'Добавить новый блок'
+                  : 'Выбрать виджет'}
               </h3>
               <p className="m-0 text-[13px] text-white/72">
                 {drawerMode === 'blocks'
@@ -332,7 +370,9 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           <input
             className="h-11 w-full rounded-[14px] border border-white/14 bg-white/8 px-3.5 text-white placeholder:text-white/50 dark:border-white/10 dark:bg-white/6"
             type="search"
-            placeholder={drawerMode === 'blocks' ? 'Поиск блока' : 'Поиск виджета'}
+            placeholder={
+              drawerMode === 'blocks' ? 'Поиск блока' : 'Поиск виджета'
+            }
             value={drawerSearch}
             onChange={(event) => setDrawerSearch(event.target.value)}
           />
@@ -357,8 +397,12 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                       onMouseLeave={() => setHoveredPreview(null)}
                       onClick={() => addPanel(item.templateId)}
                     >
-                      <strong className="mb-1.5 block text-[15px]">{item.title}</strong>
-                      <span className="text-xs text-white/68">Добавить блок в текущий макет</span>
+                      <strong className="mb-1.5 block text-[15px]">
+                        {item.title}
+                      </strong>
+                      <span className="text-xs text-white/68">
+                        Добавить блок в текущий макет
+                      </span>
                     </button>
                   ))
                 : widgetOptions.map((item) => (
@@ -381,14 +425,18 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                         }
                       }}
                     >
-                      <strong className="mb-1.5 block text-[15px]">{item.title}</strong>
-                      <span className="text-xs text-white/68">{item.description}</span>
+                      <strong className="mb-1.5 block text-[15px]">
+                        {item.title}
+                      </strong>
+                      <span className="text-xs text-white/68">
+                        {item.description}
+                      </span>
                     </button>
                   ))}
             </div>
 
             <aside
-              className={`self-start rounded-[18px] border border-white/10 bg-white/5 p-4 transition-[opacity,transform] duration-[180ms] max-lg:hidden dark:border-white/8 dark:bg-white/4 ${hoveredPreview ? 'opacity-100 -translate-y-0.5' : 'opacity-[0.88]'}`}
+              className={`self-start rounded-[18px] border border-white/10 bg-white/5 p-4 transition-[opacity,transform] duration-[180ms] max-lg:hidden dark:border-white/8 dark:bg-white/4 ${hoveredPreview ? '-translate-y-0.5 opacity-100' : 'opacity-[0.88]'}`}
             >
               {hoveredPreview ? (
                 <>
@@ -398,14 +446,21 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                     <div className="h-4 w-3/5 rounded-full bg-[rgba(31,79,90,0.14)]" />
                     {renderDrawerPreview(hoveredPreview)}
                   </div>
-                  <strong className="mb-1.5 block text-[15px] text-white">{hoveredPreview.title}</strong>
-                  <p className="m-0 text-xs leading-[1.45] text-white/74">{hoveredPreview.description}</p>
+                  <strong className="mb-1.5 block text-[15px] text-white">
+                    {hoveredPreview.title}
+                  </strong>
+                  <p className="m-0 text-xs leading-[1.45] text-white/74">
+                    {hoveredPreview.description}
+                  </p>
                 </>
               ) : (
                 <>
-                  <strong className="mb-1.5 block text-[15px] text-white">Предпросмотр</strong>
+                  <strong className="mb-1.5 block text-[15px] text-white">
+                    Предпросмотр
+                  </strong>
                   <p className="m-0 text-xs leading-[1.45] text-white/74">
-                    Наведи на элемент в списке, чтобы увидеть его внешний вид и краткое описание.
+                    Наведи на элемент в списке, чтобы увидеть его внешний вид и
+                    краткое описание.
                   </p>
                 </>
               )}
@@ -418,7 +473,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
       {visibleMinimizedThreads.length ? (
         <div
-          className="fixed left-4 bottom-4 z-[31] flex max-w-[min(420px,calc(100vw-32px))] items-center gap-3 overflow-x-auto p-1.5 px-1 [scrollbar-width:none] max-lg:left-3 max-lg:max-w-[calc(100vw-24px)] max-lg:gap-2.5 [&::-webkit-scrollbar]:hidden"
+          className="fixed bottom-4 left-4 z-[31] flex max-w-[min(420px,calc(100vw-32px))] items-center gap-3 overflow-x-auto p-1.5 px-1 [scrollbar-width:none] max-lg:left-3 max-lg:max-w-[calc(100vw-24px)] max-lg:gap-2.5 [&::-webkit-scrollbar]:hidden"
           aria-label="Свернутые треды"
         >
           {visibleMinimizedThreads.map((item) => {
@@ -432,7 +487,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.threadId}
                 type="button"
-                className="group relative inline-flex size-16 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 shadow-[0_10px_22px_rgba(37,50,63,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-[18px] transition-[transform,box-shadow,border-color] duration-200 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.96)] dark:to-[rgba(24,34,44,0.94)] dark:shadow-[0_12px_24px_rgba(4,8,12,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] dark:hover:shadow-[0_16px_30px_rgba(4,8,12,0.24),inset_0_1px_0_rgba(255,255,255,0.06)]"
+                className="group relative inline-flex size-16 flex-shrink-0 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 shadow-[0_10px_22px_rgba(37,50,63,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-[18px] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.96)] dark:to-[rgba(24,34,44,0.94)] dark:shadow-[0_12px_24px_rgba(4,8,12,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] dark:hover:shadow-[0_16px_30px_rgba(4,8,12,0.24),inset_0_1px_0_rgba(255,255,255,0.06)]"
                 aria-label={`Открыть тред ${thread.title}`}
                 onClick={() => {
                   restoreThread(item.threadId);
@@ -454,9 +509,9 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                   <X size={12} />
                 </span>
 
-                <span className="pointer-events-none absolute left-0 bottom-[82px] w-[min(300px,calc(100vw-32px))] rounded-[22px] border border-[rgba(194,210,222,0.84)] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] opacity-0 transition-[opacity,transform] duration-200 [transform:translateY(8px)_scale(0.96)] group-hover:opacity-100 group-hover:[transform:translateY(0)_scale(1)] group-focus-visible:opacity-100 group-focus-visible:[transform:translateY(0)_scale(1)] max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:border-[rgba(58,79,96,0.92)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.98)] dark:to-[rgba(22,31,40,0.96)] dark:shadow-[0_14px_28px_rgba(4,8,12,0.22),inset_0_1px_0_rgba(255,255,255,0.05)]">
+                <span className="pointer-events-none absolute bottom-[82px] left-0 w-[min(300px,calc(100vw-32px))] [transform:translateY(8px)_scale(0.96)] rounded-[22px] border border-[rgba(194,210,222,0.84)] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left opacity-0 shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] transition-[opacity,transform] duration-200 group-hover:[transform:translateY(0)_scale(1)] group-hover:opacity-100 group-focus-visible:[transform:translateY(0)_scale(1)] group-focus-visible:opacity-100 max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:border-[rgba(58,79,96,0.92)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.98)] dark:to-[rgba(22,31,40,0.96)] dark:shadow-[0_14px_28px_rgba(4,8,12,0.22),inset_0_1px_0_rgba(255,255,255,0.05)]">
                   <span className="mb-1.5 flex items-start justify-between gap-2.5">
-                    <strong className="text-sm leading-[1.35] text-[#24313b] dark:text-[#eef5fb]">
+                    <strong className="text-text-primary text-sm leading-[1.35]">
                       {thread.title}
                     </strong>
                     <span className="text-xs leading-[1.5] text-[#6d8090] dark:text-[#9eb1c2]">
@@ -475,7 +530,11 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
       <div className="fixed bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2.5 rounded-[15px] border border-white/18 bg-black/66 p-2.5 shadow-[0_18px_38px_rgba(48,35,40,0.24),inset_0_1px_0_rgba(255,255,255,0.16)] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:p-1.5 dark:border-[rgba(58,80,97,0.28)] dark:bg-[rgba(14,20,27,0.78)]">
         <div className="flex shrink-0 items-center gap-3 pr-1.5">
-          <img src={logoUrl} alt="logo" className="size-[60px] min-h-11 min-w-11 shrink-0 grid place-items-center rounded-[14px] bg-[#2d3137] text-lg font-extrabold text-white shadow-(--shadow-soft)" />
+          <img
+            src={logoUrl}
+            alt="logo"
+            className="shadow-card grid size-[60px] min-h-11 min-w-11 shrink-0 place-items-center rounded-[14px] bg-[#2d3137] text-lg font-extrabold text-white"
+          />
         </div>
 
         <nav className="mr-2.5 flex h-[60px] min-w-0 items-center gap-2 rounded-[15px] bg-[#414141] px-1.5">
@@ -488,7 +547,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.id}
                 type="button"
-                className={`flex h-[50px] w-[100px] items-center justify-center whitespace-nowrap rounded-[15px] border border-white/12 bg-inherit px-4 py-6 text-[0.7rem] text-white/88 transition-[background,color,border-color] duration-200 hover:border-[rgba(155,232,247,0.36)] hover:bg-[rgba(155,232,247,0.18)] hover:text-white max-lg:w-auto max-lg:px-3 max-lg:text-[13px] dark:border-white/8 dark:bg-white/3 dark:text-[rgba(228,238,246,0.88)] ${isActive ? 'border-[rgba(155,232,247,0.36)] bg-[rgba(155,232,247,0.18)] text-white' : ''}`}
+                className={`flex h-[50px] w-[100px] items-center justify-center rounded-[15px] border border-white/12 bg-inherit px-4 py-6 text-[0.7rem] whitespace-nowrap text-white/88 transition-[background,color,border-color] duration-200 hover:border-[rgba(155,232,247,0.36)] hover:bg-[rgba(155,232,247,0.18)] hover:text-white max-lg:w-auto max-lg:px-3 max-lg:text-[13px] dark:border-white/8 dark:bg-white/3 dark:text-[rgba(228,238,246,0.88)] ${isActive ? 'border-[rgba(155,232,247,0.36)] bg-[rgba(155,232,247,0.18)] text-white' : ''}`}
                 onClick={() => (item.path ? navigate(item.path) : undefined)}
               >
                 {item.label}
@@ -499,7 +558,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
         <button
           type="button"
-          className="flex h-[60px] shrink-0 items-center justify-center gap-[7px] whitespace-nowrap rounded-[14px] border border-[rgba(93,199,222,0.6)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] px-4 font-bold text-[#275d69] transition-[background,box-shadow] duration-200 hover:bg-gradient-to-br hover:from-[#b7effb] hover:to-[#7dd8ea] hover:shadow-[0_4px_16px_rgba(93,199,222,0.3)] max-lg:px-3.5 max-lg:text-[13px] dark:border-[rgba(88,174,199,0.4)] dark:bg-gradient-to-br dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#e8f8fc] dark:hover:from-[#2b6a78] dark:hover:to-[#25919e] dark:hover:shadow-[0_4px_16px_rgba(29,127,149,0.3)]"
+          className="flex h-[60px] shrink-0 items-center justify-center gap-[7px] rounded-[14px] border border-[rgba(93,199,222,0.6)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] px-4 font-bold whitespace-nowrap text-[#275d69] transition-[background,box-shadow] duration-200 hover:bg-gradient-to-br hover:from-[#b7effb] hover:to-[#7dd8ea] hover:shadow-[0_4px_16px_rgba(93,199,222,0.3)] max-lg:px-3.5 max-lg:text-[13px] dark:border-[rgba(88,174,199,0.4)] dark:bg-gradient-to-br dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#e8f8fc] dark:hover:from-[#2b6a78] dark:hover:to-[#25919e] dark:hover:shadow-[0_4px_16px_rgba(29,127,149,0.3)]"
         >
           К работам
         </button>

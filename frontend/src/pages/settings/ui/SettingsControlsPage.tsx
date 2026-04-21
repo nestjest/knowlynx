@@ -14,16 +14,16 @@ import {
 } from '../model/settingsSections';
 
 const PANEL_BASE =
-  'rounded-3xl border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]';
+  'rounded-3xl border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] shadow-card';
 
 const EYEBROW =
-  'm-0 mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#5b7b87] dark:text-[#8cb6c4]';
+  'm-0 mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-text-muted';
 
 const CONTROL_INPUT =
-  'min-w-[190px] rounded-[14px] border border-[var(--control-border)] bg-[var(--control-bg)] px-3.5 py-[11px] text-[var(--control-text)] dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
+  'min-w-[190px] rounded-[14px] border border-border-strong bg-surface-raised px-3.5 py-[11px] text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
 
 const SEGMENT_BASE =
-  'rounded-full border border-[var(--control-border)] bg-[var(--control-bg)] px-3.5 py-2.5 text-[var(--control-text)] hover:border-[var(--accent-soft-border)] hover:bg-[var(--accent-soft-bg)] hover:text-[var(--accent-soft-text)] dark:border-[rgba(57,78,95,0.95)] dark:bg-[rgba(21,31,40,0.96)] dark:text-[#dbe8f2]';
+  'rounded-full border border-border-strong bg-surface-raised px-3.5 py-2.5 text-text-primary hover:border-accent-soft-border hover:bg-accent-soft-bg hover:text-accent-soft-text dark:text-[#dbe8f2]';
 
 function buildInitialState(sectionId: SettingsSectionId) {
   const controls = settingsFormSections[sectionId].flatMap(
@@ -115,7 +115,7 @@ export function SettingsControlsPage() {
               <button
                 key={option}
                 type="button"
-                className={`${SEGMENT_BASE} ${active ? 'border-[var(--accent-soft-border)] bg-[var(--accent-soft-bg)] text-[var(--accent-soft-text)]' : ''}`}
+                className={`${SEGMENT_BASE} ${active ? 'border-accent-soft-border bg-accent-soft-bg text-accent-soft-text' : ''}`}
                 onClick={() => setValue(control.id, option)}
               >
                 {option}
@@ -140,7 +140,7 @@ export function SettingsControlsPage() {
     return (
       <button
         type="button"
-        className={`${SEGMENT_BASE} font-semibold ${control.tone === 'danger' ? 'border-[var(--control-danger-border)] bg-[var(--control-danger-bg)] text-[var(--control-danger-text)]' : ''}`}
+        className={`${SEGMENT_BASE} font-semibold ${control.tone === 'danger' ? 'border-danger-border bg-danger-bg text-danger-text' : ''}`}
       >
         {control.actionLabel}
       </button>
@@ -150,17 +150,17 @@ export function SettingsControlsPage() {
   return (
     <DashboardEditorShell>
       <div className="mx-auto flex max-w-[1100px] flex-col gap-4 px-0 py-2">
-        <div className="rounded-3xl border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(247,250,253,0.94)_100%)] p-6 shadow-(--shadow-soft) max-sm:rounded-[18px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[radial-gradient(circle_at_top_right,rgba(43,94,111,0.35),transparent_30%),rgba(18,26,34,0.94)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+        <div className="shadow-card rounded-3xl border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(247,250,253,0.94)_100%)] p-6 max-sm:rounded-[18px] dark:bg-[radial-gradient(circle_at_top_right,rgba(43,94,111,0.35),transparent_30%),rgba(18,26,34,0.94)]">
           <div className="mb-[18px] flex items-start justify-between gap-4">
             <Link
               to="/settings"
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(219,229,238,0.9)] bg-white/72 px-3 py-2 text-[#47606f] dark:border-[rgba(57,78,95,0.95)] dark:bg-[rgba(21,31,40,0.96)] dark:text-[#b6c7d5]"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(219,229,238,0.9)] bg-white/72 px-3 py-2 text-[#47606f] dark:text-[#b6c7d5]"
             >
               <ChevronLeft size={16} />
               Все настройки
             </Link>
             {section.badge ? (
-              <span className="inline-flex rounded-md bg-[rgba(155,232,247,0.25)] px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.04em] text-[#1e4b57] dark:bg-[rgba(57,148,173,0.24)] dark:text-[#97e5f5]">
+              <span className="inline-flex rounded-md bg-[rgba(155,232,247,0.25)] px-2 py-0.5 text-[10px] font-semibold tracking-[0.04em] text-[#1e4b57] uppercase dark:text-[#97e5f5]">
                 {section.badge}
               </span>
             ) : null}
@@ -172,10 +172,10 @@ export function SettingsControlsPage() {
             </div>
             <div className="min-w-0">
               <p className={EYEBROW}>Настройки раздела</p>
-              <h1 className="m-0 text-[32px] leading-[1.1] text-[#25323d] dark:text-[#eef5fb]">
+              <h1 className="text-text-primary m-0 text-[32px] leading-[1.1]">
                 {section.title}
               </h1>
-              <p className="m-0 mt-2.5 text-sm leading-[1.5] text-[#758592] dark:text-[#9eb1c2]">
+              <p className="text-text-muted m-0 mt-2.5 text-sm leading-[1.5]">
                 {section.summary}
               </p>
             </div>
@@ -186,13 +186,13 @@ export function SettingsControlsPage() {
           {section.facts.map((fact) => (
             <article
               key={fact.label}
-              className={`rounded-[18px] border border-[rgba(219,229,238,0.95)] p-4 shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] ${fact.tone === 'accent' ? 'bg-gradient-to-b from-[rgba(155,232,247,0.2)] to-white/88' : 'bg-white/78'}`}
+              className={`shadow-card rounded-[18px] border border-[rgba(219,229,238,0.95)] p-4 ${fact.tone === 'accent' ? 'bg-gradient-to-b from-[rgba(155,232,247,0.2)] to-white/88' : 'bg-white/78'}`}
             >
               <span className="mb-2 block text-xs text-[#7b8b98] dark:text-[#9eb1c2]">
                 {fact.label}
               </span>
               <strong
-                className={`text-[#26313b] dark:text-[#eef5fb] ${fact.tone === 'muted' ? 'text-base' : 'text-lg'}`}
+                className={`text-text-primary ${fact.tone === 'muted' ? 'text-base' : 'text-lg'}`}
               >
                 {fact.value}
               </strong>
@@ -207,11 +207,9 @@ export function SettingsControlsPage() {
                 <div className="mb-[18px] flex items-start justify-between gap-4">
                   <div>
                     <p className={EYEBROW}>Настройки</p>
-                    <h2 className="m-0 text-[#25323d] dark:text-[#eef5fb]">
-                      {group.title}
-                    </h2>
+                    <h2 className="text-text-primary m-0">{group.title}</h2>
                     {group.description ? (
-                      <p className="m-0 mt-2.5 text-sm leading-[1.5] text-[#758592] dark:text-[#9eb1c2]">
+                      <p className="text-text-muted m-0 mt-2.5 text-sm leading-[1.5]">
                         {group.description}
                       </p>
                     ) : null}
@@ -225,7 +223,7 @@ export function SettingsControlsPage() {
                       className={`flex items-center justify-between gap-[18px] py-4 max-lg:flex-col max-lg:items-start ${idx === 0 ? '' : 'border-t border-[rgba(219,229,238,0.78)] dark:border-[rgba(42,60,74,0.78)]'}`}
                     >
                       <div className="flex min-w-0 flex-1 flex-col gap-1">
-                        <strong className="text-[15px] font-semibold text-[#25323d] dark:text-[#eef5fb]">
+                        <strong className="text-text-primary text-[15px] font-semibold">
                           {control.label}
                         </strong>
                         <span className="text-[13px] leading-[1.45] text-[#778894] dark:text-[#9eb1c2]">
@@ -248,7 +246,7 @@ export function SettingsControlsPage() {
             >
               <div className="mb-[18px]">
                 <p className={EYEBROW}>Системно</p>
-                <h2 className="m-0 text-[#25323d] dark:text-[#eef5fb]">
+                <h2 className="text-text-primary m-0">
                   Что задаётся платформой
                 </h2>
               </div>
@@ -262,9 +260,7 @@ export function SettingsControlsPage() {
             <article className={PANEL_BASE}>
               <div>
                 <p className={EYEBROW}>Соседние разделы</p>
-                <h2 className="m-0 text-[#25323d] dark:text-[#eef5fb]">
-                  Другие настройки
-                </h2>
+                <h2 className="text-text-primary m-0">Другие настройки</h2>
               </div>
 
               <div className="mt-[18px] grid grid-cols-1 gap-3.5">
@@ -275,13 +271,13 @@ export function SettingsControlsPage() {
                     <Link
                       key={item.id}
                       to={`/settings/${item.id}`}
-                      className="flex w-full items-center gap-3.5 rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/72 p-4 text-inherit dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]"
+                      className="flex w-full items-center gap-3.5 rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/72 p-4 text-inherit"
                     >
                       <span className="grid size-[38px] flex-shrink-0 place-items-center rounded-xl bg-[rgba(155,232,247,0.14)] text-[#38a8c0]">
                         <RelatedIcon size={18} />
                       </span>
                       <span className="flex min-w-0 flex-1 flex-col gap-1">
-                        <strong className="text-[#25323d] dark:text-[#eef5fb]">
+                        <strong className="text-text-primary">
                           {item.shortTitle}
                         </strong>
                         <span className="text-xs text-[#7b8b98] dark:text-[#9eb1c2]">
@@ -290,7 +286,7 @@ export function SettingsControlsPage() {
                       </span>
                       <ChevronRight
                         size={16}
-                        className="flex-shrink-0 text-[#b0bec5] dark:text-[#4a5f6e]"
+                        className="text-text-muted flex-shrink-0 opacity-60"
                       />
                     </Link>
                   );
