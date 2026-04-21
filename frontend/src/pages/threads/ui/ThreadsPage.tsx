@@ -805,7 +805,6 @@ export function ThreadsPage() {
             <button type="button" className="threads-modal__backdrop" aria-label="Закрыть тред" onClick={closeThread} />
 
             <section className="threads-modal">
-              <div className="threads-modal__handle" />
 
               <div className="threads-modal__header">
                 <div className="threads-modal__heading">
