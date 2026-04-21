@@ -25,3 +25,14 @@
   --color-soft-blue-strong: #235165;
   --shadow-soft: 0 18px 45px rgba(4, 8, 12, 0.34);
 }
+
+@keyframes drawer-slide-up {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
