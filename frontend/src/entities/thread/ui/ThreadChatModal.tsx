@@ -61,10 +61,10 @@ type MenuState = {
 const THREAD_AVATAR_BASE =
   'inline-flex size-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)] dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#eff9fc] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.16)]';
 
-const STATUS_STYLES: Record<ThreadItem['status'], string> = {
-  active: 'bg-[rgba(126,217,138,0.18)] text-[#2f7a40]',
-  draft: 'bg-[rgba(255,184,107,0.18)] text-[#996126]',
-  archived: 'bg-[rgba(176,190,201,0.22)] text-[#586673]',
+const STATUS_LABEL: Record<ThreadItem['status'], string> = {
+  active: 'Активный',
+  draft: 'Черновик',
+  archived: 'Архив',
 };
 
 const TOOLBAR_BUTTON =
@@ -91,17 +91,9 @@ function ThreadAvatar({
 }
 
 function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
-  const labelMap: Record<ThreadItem['status'], string> = {
-    active: 'Активный',
-    draft: 'Черновик',
-    archived: 'Архив',
-  };
-
   return (
-    <span
-      className={`inline-flex w-fit items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-bold ${STATUS_STYLES[status]}`}
-    >
-      {labelMap[status]}
+    <span className={`status-pill status-pill-${status}`}>
+      {STATUS_LABEL[status]}
     </span>
   );
 }

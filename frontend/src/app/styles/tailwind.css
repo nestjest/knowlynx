@@ -230,4 +230,13 @@
   .status-pill {
     @apply inline-flex w-fit items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-bold;
   }
+  .status-pill-active {
+    @apply bg-status-active-bg text-status-active-text;
+  }
+  .status-pill-draft {
+    @apply bg-status-draft-bg text-status-draft-text;
+  }
+  .status-pill-archived {
+    @apply bg-status-archived-bg text-status-archived-text;
+  }
 }

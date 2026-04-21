@@ -91,24 +91,16 @@ function ThreadAvatar({
   );
 }
 
-const STATUS_STYLES: Record<ThreadItem['status'], string> = {
-  active: 'bg-[rgba(126,217,138,0.18)] text-[#2f7a40]',
-  draft: 'bg-[rgba(255,184,107,0.18)] text-[#996126]',
-  archived: 'bg-[rgba(176,190,201,0.22)] text-[#586673]',
+const STATUS_LABEL: Record<ThreadItem['status'], string> = {
+  active: 'Активный',
+  draft: 'Черновик',
+  archived: 'Архив',
 };
 
 function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
-  const labelMap: Record<ThreadItem['status'], string> = {
-    active: 'Активный',
-    draft: 'Черновик',
-    archived: 'Архив',
-  };
-
   return (
-    <span
-      className={`inline-flex w-fit items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-bold ${STATUS_STYLES[status]}`}
-    >
-      {labelMap[status]}
+    <span className={`status-pill status-pill-${status}`}>
+      {STATUS_LABEL[status]}
     </span>
   );
 }
