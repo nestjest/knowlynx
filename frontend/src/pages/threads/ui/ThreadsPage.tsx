@@ -5,12 +5,17 @@ import {
   useState,
   type CSSProperties,
   type FormEvent,
+  type KeyboardEvent,
   type MouseEvent as ReactMouseEvent
 } from 'react';
 import { createPortal } from 'react-dom';
 import {
+  ArrowDown,
+  ArrowUp,
   ArrowUpRight,
   Bold,
+  ChevronDown,
+  ChevronUp,
   Code2,
   Copy,
   CornerUpLeft,
@@ -18,6 +23,7 @@ import {
   Italic,
   List,
   MessageSquareReply,
+  Minus,
   Pin,
   Search,
   SendHorizontal,
@@ -26,6 +32,7 @@ import {
   X
 } from 'lucide-react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { useThreadWindowsStore } from '../../../entities/thread/model/useThreadWindowsStore';
 import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorShell';
 import { threadMocks, threadMocksMap, type ThreadItem, type ThreadMessage } from '../model/threadMocks';
 
@@ -46,6 +53,8 @@ type ComposerMode =
   | { type: 'new' }
   | { type: 'reply'; messageId: string }
   | { type: 'edit'; messageId: string };
+
+const THREAD_MINIMIZE_ANIMATION_MS = 320;
 
 type MenuState = {
   messageId: string;
@@ -329,23 +338,25 @@ export function ThreadsPage() {
   const { threadId } = useParams<{ threadId?: string }>();
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const contextMenuRef = useRef<HTMLDivElement | null>(null);
+  const historyRef = useRef<HTMLDivElement | null>(null);
+  const minimizeTimeoutRef = useRef<number | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<'all' | ThreadItem['category']>('all');
   const [draftMessage, setDraftMessage] = useState('');
   const [composerMode, setComposerMode] = useState<ComposerMode>({ type: 'new' });
+  const [isComposerCollapsed, setIsComposerCollapsed] = useState(false);
+  const [isMinimizingThread, setIsMinimizingThread] = useState(false);
   const [menuState, setMenuState] = useState<MenuState | null>(null);
   const [copiedMessageId, setCopiedMessageId] = useState<string | null>(null);
-  const [threadMessages, setThreadMessages] = useState<Record<string, UIThreadMessage[]>>(
-    Object.fromEntries(
-      threadMocks.map((thread) => [
-        thread.id,
-        thread.messages.map((message) => ({
-          ...message,
-          reactions: {}
-        }))
-      ])
-    )
-  );
+  const [isHistoryScrollable, setIsHistoryScrollable] = useState(false);
+  const [isHistoryAtTop, setIsHistoryAtTop] = useState(false);
+  const [deleteDialogMessageId, setDeleteDialogMessageId] = useState<string | null>(null);
+  const activeThreadId = useThreadWindowsStore((state) => state.activeThreadId);
+  const threadMessages = useThreadWindowsStore((state) => state.threadMessages);
+  const openThreadWindow = useThreadWindowsStore((state) => state.openThread);
+  const setThreadMessages = useThreadWindowsStore((state) => state.setThreadMessages);
+  const minimizeThread = useThreadWindowsStore((state) => state.minimizeThread);
+  const restoreThread = useThreadWindowsStore((state) => state.restoreThread);
 
   const categories = Array.from(new Set(threadMocks.map((thread) => thread.category)));
   const topCategory = useMemo(() => {
@@ -382,8 +393,9 @@ export function ThreadsPage() {
     return matchesQuery && matchesCategory;
   });
 
-  const selectedThread = threadId ? threadMocksMap[threadId] : null;
+  const selectedThread = threadId ? threadMocksMap[threadId] : activeThreadId ? threadMocksMap[activeThreadId] : null;
   const selectedThreadMessages = selectedThread ? threadMessages[selectedThread.id] ?? [] : [];
+  const latestThreadMessage = selectedThreadMessages[selectedThreadMessages.length - 1] ?? null;
   const pinnedMessage = useMemo(
     () => selectedThreadMessages.find((message) => message.isPinned) ?? null,
     [selectedThreadMessages]
@@ -392,6 +404,8 @@ export function ThreadsPage() {
   const composerTarget =
     composerMode.type === 'new' ? null : findMessage(selectedThreadMessages, composerMode.messageId);
   const remainingCharacters = THREAD_MESSAGE_LIMIT - draftMessage.length;
+  const isScrollControlPointingDown = isHistoryScrollable && isHistoryAtTop;
+  const shouldShowScrollControl = isHistoryScrollable;
 
   useEffect(() => {
     if (!menuState) {
@@ -426,30 +440,110 @@ export function ThreadsPage() {
   }, [menuState]);
 
   useEffect(() => {
+    return () => {
+      if (minimizeTimeoutRef.current) {
+        window.clearTimeout(minimizeTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     setMenuState(null);
     setCopiedMessageId(null);
-  }, [threadId]);
+    setDeleteDialogMessageId(null);
+    setIsComposerCollapsed(false);
+    setIsMinimizingThread(false);
+    if (threadId) {
+      openThreadWindow(threadId);
+      restoreThread(threadId);
+    }
+  }, [threadId, openThreadWindow, restoreThread]);
+
+  useEffect(() => {
+    const historyElement = historyRef.current;
+
+    if (!historyElement) {
+      return undefined;
+    }
+
+    function updateScrollState() {
+      const maxScrollTop = historyElement.scrollHeight - historyElement.clientHeight;
+      setIsHistoryScrollable(maxScrollTop > 24);
+      setIsHistoryAtTop(historyElement.scrollTop <= 24);
+    }
+
+    updateScrollState();
+    historyElement.addEventListener('scroll', updateScrollState);
+    return () => historyElement.removeEventListener('scroll', updateScrollState);
+  }, [threadId, selectedThreadMessages.length]);
+
+  useEffect(() => {
+    if (!selectedThread) {
+      return;
+    }
+
+    const historyElement = historyRef.current;
+
+    if (!historyElement) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      historyElement.scrollTo({
+        top: historyElement.scrollHeight,
+        behavior: 'smooth'
+      });
+    });
+  }, [selectedThread?.id, selectedThreadMessages.length]);
 
   if (threadId && !selectedThread) {
     return <Navigate to="/threads" replace />;
   }
 
   function updateThreadMessages(threadKey: string, updater: (messages: UIThreadMessage[]) => UIThreadMessage[]) {
-    setThreadMessages((current) => ({
-      ...current,
-      [threadKey]: updater(current[threadKey] ?? [])
-    }));
+    setThreadMessages(threadKey, updater);
   }
 
   function openThread(id: string) {
-    navigate(`/threads/${id}`);
+    restoreThread(id);
+    openThreadWindow(id);
+  }
+
+  function clearMinimizeAnimation() {
+    if (minimizeTimeoutRef.current) {
+      window.clearTimeout(minimizeTimeoutRef.current);
+      minimizeTimeoutRef.current = null;
+    }
+  }
+
+  function minimizeThreadWindow() {
+    if (!selectedThread || isMinimizingThread) {
+      return;
+    }
+
+    clearMinimizeAnimation();
+    setMenuState(null);
+    setIsMinimizingThread(true);
+    minimizeTimeoutRef.current = window.setTimeout(() => {
+      minimizeThread(selectedThread.id, {
+        text: latestThreadMessage?.text ?? selectedThread.summary,
+        timestamp: latestThreadMessage?.timestamp ?? selectedThread.updatedAt
+      });
+      setIsMinimizingThread(false);
+      minimizeTimeoutRef.current = null;
+      navigate('/threads');
+    }, THREAD_MINIMIZE_ANIMATION_MS);
   }
 
   function closeThread() {
+    clearMinimizeAnimation();
     navigate('/threads');
     setDraftMessage('');
     setComposerMode({ type: 'new' });
     setMenuState(null);
+    setDeleteDialogMessageId(null);
+    setIsComposerCollapsed(false);
+    setIsMinimizingThread(false);
   }
 
   function resetComposer() {
@@ -512,9 +606,7 @@ export function ThreadsPage() {
     });
   }
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  function submitCurrentDraft() {
     if (!selectedThread || !draftMessage.trim()) {
       return;
     }
@@ -549,6 +641,24 @@ export function ThreadsPage() {
     resetComposer();
   }
 
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    submitCurrentDraft();
+  }
+
+  function handleComposerKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
+    if (event.nativeEvent.isComposing || event.key !== 'Enter') {
+      return;
+    }
+
+    if (event.ctrlKey) {
+      return;
+    }
+
+    event.preventDefault();
+    submitCurrentDraft();
+  }
+
   function openMessageMenu(event: ReactMouseEvent<HTMLElement>, messageId: string) {
     event.preventDefault();
     const rect = event.currentTarget.getBoundingClientRect();
@@ -565,6 +675,19 @@ export function ThreadsPage() {
       left,
       top: shouldPlaceAbove ? rect.top - 8 : rect.bottom + 8,
       placement: shouldPlaceAbove ? 'above' : 'below'
+    });
+  }
+
+  function toggleHistoryScrollDirection() {
+    const historyElement = historyRef.current;
+
+    if (!historyElement) {
+      return;
+    }
+
+    historyElement.scrollTo({
+      top: isScrollControlPointingDown ? historyElement.scrollHeight : 0,
+      behavior: 'smooth'
     });
   }
 
@@ -611,33 +734,59 @@ export function ThreadsPage() {
     );
   }
 
-  function removeMessage(messageId: string) {
+  function removeMessage(messageId: string, mode: 'self' | 'everyone') {
     if (!selectedThread) {
       return;
     }
 
-    updateThreadMessages(selectedThread.id, (messages) => messages.filter((message) => message.id !== messageId));
+    updateThreadMessages(selectedThread.id, (messages) => {
+      const filteredMessages = messages.filter((message) => message.id !== messageId);
+
+      if (mode === 'everyone') {
+        return [
+          ...filteredMessages,
+          {
+            id: `system-delete-${Date.now()}`,
+            author: 'system',
+            text: 'Сообщение удалено для всех участников треда.',
+            timestamp: 'Сейчас',
+            reactions: {}
+          }
+        ];
+      }
+
+      return filteredMessages;
+    });
 
     if (composerMode.type !== 'new' && composerMode.messageId === messageId) {
       resetComposer();
     }
+
+    setDeleteDialogMessageId(null);
+  }
+
+  function requestMessageRemoval(messageId: string) {
+    setMenuState(null);
+    setDeleteDialogMessageId(messageId);
   }
 
   function startReply(message: UIThreadMessage) {
     setComposerMode({ type: 'reply', messageId: message.id });
     setDraftMessage('');
+    setIsComposerCollapsed(false);
     textareaRef.current?.focus();
   }
 
   function startEdit(message: UIThreadMessage) {
     setComposerMode({ type: 'edit', messageId: message.id });
     setDraftMessage(message.text);
+    setIsComposerCollapsed(false);
     window.requestAnimationFrame(() => textareaRef.current?.focus());
   }
 
   return (
     <DashboardEditorShell>
-      <div className="threads-page">
+      <div className={`threads-page ${isMinimizingThread ? 'threads-page--thread-minimizing' : ''}`.trim()}>
         <section className="threads-page__hero">
           <div className="threads-page__hero-copy">
             <div className="threads-page__eyebrow">
@@ -800,11 +949,11 @@ export function ThreadsPage() {
           </div>
         </section>
 
-        {selectedThread ? (
+        {false ? (
           <>
             <button type="button" className="threads-modal__backdrop" aria-label="Закрыть тред" onClick={closeThread} />
 
-            <section className="threads-modal">
+            <section className={`threads-modal ${isMinimizingThread ? 'threads-modal--minimizing' : ''}`.trim()}>
 
               <div className="threads-modal__header">
                 <div className="threads-modal__heading">
@@ -820,6 +969,15 @@ export function ThreadsPage() {
                   <X size={18} />
                 </button>
               </div>
+
+              <button
+                type="button"
+                className="threads-modal__minimize"
+                aria-label="Свернуть тред"
+                onClick={minimizeThreadWindow}
+              >
+                <Minus size={18} />
+              </button>
 
               <div className="threads-modal__summary">
                 <ThreadStatusBadge status={selectedThread.status} />
@@ -840,7 +998,7 @@ export function ThreadsPage() {
                 </div>
               ) : null}
 
-              <div className="threads-modal__history">
+              <div ref={historyRef} className="threads-modal__history">
                 {selectedThreadMessages.map((message) => (
                   <ThreadMessageBubble
                     key={message.id}
@@ -855,6 +1013,7 @@ export function ThreadsPage() {
                 createPortal(
                   <div ref={contextMenuRef}>
                     <ThreadMessageMenu
+                      key={`${menuState.messageId}-${menuState.placement}`}
                       copiedMessageId={copiedMessageId}
                       message={activeMenuMessage}
                       placement={menuState.placement}
@@ -864,12 +1023,45 @@ export function ThreadsPage() {
                       onEdit={startEdit}
                       onPin={togglePin}
                       onReact={toggleReaction}
-                      onRemove={removeMessage}
+                      onRemove={requestMessageRemoval}
                       onReply={startReply}
                     />
                   </div>,
                   document.body
                 )
+              ) : null}
+
+              {deleteDialogMessageId ? (
+                <div className="threads-modal__inline-dialog-backdrop" role="presentation">
+                  <div className="threads-modal__inline-dialog" role="dialog" aria-modal="true" aria-label="Подтверждение удаления сообщения">
+                    <div className="threads-modal__inline-dialog-copy">
+                      <strong>Вы действительно хотите удалить сообщение?</strong>
+                      <p>Выберите, как именно удалить сообщение в этом треде.</p>
+                    </div>
+
+                    <div className="threads-modal__inline-dialog-actions">
+                      <button type="button" onClick={() => removeMessage(deleteDialogMessageId, 'self')}>
+                        Удалить у себя
+                      </button>
+                      <button
+                        type="button"
+                        className="threads-modal__inline-dialog-danger"
+                        onClick={() => removeMessage(deleteDialogMessageId, 'everyone')}
+                      >
+                        Удалить у всех
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="threads-modal__inline-dialog-close"
+                      aria-label="Закрыть подтверждение удаления"
+                      onClick={() => setDeleteDialogMessageId(null)}
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                </div>
               ) : null}
 
               {composerTarget ? (
@@ -884,8 +1076,12 @@ export function ThreadsPage() {
                 </div>
               ) : null}
 
-              <form className="threads-modal__composer" onSubmit={handleSubmit}>
-                <div className="threads-modal__toolbar">
+              <form
+                className={`threads-modal__composer ${isComposerCollapsed ? 'threads-modal__composer--collapsed' : ''}`}
+                onSubmit={handleSubmit}
+              >
+                <div className="threads-modal__composer-top">
+                  <div className="threads-modal__toolbar">
                   <button type="button" onClick={() => applyFormatting('bold')} aria-label="Жирный текст">
                     <Bold size={16} />
                   </button>
@@ -901,8 +1097,18 @@ export function ThreadsPage() {
                   <button type="button" onClick={() => applyFormatting('list')} aria-label="Список">
                     <List size={16} />
                   </button>
+                  <button
+                    type="button"
+                    className="threads-modal__composer-toggle"
+                    aria-label={isComposerCollapsed ? 'Развернуть поле сообщения' : 'Свернуть поле сообщения'}
+                    onClick={() => setIsComposerCollapsed((current) => !current)}
+                  >
+                    {isComposerCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  </button>
+                  </div>
                 </div>
 
+                <div className="threads-modal__composer-body">
                 <div className="threads-modal__composer-field">
                   <textarea
                     ref={textareaRef}
@@ -910,23 +1116,54 @@ export function ThreadsPage() {
                     placeholder="Напишите сообщение в тред..."
                     value={draftMessage}
                     onChange={(event) => setDraftMessage(event.target.value)}
+                    onKeyDown={handleComposerKeyDown}
                   />
                   <span className={`threads-modal__counter ${remainingCharacters <= 80 ? 'threads-modal__counter--limit' : ''}`}>
                     {draftMessage.length}/{THREAD_MESSAGE_LIMIT}
                   </span>
                 </div>
 
-                <button
-                  type="submit"
-                  className="threads-modal__send"
-                  aria-label="Отправить сообщение"
-                  disabled={!draftMessage.trim()}
-                >
-                  <SendHorizontal size={16} />
-                  {composerMode.type === 'edit' ? 'Сохранить' : 'Отправить'}
-                </button>
+                <div className="threads-modal__actions">
+                  <button
+                    type="button"
+                    className={`threads-modal__jump ${shouldShowScrollControl ? 'threads-modal__jump--visible' : ''}`}
+                    aria-label="Вернуться наверх"
+                    onClick={toggleHistoryScrollDirection}
+                  >
+                    {isScrollControlPointingDown ? <ArrowDown size={16} /> : <ArrowUp size={16} />}
+                  </button>
+
+                  <button
+                    type="submit"
+                    className="threads-modal__send"
+                    aria-label="Отправить сообщение"
+                    disabled={!draftMessage.trim()}
+                  >
+                    <SendHorizontal size={16} />
+                    {composerMode.type === 'edit' ? 'Сохранить' : 'Отправить'}
+                  </button>
+                </div>
+                </div>
               </form>
             </section>
+            {/*
+
+                aria-label="Развернуть тред"
+                <ThreadAvatar
+                  label={selectedThread.creator.avatar}
+                  name={selectedThread.creator.name}
+                  className="threads-float-orb__avatar"
+                />
+                <div className="threads-float-orb__preview">
+                  <div className="threads-float-orb__preview-head">
+                    <strong>{selectedThread.title}</strong>
+                    <span>{latestThreadMessage?.timestamp ?? selectedThread.updatedAt}</span>
+                  </div>
+                  <p>{latestThreadMessage?.text ?? selectedThread.summary}</p>
+                </div>
+              </button>
+            ) : null}
+            */}
           </>
         ) : null}
       </div>

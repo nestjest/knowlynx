@@ -1,11 +1,14 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Settings, Sun, Moon, ArrowRight } from 'lucide-react';
+import { Settings, Sun, Moon, ArrowUpRight, X } from 'lucide-react';
 import logoUrl from '../../../app/logo.svg';
 import {
   dashboardEditorPanelTemplates
 } from '../../../entities/panel/model/dashboardEditorData';
 import { quickAccessWidgetPresets } from '../../../entities/quick-access/model/quickAccessEditorData';
+import { ThreadChatModal } from '../../../entities/thread/ui/ThreadChatModal';
+import { threadMocksMap } from '../../../pages/threads/model/threadMocks';
+import { useThreadWindowsStore } from '../../../entities/thread/model/useThreadWindowsStore';
 import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
 
 type NavItem = {
@@ -145,9 +148,18 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
   const setDrawerSearch = useDashboardEditorStore((state) => state.setDrawerSearch);
   const addPanel = useDashboardEditorStore((state) => state.addPanel);
   const assignWidget = useDashboardEditorStore((state) => state.assignWidget);
+  const activeThreadId = useThreadWindowsStore((state) => state.activeThreadId);
+  const openThread = useThreadWindowsStore((state) => state.openThread);
+  const minimizedThreads = useThreadWindowsStore((state) => state.minimizedThreads);
+  const restoreThread = useThreadWindowsStore((state) => state.restoreThread);
+  const removeMinimizedThread = useThreadWindowsStore((state) => state.removeMinimizedThread);
   const [hoveredPreview, setHoveredPreview] = useState<DrawerPreview | null>(null);
   const [siteSearchQuery, setSiteSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  const visibleMinimizedThreads = minimizedThreads.filter(
+    (item) => item.threadId !== activeThreadId && !location.pathname.startsWith(`/threads/${item.threadId}`)
+  );
 
   const normalizedSearch = drawerSearch.toLowerCase();
 
@@ -367,6 +379,54 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
         </div>
       ) : null}
 
+      <ThreadChatModal />
+
+      {visibleMinimizedThreads.length ? (
+        <div className="threads-dock-orbs" aria-label="Свернутые треды">
+          {visibleMinimizedThreads.map((item) => {
+            const thread = threadMocksMap[item.threadId];
+
+            if (!thread) {
+              return null;
+            }
+
+            return (
+              <button
+                key={item.threadId}
+                type="button"
+                className="threads-dock-orb"
+                aria-label={`Открыть тред ${thread.title}`}
+                onClick={() => {
+                  restoreThread(item.threadId);
+                  openThread(item.threadId);
+                }}
+              >
+                <span className="threads-dock-orb__halo" />
+                <span className="threads-dock-orb__avatar">{thread.creator.avatar}</span>
+
+                <span
+                  className="threads-dock-orb__dismiss"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    removeMinimizedThread(item.threadId);
+                  }}
+                >
+                  <X size={12} />
+                </span>
+
+                <span className="threads-dock-orb__preview">
+                  <span className="threads-dock-orb__preview-head">
+                    <strong>{thread.title}</strong>
+                    <span>{item.previewTimestamp || thread.updatedAt}</span>
+                  </span>
+                  <span className="threads-dock-orb__preview-text">{item.previewText || thread.summary}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+
       <div className="bottom-dock">
         <div className="bottom-dock__brand">
           <img src={logoUrl} alt="logo" className="brand-mark" />
@@ -387,7 +447,6 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
         <button type="button" className="bottom-dock__cta bottom-dock__cta--accent">
           К работам
-          <ArrowRight size={16} />
         </button>
       </div>
     </div>
