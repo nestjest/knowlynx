@@ -417,7 +417,10 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
       <ThreadChatModal />
 
       {visibleMinimizedThreads.length ? (
-        <div className="threads-dock-orbs" aria-label="Свернутые треды">
+        <div
+          className="fixed left-4 bottom-4 z-[31] flex max-w-[min(420px,calc(100vw-32px))] items-center gap-3 overflow-x-auto p-1.5 px-1 [scrollbar-width:none] max-lg:left-3 max-lg:max-w-[calc(100vw-24px)] max-lg:gap-2.5 [&::-webkit-scrollbar]:hidden"
+          aria-label="Свернутые треды"
+        >
           {visibleMinimizedThreads.map((item) => {
             const thread = threadMocksMap[item.threadId];
 
@@ -429,18 +432,20 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.threadId}
                 type="button"
-                className="threads-dock-orb"
+                className="group relative inline-flex size-16 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 shadow-[0_10px_22px_rgba(37,50,63,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-[18px] transition-[transform,box-shadow,border-color] duration-200 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.96)] dark:to-[rgba(24,34,44,0.94)] dark:shadow-[0_12px_24px_rgba(4,8,12,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] dark:hover:shadow-[0_16px_30px_rgba(4,8,12,0.24),inset_0_1px_0_rgba(255,255,255,0.06)]"
                 aria-label={`Открыть тред ${thread.title}`}
                 onClick={() => {
                   restoreThread(item.threadId);
                   openThread(item.threadId);
                 }}
               >
-                <span className="threads-dock-orb__halo" />
-                <span className="threads-dock-orb__avatar">{thread.creator.avatar}</span>
+                <span className="pointer-events-none absolute -inset-2 rounded-[inherit] bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] opacity-56" />
+                <span className="relative z-[1] inline-flex size-[52px] items-center justify-center rounded-[inherit] border-[3px] border-[rgba(244,249,252,0.96)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] font-extrabold text-[#215260] shadow-[0_10px_22px_rgba(70,86,101,0.18)] max-lg:size-[46px] dark:border-[rgba(18,26,34,0.94)]">
+                  {thread.creator.avatar}
+                </span>
 
                 <span
-                  className="threads-dock-orb__dismiss"
+                  className="absolute -top-1 -right-1 z-[2] inline-flex size-[22px] items-center justify-center rounded-full bg-[rgba(33,40,48,0.76)] text-[#f6fbff] shadow-[0_4px_10px_rgba(15,20,26,0.14)]"
                   onClick={(event) => {
                     event.stopPropagation();
                     removeMinimizedThread(item.threadId);
@@ -449,12 +454,16 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                   <X size={12} />
                 </span>
 
-                <span className="threads-dock-orb__preview">
-                  <span className="threads-dock-orb__preview-head">
-                    <strong>{thread.title}</strong>
-                    <span>{item.previewTimestamp || thread.updatedAt}</span>
+                <span className="pointer-events-none absolute left-0 bottom-[82px] w-[min(300px,calc(100vw-32px))] rounded-[22px] border border-[rgba(194,210,222,0.84)] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] opacity-0 transition-[opacity,transform] duration-200 [transform:translateY(8px)_scale(0.96)] group-hover:opacity-100 group-hover:[transform:translateY(0)_scale(1)] group-focus-visible:opacity-100 group-focus-visible:[transform:translateY(0)_scale(1)] max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:border-[rgba(58,79,96,0.92)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.98)] dark:to-[rgba(22,31,40,0.96)] dark:shadow-[0_14px_28px_rgba(4,8,12,0.22),inset_0_1px_0_rgba(255,255,255,0.05)]">
+                  <span className="mb-1.5 flex items-start justify-between gap-2.5">
+                    <strong className="text-sm leading-[1.35] text-[#24313b] dark:text-[#eef5fb]">
+                      {thread.title}
+                    </strong>
+                    <span className="text-xs leading-[1.5] text-[#6d8090] dark:text-[#9eb1c2]">
+                      {item.previewTimestamp || thread.updatedAt}
+                    </span>
                   </span>
-                  <span className="threads-dock-orb__preview-text">
+                  <span className="line-clamp-3 overflow-hidden text-xs leading-[1.5] text-[#6d8090] dark:text-[#9eb1c2]">
                     {item.previewText || thread.summary}
                   </span>
                 </span>
