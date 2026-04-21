@@ -97,6 +97,12 @@ const STATUS_LABEL: Record<ThreadItem['status'], string> = {
   archived: 'Архив',
 };
 
+const HERO_INSIGHT_CARD =
+  "bordered-soft relative overflow-hidden rounded-[22px] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:bg-surface-muted";
+
+const HERO_STAT =
+  'bordered-soft rounded-[22px] bg-white/72 p-[18px_20px] dark:bg-surface-muted';
+
 function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
   return (
     <span className={`status-pill status-pill-${status}`}>
@@ -890,7 +896,7 @@ export function ThreadsPage() {
   return (
     <DashboardEditorShell>
       <div className="flex flex-col gap-6 px-0 py-2 pb-4">
-        <section className="shadow-card grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] p-7 max-xl:grid-cols-1 max-sm:p-5 dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)]">
+        <section className="bordered gradient-card shadow-card grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] p-7 max-xl:grid-cols-1 max-sm:p-5">
           <div className="flex flex-col gap-3.5">
             <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(155,232,247,0.22)] px-3 py-2 text-xs font-bold tracking-[0.06em] text-[#215c69] uppercase dark:text-[#97e5f5]">
               <Sparkles size={14} />
@@ -905,28 +911,28 @@ export function ThreadsPage() {
             </p>
 
             <div className="mt-1.5 grid max-w-[720px] grid-cols-2 gap-3.5 max-sm:grid-cols-1">
-              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:bg-[rgba(21,31,40,0.82)]">
-                <span className="text-text-muted mb-2.5 inline-block text-[11px] font-bold tracking-[0.12em] uppercase">
+              <article className={HERO_INSIGHT_CARD}>
+                <span className="eyebrow mb-2.5 inline-block tracking-[0.12em]">
                   Главный фокус
                 </span>
                 <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
                   {topCategory?.[0] ?? 'Без категории'}
                 </strong>
-                <p className="text-text-muted m-0 text-[13px] leading-[1.55]">
+                <p className="meta-text m-0 leading-[1.55]">
                   {topCategory
                     ? `${topCategory[1]} треда в этой группе`
                     : 'Категории появятся позже'}
                 </p>
               </article>
 
-              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:bg-[rgba(21,31,40,0.82)]">
-                <span className="text-text-muted mb-2.5 inline-block text-[11px] font-bold tracking-[0.12em] uppercase">
+              <article className={HERO_INSIGHT_CARD}>
+                <span className="eyebrow mb-2.5 inline-block tracking-[0.12em]">
                   Последний апдейт
                 </span>
                 <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
                   {latestThread?.title ?? 'Новый тред'}
                 </strong>
-                <p className="text-text-muted m-0 text-[13px] leading-[1.55]">
+                <p className="meta-text m-0 leading-[1.55]">
                   {latestThread?.summary ??
                     'Здесь будет краткое описание активности.'}
                 </p>

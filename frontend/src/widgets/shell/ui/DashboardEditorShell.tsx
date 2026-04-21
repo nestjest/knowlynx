@@ -343,7 +343,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
       <div className="relative px-2">{children}</div>
 
       {drawerMode ? (
-        <div className="fixed bottom-24 left-1/2 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-[18px] shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))] dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)]">
+        <div className="fixed-centered bordered-overlay shadow-panel bg-surface-overlay bottom-24 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] p-[18px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))]">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="m-0 mb-1 text-xl text-white">
@@ -487,20 +487,20 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.threadId}
                 type="button"
-                className="group relative inline-flex size-16 flex-shrink-0 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 shadow-[0_10px_22px_rgba(37,50,63,0.1),inset_0_1px_0_rgba(255,255,255,0.8)] backdrop-blur-[18px] transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-1 hover:scale-[1.03] hover:shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.96)] dark:to-[rgba(24,34,44,0.94)] dark:shadow-[0_12px_24px_rgba(4,8,12,0.2),inset_0_1px_0_rgba(255,255,255,0.05)] dark:hover:shadow-[0_16px_30px_rgba(4,8,12,0.24),inset_0_1px_0_rgba(255,255,255,0.06)]"
+                className="group smooth-transform shadow-soft dark:from-surface relative inline-flex size-16 shrink-0 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 backdrop-blur-[18px] hover:-translate-y-1 hover:scale-[1.03] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:to-[rgba(24,34,44,0.94)]"
                 aria-label={`Открыть тред ${thread.title}`}
                 onClick={() => {
                   restoreThread(item.threadId);
                   openThread(item.threadId);
                 }}
               >
-                <span className="pointer-events-none absolute -inset-2 rounded-[inherit] bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] opacity-56" />
-                <span className="relative z-[1] inline-flex size-[52px] items-center justify-center rounded-[inherit] border-[3px] border-[rgba(244,249,252,0.96)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] font-extrabold text-[#215260] shadow-[0_10px_22px_rgba(70,86,101,0.18)] max-lg:size-[46px] dark:border-[rgba(18,26,34,0.94)]">
+                <span className="pointer-events-none absolute -inset-2 rounded-[inherit] bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] opacity-60" />
+                <span className="gradient-accent shadow-soft dark:border-surface relative z-[1] inline-flex size-[52px] items-center justify-center rounded-[inherit] border-[3px] border-[rgba(244,249,252,0.96)] font-extrabold text-[#215260] max-lg:size-[46px]">
                   {thread.creator.avatar}
                 </span>
 
                 <span
-                  className="absolute -top-1 -right-1 z-[2] inline-flex size-[22px] items-center justify-center rounded-full bg-[rgba(33,40,48,0.76)] text-[#f6fbff] shadow-[0_4px_10px_rgba(15,20,26,0.14)]"
+                  className="shadow-soft absolute -top-1 -right-1 z-[2] inline-flex size-[22px] items-center justify-center rounded-full bg-[rgba(33,40,48,0.76)] text-[#f6fbff]"
                   onClick={(event) => {
                     event.stopPropagation();
                     removeMinimizedThread(item.threadId);
@@ -509,16 +509,16 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                   <X size={12} />
                 </span>
 
-                <span className="pointer-events-none absolute bottom-[82px] left-0 w-[min(300px,calc(100vw-32px))] [transform:translateY(8px)_scale(0.96)] rounded-[22px] border border-[rgba(194,210,222,0.84)] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left opacity-0 shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)] transition-[opacity,transform] duration-200 group-hover:[transform:translateY(0)_scale(1)] group-hover:opacity-100 group-focus-visible:[transform:translateY(0)_scale(1)] group-focus-visible:opacity-100 max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:border-[rgba(58,79,96,0.92)] dark:bg-gradient-to-b dark:from-[rgba(18,26,34,0.98)] dark:to-[rgba(22,31,40,0.96)] dark:shadow-[0_14px_28px_rgba(4,8,12,0.22),inset_0_1px_0_rgba(255,255,255,0.05)]">
+                <span className="hover-reveal bordered-soft shadow-elevated dark:from-surface absolute bottom-[82px] left-0 w-[min(300px,calc(100vw-32px))] rounded-[22px] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:to-[rgba(22,31,40,0.96)]">
                   <span className="mb-1.5 flex items-start justify-between gap-2.5">
                     <strong className="text-text-primary text-sm leading-[1.35]">
                       {thread.title}
                     </strong>
-                    <span className="text-xs leading-[1.5] text-[#6d8090] dark:text-[#9eb1c2]">
+                    <span className="meta-text leading-[1.5]">
                       {item.previewTimestamp || thread.updatedAt}
                     </span>
                   </span>
-                  <span className="line-clamp-3 overflow-hidden text-xs leading-[1.5] text-[#6d8090] dark:text-[#9eb1c2]">
+                  <span className="meta-text line-clamp-3 overflow-hidden leading-[1.5]">
                     {item.previewText || thread.summary}
                   </span>
                 </span>
@@ -528,7 +528,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
         </div>
       ) : null}
 
-      <div className="fixed bottom-4 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2.5 rounded-[15px] border border-white/18 bg-black/66 p-2.5 shadow-[0_18px_38px_rgba(48,35,40,0.24),inset_0_1px_0_rgba(255,255,255,0.16)] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:p-1.5 dark:border-[rgba(58,80,97,0.28)] dark:bg-[rgba(14,20,27,0.78)]">
+      <div className="fixed-centered bottom-4 z-30 flex items-center gap-2.5 rounded-[15px] border border-white/18 bg-black/66 p-2.5 shadow-[0_18px_38px_rgba(48,35,40,0.24),inset_0_1px_0_rgba(255,255,255,0.16)] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:p-1.5 dark:border-[rgba(58,80,97,0.28)] dark:bg-[rgba(14,20,27,0.78)]">
         <div className="flex shrink-0 items-center gap-3 pr-1.5">
           <img
             src={logoUrl}
@@ -547,7 +547,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.id}
                 type="button"
-                className={`flex h-[50px] w-[100px] items-center justify-center rounded-[15px] border border-white/12 bg-inherit px-4 py-6 text-[0.7rem] whitespace-nowrap text-white/88 transition-[background,color,border-color] duration-200 hover:border-[rgba(155,232,247,0.36)] hover:bg-[rgba(155,232,247,0.18)] hover:text-white max-lg:w-auto max-lg:px-3 max-lg:text-[13px] dark:border-white/8 dark:bg-white/3 dark:text-[rgba(228,238,246,0.88)] ${isActive ? 'border-[rgba(155,232,247,0.36)] bg-[rgba(155,232,247,0.18)] text-white' : ''}`}
+                className={`smooth-interact hover:bg-accent-soft-bg flex h-[50px] w-[100px] items-center justify-center rounded-[15px] border border-white/12 bg-inherit px-4 py-6 text-[0.7rem] whitespace-nowrap text-white/88 hover:border-[rgba(155,232,247,0.36)] hover:text-white max-lg:w-auto max-lg:px-3 max-lg:text-[13px] ${isActive ? 'bg-accent-soft-bg border-[rgba(155,232,247,0.36)] text-white' : ''}`}
                 onClick={() => (item.path ? navigate(item.path) : undefined)}
               >
                 {item.label}
@@ -558,7 +558,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
 
         <button
           type="button"
-          className="flex h-[60px] shrink-0 items-center justify-center gap-[7px] rounded-[14px] border border-[rgba(93,199,222,0.6)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] px-4 font-bold whitespace-nowrap text-[#275d69] transition-[background,box-shadow] duration-200 hover:bg-gradient-to-br hover:from-[#b7effb] hover:to-[#7dd8ea] hover:shadow-[0_4px_16px_rgba(93,199,222,0.3)] max-lg:px-3.5 max-lg:text-[13px] dark:border-[rgba(88,174,199,0.4)] dark:bg-gradient-to-br dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#e8f8fc] dark:hover:from-[#2b6a78] dark:hover:to-[#25919e] dark:hover:shadow-[0_4px_16px_rgba(29,127,149,0.3)]"
+          className="accent-cta h-[60px] justify-center px-4 whitespace-nowrap max-lg:px-3.5 max-lg:text-[13px]"
         >
           К работам
         </button>

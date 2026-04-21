@@ -240,3 +240,71 @@
     @apply bg-status-archived-bg text-status-archived-text;
   }
 }
+
+@layer utilities {
+  /* Переходы */
+  .smooth {
+    @apply transition-all duration-150 ease-out;
+  }
+  .smooth-interact {
+    @apply transition-[background,color,border-color] duration-200;
+  }
+  .smooth-transform {
+    @apply transition-[transform,box-shadow,border-color] duration-200;
+  }
+
+  /* Рамки поверх токенов border-* */
+  .bordered {
+    @apply border-border border;
+  }
+  .bordered-soft {
+    @apply border-border-muted border;
+  }
+  .bordered-strong {
+    @apply border-border-strong border;
+  }
+  .bordered-overlay {
+    @apply border-border-overlay border;
+  }
+
+  /* Тени */
+  .shadow-soft {
+    @apply shadow-[0_8px_18px_rgba(112,130,145,0.14)];
+  }
+  .shadow-elevated {
+    @apply shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)];
+  }
+  .shadow-panel {
+    @apply shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)];
+  }
+
+  /* Интерактивность */
+  .hoverable {
+    @apply hover:bg-accent-soft-bg-subtle transition-colors duration-150;
+  }
+
+  /* Позиционирование */
+  .fixed-centered {
+    @apply fixed left-1/2 -translate-x-1/2;
+  }
+
+  /* Reveal-эффекты (для дочернего элемента group с hover) */
+  .hover-reveal {
+    @apply pointer-events-none [transform:translateY(8px)_scale(0.96)] opacity-0 transition-[opacity,transform] duration-200 group-hover:[transform:translateY(0)_scale(1)] group-hover:opacity-100 group-focus-visible:[transform:translateY(0)_scale(1)] group-focus-visible:opacity-100;
+  }
+
+  /* Overlay */
+  .overlay-backdrop {
+    @apply fixed inset-0 bg-[linear-gradient(180deg,rgba(15,21,28,0.04)_0%,rgba(15,21,28,0.32)_100%)];
+  }
+
+  /* Градиент для hero-карточек (radial + linear) */
+  .gradient-card {
+    @apply bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)];
+  }
+
+  /* Accent-градиент (CTA, avatar) */
+  .gradient-accent {
+    @apply bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] dark:from-[#235165] dark:to-[#1d7f95];
+  }
+}
