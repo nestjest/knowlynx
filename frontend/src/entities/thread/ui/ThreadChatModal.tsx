@@ -324,7 +324,7 @@ function ThreadMessageBubble({
   if (message.author === 'system') {
     return (
       <div
-        className="inline-flex max-w-full items-center gap-2.5 self-center p-0 text-center text-[13px] leading-[1.5] text-white/76"
+        className="inline-flex max-w-full items-center gap-2.5 self-center p-0 text-center text-[13px] leading-normal text-white/76"
         role="status"
         aria-label={authorLabel}
         onContextMenu={(event) => onOpenMenu(event, message.id)}

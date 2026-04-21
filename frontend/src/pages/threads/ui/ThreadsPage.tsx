@@ -915,7 +915,7 @@ export function ThreadsPage() {
                 <span className="eyebrow mb-2.5 inline-block tracking-[0.12em]">
                   Главный фокус
                 </span>
-                <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
+                <strong className="text-text-primary mb-2 block text-lg leading-tight">
                   {topCategory?.[0] ?? 'Без категории'}
                 </strong>
                 <p className="meta-text m-0 leading-[1.55]">
@@ -929,7 +929,7 @@ export function ThreadsPage() {
                 <span className="eyebrow mb-2.5 inline-block tracking-[0.12em]">
                   Последний апдейт
                 </span>
-                <strong className="text-text-primary mb-2 block text-lg leading-[1.25]">
+                <strong className="text-text-primary mb-2 block text-lg leading-tight">
                   {latestThread?.title ?? 'Новый тред'}
                 </strong>
                 <p className="meta-text m-0 leading-[1.55]">

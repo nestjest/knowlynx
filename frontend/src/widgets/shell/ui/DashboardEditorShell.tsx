@@ -514,11 +514,11 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                     <strong className="text-text-primary text-sm leading-[1.35]">
                       {thread.title}
                     </strong>
-                    <span className="meta-text leading-[1.5]">
+                    <span className="meta-text leading-normal">
                       {item.previewTimestamp || thread.updatedAt}
                     </span>
                   </span>
-                  <span className="meta-text line-clamp-3 overflow-hidden leading-[1.5]">
+                  <span className="meta-text line-clamp-3 overflow-hidden leading-normal">
                     {item.previewText || thread.summary}
                   </span>
                 </span>

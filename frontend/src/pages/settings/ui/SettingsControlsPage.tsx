@@ -175,7 +175,7 @@ export function SettingsControlsPage() {
               <h1 className="text-text-primary m-0 text-[32px] leading-[1.1]">
                 {section.title}
               </h1>
-              <p className="text-text-muted m-0 mt-2.5 text-sm leading-[1.5]">
+              <p className="text-text-muted m-0 mt-2.5 text-sm leading-normal">
                 {section.summary}
               </p>
             </div>
@@ -209,7 +209,7 @@ export function SettingsControlsPage() {
                     <p className={EYEBROW}>Настройки</p>
                     <h2 className="text-text-primary m-0">{group.title}</h2>
                     {group.description ? (
-                      <p className="text-text-muted m-0 mt-2.5 text-sm leading-[1.5]">
+                      <p className="text-text-muted m-0 mt-2.5 text-sm leading-normal">
                         {group.description}
                       </p>
                     ) : null}

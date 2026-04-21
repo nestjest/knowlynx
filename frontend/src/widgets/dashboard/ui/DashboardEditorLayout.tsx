@@ -51,7 +51,7 @@ export function DashboardEditorLayout() {
       >
         <header className="flex items-center justify-between gap-5 pr-1.5 max-lg:pr-0">
           <div>
-            <h1 className="m-0 text-[30px] font-semibold dark:text-[#eef5fb]">
+            <h1 className="m-0 text-3xl font-semibold dark:text-[#eef5fb]">
               Главная страница
             </h1>
             <p className="text-text-muted m-0 mt-1.5 text-[13px]">
