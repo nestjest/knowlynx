@@ -68,6 +68,9 @@ type MenuState = {
   placement: 'above' | 'below';
 };
 
+const THREAD_AVATAR_BASE =
+  'inline-flex size-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)]';
+
 function ThreadAvatar({
   label,
   name,
@@ -79,7 +82,7 @@ function ThreadAvatar({
 }) {
   return (
     <span
-      className={`thread-avatar ${className}`.trim()}
+      className={`${THREAD_AVATAR_BASE} ${className}`.trim()}
       aria-label={name}
       title={name}
     >
@@ -87,6 +90,12 @@ function ThreadAvatar({
     </span>
   );
 }
+
+const STATUS_STYLES: Record<ThreadItem['status'], string> = {
+  active: 'bg-[rgba(126,217,138,0.18)] text-[#2f7a40]',
+  draft: 'bg-[rgba(255,184,107,0.18)] text-[#996126]',
+  archived: 'bg-[rgba(176,190,201,0.22)] text-[#586673]',
+};
 
 function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
   const labelMap: Record<ThreadItem['status'], string> = {
@@ -96,7 +105,9 @@ function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
   };
 
   return (
-    <span className={`threads-page__status threads-page__status--${status}`}>
+    <span
+      className={`inline-flex w-fit items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-bold ${STATUS_STYLES[status]}`}
+    >
       {labelMap[status]}
     </span>
   );
@@ -886,86 +897,98 @@ export function ThreadsPage() {
 
   return (
     <DashboardEditorShell>
-      <div
-        className={`threads-page ${isMinimizingThread ? 'threads-page--thread-minimizing' : ''}`.trim()}
-      >
-        <section className="threads-page__hero">
-          <div className="threads-page__hero-copy">
-            <div className="threads-page__eyebrow">
+      <div className="flex flex-col gap-6 px-0 py-2 pb-4">
+        <section className="grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] p-7 shadow-(--shadow-soft) max-xl:grid-cols-1 max-sm:p-5 dark:border-[rgba(41,57,70,0.95)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="flex flex-col gap-3.5">
+            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(155,232,247,0.22)] px-3 py-2 text-xs font-bold uppercase tracking-[0.06em] text-[#215c69] dark:bg-[rgba(57,148,173,0.24)] dark:text-[#97e5f5]">
               <Sparkles size={14} />
               <span>Threads</span>
             </div>
-            <h1 className="threads-page__title">
+            <h1 className="m-0 max-w-[700px] text-[clamp(28px,4vw,40px)] leading-[1.05] text-[#24313b] dark:text-[#eef5fb]">
               Ваши треды по профилю и рабочим сценариям
             </h1>
-            <p className="threads-page__subtitle">
+            <p className="m-0 max-w-[620px] text-sm leading-[1.6] text-[#6c7a87] dark:text-[#9eb1c2]">
               Пока это визуальная заглушка: здесь можно оценить список тредов,
               карточки и просмотр истории внутри выбранного диалога.
             </p>
 
-            <div className="threads-page__hero-insights">
-              <article className="threads-page__hero-insight">
-                <span className="threads-page__hero-insight-label">
+            <div className="mt-1.5 grid max-w-[720px] grid-cols-2 gap-3.5 max-sm:grid-cols-1">
+              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+                <span className="mb-2.5 inline-block text-[11px] font-bold uppercase tracking-[0.12em] text-[#6f8293] dark:text-[#9eb1c2]">
                   Главный фокус
                 </span>
-                <strong>{topCategory?.[0] ?? 'Без категории'}</strong>
-                <p>
+                <strong className="mb-2 block text-lg leading-[1.25] text-[#24313b] dark:text-[#eef5fb]">
+                  {topCategory?.[0] ?? 'Без категории'}
+                </strong>
+                <p className="m-0 text-[13px] leading-[1.55] text-[#70808f] dark:text-[#9eb1c2]">
                   {topCategory
                     ? `${topCategory[1]} треда в этой группе`
                     : 'Категории появятся позже'}
                 </p>
               </article>
 
-              <article className="threads-page__hero-insight">
-                <span className="threads-page__hero-insight-label">
+              <article className="relative overflow-hidden rounded-[22px] border border-[rgba(207,220,231,0.92)] bg-[linear-gradient(180deg,rgba(255,255,255,0.9)_0%,rgba(243,248,252,0.92)_100%)] p-[18px_20px] after:pointer-events-none after:absolute after:-right-[30px] after:-bottom-[30px] after:size-[110px] after:rounded-full after:bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] after:content-[''] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+                <span className="mb-2.5 inline-block text-[11px] font-bold uppercase tracking-[0.12em] text-[#6f8293] dark:text-[#9eb1c2]">
                   Последний апдейт
                 </span>
-                <strong>{latestThread?.title ?? 'Новый тред'}</strong>
-                <p>
+                <strong className="mb-2 block text-lg leading-[1.25] text-[#24313b] dark:text-[#eef5fb]">
+                  {latestThread?.title ?? 'Новый тред'}
+                </strong>
+                <p className="m-0 text-[13px] leading-[1.55] text-[#70808f] dark:text-[#9eb1c2]">
                   {latestThread?.summary ??
                     'Здесь будет краткое описание активности.'}
                 </p>
               </article>
             </div>
 
-            <div className="threads-page__hero-strip">
-              <div className="threads-page__hero-avatars" aria-hidden="true">
-                {threadMocks.slice(0, 3).map((thread) => (
+            <div className="flex w-fit max-w-full items-center gap-4 rounded-full border border-[rgba(207,220,231,0.88)] bg-white/72 px-4 py-3 dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+              <div className="flex items-center" aria-hidden="true">
+                {threadMocks.slice(0, 3).map((thread, idx) => (
                   <ThreadAvatar
                     key={thread.id}
                     label={thread.creator.avatar}
                     name={thread.creator.name}
-                    className="threads-page__hero-avatar"
+                    className={`size-10 border-[3px] border-[rgba(244,249,252,0.95)] shadow-[0_8px_18px_rgba(112,130,145,0.14)] dark:border-[rgba(18,26,34,0.92)] ${idx === 0 ? '' : '-ml-2.5'}`}
                   />
                 ))}
               </div>
 
-              <div className="threads-page__hero-strip-copy">
-                <strong>{uniquePeopleCount} участников уже в моках</strong>
-                <span>
+              <div className="flex min-w-0 flex-col gap-1">
+                <strong className="text-sm leading-[1.3] text-[#24313b] dark:text-[#eef5fb]">
+                  {uniquePeopleCount} участников уже в моках
+                </strong>
+                <span className="text-xs leading-[1.45] text-[#70808f] dark:text-[#9eb1c2]">
                   Быстрый обзор тредов, авторов и сценариев прямо из профиля.
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="threads-page__hero-stats">
-            <article className="threads-page__hero-stat">
-              <span>Всего тредов</span>
-              <strong>{threadMocks.length}</strong>
+          <div className="grid gap-3.5">
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                Всего тредов
+              </span>
+              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
+                {threadMocks.length}
+              </strong>
             </article>
-            <article className="threads-page__hero-stat">
-              <span>Активных сейчас</span>
-              <strong>
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                Активных сейчас
+              </span>
+              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
                 {
                   threadMocks.filter((thread) => thread.status === 'active')
                     .length
                 }
               </strong>
             </article>
-            <article className="threads-page__hero-stat">
-              <span>Новых сообщений</span>
-              <strong>
+            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+              <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                Новых сообщений
+              </span>
+              <strong className="mt-2 block text-[28px] leading-none text-[#24313b] dark:text-[#eef5fb]">
                 {threadMocks.reduce(
                   (count, thread) => count + thread.unreadCount,
                   0,
@@ -975,52 +998,61 @@ export function ThreadsPage() {
           </div>
         </section>
 
-        <section className="threads-page__list-panel">
-          <div className="threads-page__panel-head">
+        <section className="min-w-0 rounded-[26px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] shadow-(--shadow-soft) dark:border-[rgba(41,57,70,0.95)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+          <div className="mb-[18px] flex items-start justify-between gap-4">
             <div>
-              <p className="threads-page__panel-eyebrow">Список тредов</p>
-              <h2>Созданные пользователем обсуждения</h2>
+              <p className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+                Список тредов
+              </p>
+              <h2 className="m-0 mt-1 text-[21px] text-[#24313b] dark:text-[#eef5fb]">
+                Созданные пользователем обсуждения
+              </h2>
             </div>
-            <span className="threads-page__panel-meta">Мок-данные</span>
+            <span className="whitespace-nowrap rounded-full bg-[rgba(155,232,247,0.14)] px-2.5 py-[7px] text-xs text-[#7b8995] dark:text-[#9eb1c2]">
+              Мок-данные
+            </span>
           </div>
 
-          <div className="threads-page__controls">
-            <label className="threads-page__search">
+          <div className="mb-[18px] flex flex-col gap-4">
+            <label className="flex h-12 items-center gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/86 px-4 text-[#61707d] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
               <Search size={16} />
               <input
                 type="search"
                 placeholder="Поиск по названию, описанию или участникам"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
+                className="w-full border-0 bg-transparent text-[#24313b] outline-0 placeholder:text-[#8493a0] dark:text-[#eef5fb] dark:placeholder:text-[#9eb1c2]"
               />
             </label>
 
             <div
-              className="threads-page__filters"
+              className="flex flex-wrap gap-2.5"
               role="tablist"
               aria-label="Фильтрация тредов по категориям"
             >
-              <button
-                type="button"
-                className={`threads-page__filter ${selectedCategory === 'all' ? 'threads-page__filter--active' : ''}`}
-                onClick={() => setSelectedCategory('all')}
-              >
-                Все
-              </button>
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  type="button"
-                  className={`threads-page__filter ${selectedCategory === category ? 'threads-page__filter--active' : ''}`}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category}
-                </button>
-              ))}
+              {[
+                { value: 'all' as const, label: 'Все' },
+                ...categories.map((category) => ({
+                  value: category,
+                  label: category,
+                })),
+              ].map(({ value, label }) => {
+                const active = selectedCategory === value;
+                return (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`h-10 rounded-full border px-3.5 transition-[0.18s_ease] hover:border-[rgba(93,199,222,0.48)] hover:bg-[rgba(155,232,247,0.2)] hover:text-[#1f4f5a] dark:hover:bg-[rgba(48,114,132,0.22)] ${active ? 'border-[rgba(93,199,222,0.48)] bg-[rgba(155,232,247,0.2)] text-[#1f4f5a]' : 'border-[rgba(209,221,235,0.92)] bg-white/76 text-[#53606c] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]'}`}
+                    onClick={() => setSelectedCategory(value)}
+                  >
+                    {label}
+                  </button>
+                );
+              })}
             </div>
           </div>
 
-          <div className="threads-page__list threads-page__list--rows">
+          <div className="grid gap-3">
             {filteredThreads.length ? (
               filteredThreads.map((thread) => {
                 const isActive = selectedThread?.id === thread.id;
@@ -1032,53 +1064,57 @@ export function ThreadsPage() {
                   <button
                     key={thread.id}
                     type="button"
-                    className={`thread-card thread-card--row ${isActive ? 'thread-card--active' : ''}`}
+                    className={`relative grid w-full grid-cols-[6px_minmax(0,1fr)] items-stretch gap-3.5 rounded-[20px] border p-4 text-left transition-[transform,border-color,box-shadow] duration-[0.18s] hover:-translate-y-0.5 hover:border-[rgba(93,199,222,0.55)] hover:shadow-[0_16px_30px_rgba(164,182,204,0.16)] dark:bg-[rgba(21,31,40,0.82)] ${isActive ? '-translate-y-0.5 border-[rgba(93,199,222,0.55)] shadow-[0_16px_30px_rgba(164,182,204,0.16)]' : 'border-[rgba(219,229,238,0.9)] bg-white/74 dark:border-[rgba(41,57,70,0.95)]'}`}
                     onClick={() => openThread(thread.id)}
                   >
                     <div
-                      className="thread-card__accent"
+                      className="rounded-full"
                       style={{ background: thread.accent }}
                     />
-                    <div className="thread-card__body">
-                      <div className="thread-card__top">
-                        <div className="thread-card__identity">
+                    <div className="min-w-0">
+                      <div className="flex items-start justify-between gap-2.5">
+                        <div className="flex min-w-0 items-start gap-3.5">
                           <ThreadAvatar
                             label={thread.creator.avatar}
                             name={thread.creator.name}
                           />
-                          <div className="thread-card__heading">
-                            <h3>{thread.title}</h3>
-                            <p>{thread.summary}</p>
+                          <div className="min-w-0">
+                            <h3 className="m-0 mt-2.5 mb-2 text-[17px] text-[#24313b] dark:text-[#eef5fb]">
+                              {thread.title}
+                            </h3>
+                            <p className="m-0 text-[13px] leading-[1.55] text-[#657380] dark:text-[#9eb1c2]">
+                              {thread.summary}
+                            </p>
                           </div>
                         </div>
-                        <div className="thread-card__meta">
+                        <div className="flex flex-shrink-0 flex-col items-end gap-2">
                           <ThreadStatusBadge status={thread.status} />
-                          <span className="thread-card__updated">
+                          <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
                             {thread.updatedAt}
                           </span>
                         </div>
                       </div>
 
                       {threadPinnedMessage ? (
-                        <div className="thread-card__pinned-preview">
+                        <div className="mt-3.5 flex items-start gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.85)] bg-[rgba(155,232,247,0.12)] p-2.5 px-3 text-xs text-[#46606e] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
                           <Pin size={14} />
                           <span>{threadPinnedMessage.text}</span>
                         </div>
                       ) : null}
 
-                      <div className="thread-card__footer">
-                        <div className="thread-card__footer-main">
-                          <span className="thread-card__category">
+                      <div className="mt-3 flex items-center justify-between gap-2.5">
+                        <div className="flex flex-wrap items-center gap-2.5">
+                          <span className="inline-flex w-fit items-center justify-center rounded-full bg-[rgba(44,49,55,0.08)] px-2.5 py-1 text-[11px] font-bold text-[#42515d] dark:bg-white/6 dark:text-[#c6d7e4]">
                             {thread.category}
                           </span>
-                          <span className="thread-card__participants">
+                          <span className="text-xs text-[#7b8995] dark:text-[#9eb1c2]">
                             {thread.creator.name} ·{' '}
                             {thread.participants.join(' · ')}
                           </span>
                         </div>
-                        <div className="thread-card__side">
+                        <div className="flex flex-row items-center gap-2.5 text-[#7b8995] dark:text-[#9eb1c2]">
                           {thread.unreadCount ? (
-                            <span className="thread-card__counter">
+                            <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-full bg-[#2d3137] px-2 text-xs font-bold text-white">
                               {thread.unreadCount}
                             </span>
                           ) : null}
@@ -1090,9 +1126,11 @@ export function ThreadsPage() {
                 );
               })
             ) : (
-              <div className="threads-page__empty">
-                <strong>Ничего не найдено</strong>
-                <p>
+              <div className="rounded-[20px] border border-dashed border-[rgba(155,232,247,0.6)] bg-white/66 p-[22px] dark:border-[rgba(41,57,70,0.95)] dark:bg-[rgba(21,31,40,0.82)]">
+                <strong className="mb-1.5 block text-[#24313b] dark:text-[#eef5fb]">
+                  Ничего не найдено
+                </strong>
+                <p className="m-0 text-[13px] text-[#738290] dark:text-[#9eb1c2]">
                   Попробуйте изменить поисковый запрос или выбрать другую
                   категорию.
                 </p>
