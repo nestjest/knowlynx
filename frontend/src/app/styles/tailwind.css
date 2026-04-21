@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme static {
+  --font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+
+  --color-border-soft: #dbe5ee;
+  --color-panel-bg: rgba(255, 255, 255, 0.82);
+  --color-soft-blue: #ccf5ff;
+  --color-soft-blue-strong: #acecfb;
+
+  --shadow-soft: 0 18px 45px rgba(164, 182, 204, 0.12);
+
+  --breakpoint-sm: 640px;
+  --breakpoint-lg: 900px;
+  --breakpoint-xl: 1200px;
+}
+
+:root[data-theme="dark"] {
+  --color-border-soft: #253544;
+  --color-panel-bg: rgba(20, 28, 36, 0.92);
+  --color-soft-blue: #183746;
+  --color-soft-blue-strong: #235165;
+  --shadow-soft: 0 18px 45px rgba(4, 8, 12, 0.34);
+}
