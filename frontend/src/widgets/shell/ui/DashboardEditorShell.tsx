@@ -80,7 +80,7 @@ const HEADER_LINK_ACTIVE_BORDER =
   'dark:border-[rgba(88,174,199,0.4)] dark:text-[#eaf8fd]';
 
 const ICON_BUTTON_BASE =
-  'grid size-[42px] place-items-center rounded-xl border border-border-strong bg-surface-raised text-text-primary transition-[background,color,border-color] duration-200 hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-accent-soft-border hover:text-accent-soft-text dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
+  'grid size-[42px] place-items-center rounded-xl bordered-strong bg-surface-raised text-text-primary smooth-interact hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-accent-soft-border hover:text-accent-soft-text dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
 
 const PREVIEW_BOX =
   'h-[34px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92';
@@ -251,7 +251,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.id}
                 type="button"
-                className={`h-[42px] rounded-[14px] border border-transparent bg-transparent px-4 whitespace-nowrap text-[#53606c] transition-[background,color,border-color] duration-200 hover:${HEADER_LINK_ACTIVE_BG} dark:text-[#b6c6d4] ${isActive ? `${HEADER_LINK_ACTIVE_BG} ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
+                className={`smooth-interact h-[42px] rounded-[14px] border border-transparent bg-transparent px-4 whitespace-nowrap text-[#53606c] hover:${HEADER_LINK_ACTIVE_BG} dark:text-[#b6c6d4] ${isActive ? `${HEADER_LINK_ACTIVE_BG} ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
                 onClick={() => (item.path ? navigate(item.path) : undefined)}
               >
                 {item.label}

@@ -59,7 +59,7 @@ type MenuState = {
 };
 
 const THREAD_AVATAR_BASE =
-  'inline-flex size-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)] dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#eff9fc] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.16)]';
+  'gradient-accent inline-flex size-11 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)] dark:text-[#eff9fc] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.16)]';
 
 const STATUS_LABEL: Record<ThreadItem['status'], string> = {
   active: 'Активный',
@@ -833,7 +833,7 @@ export function ThreadChatModal() {
       />
 
       <section
-        className={`fixed bottom-[96px] left-1/2 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-5 shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)] backdrop-blur-[22px] max-lg:bottom-[84px] max-lg:h-[78vh] max-lg:max-h-[78vh] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:rounded-[26px] max-lg:p-4 dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)] ${isMinimizingThread ? 'pointer-events-none [animation:threads-modal-minimize-soft_320ms_ease_forwards] opacity-0' : ''}`}
+        className={`shadow-panel fixed bottom-[96px] left-1/2 z-[29] mb-2.5 flex max-h-[72vh] w-[min(960px,calc(100vw-64px))] -translate-x-1/2 [animation:drawer-slide-up_240ms_ease] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] border border-white/18 bg-[rgba(54,49,52,0.78)] p-5 backdrop-blur-[22px] max-lg:bottom-[84px] max-lg:h-[78vh] max-lg:max-h-[78vh] max-lg:w-[min(100%,calc(100vw-32px))] max-lg:rounded-[26px] max-lg:p-4 dark:border-[rgba(60,82,98,0.28)] dark:bg-[rgba(12,18,24,0.92)] ${isMinimizingThread ? 'pointer-events-none [animation:threads-modal-minimize-soft_320ms_ease_forwards] opacity-0' : ''}`}
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
@@ -1108,7 +1108,7 @@ export function ThreadChatModal() {
 
               <button
                 type="submit"
-                className="inline-flex h-10 items-center gap-2 rounded-[12px] border border-[rgba(93,199,222,0.6)] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] px-4 text-sm font-bold text-[#275d69] transition-[background,box-shadow] duration-200 hover:shadow-[0_4px_16px_rgba(93,199,222,0.3)] disabled:cursor-not-allowed disabled:opacity-50 dark:border-[rgba(88,174,199,0.4)] dark:from-[#235165] dark:to-[#1d7f95] dark:text-[#e8f8fc]"
+                className="accent-cta h-10 px-4 text-sm"
                 aria-label="Отправить сообщение"
                 disabled={!draftMessage.trim()}
               >

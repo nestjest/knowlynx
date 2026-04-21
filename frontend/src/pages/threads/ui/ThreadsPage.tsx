@@ -69,7 +69,7 @@ type MenuState = {
 };
 
 const THREAD_AVATAR_BASE =
-  'inline-flex size-11 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)]';
+  'gradient-accent inline-flex size-11 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)]';
 
 function ThreadAvatar({
   label,
@@ -946,7 +946,7 @@ export function ThreadsPage() {
                     key={thread.id}
                     label={thread.creator.avatar}
                     name={thread.creator.name}
-                    className={`size-10 border-[3px] border-[rgba(244,249,252,0.95)] shadow-[0_8px_18px_rgba(112,130,145,0.14)] dark:border-[rgba(18,26,34,0.92)] ${idx === 0 ? '' : '-ml-2.5'}`}
+                    className={`shadow-soft size-10 border-[3px] border-[rgba(244,249,252,0.95)] dark:border-[rgba(18,26,34,0.92)] ${idx === 0 ? '' : '-ml-2.5'}`}
                   />
                 ))}
               </div>

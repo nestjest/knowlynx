@@ -5,7 +5,7 @@ import { DashboardBlockCard } from '../../../entities/panel/ui/DashboardBlockCar
 import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
 
 const ICON_BUTTON =
-  'h-[34px] w-[34px] rounded-[10px] border border-[rgba(209,221,235,0.95)] bg-white/96 text-[#2f3b46] shadow-[0_12px_26px_rgba(198,209,221,0.28)] dark:text-[#dbe8f2] dark:shadow-none';
+  'h-[34px] w-[34px] rounded-[10px] border border-[rgba(209,221,235,0.95)] bg-white/96 text-[#2f3b46] shadow-card-raised dark:text-[#dbe8f2] dark:shadow-none';
 
 const ICON_BUTTON_ACTIVE =
   'bg-gradient-to-r from-[#9be8f7] to-[#bceeff] text-[#1e4b57]';

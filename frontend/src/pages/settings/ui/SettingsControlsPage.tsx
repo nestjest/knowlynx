@@ -20,10 +20,10 @@ const EYEBROW =
   'm-0 mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-text-muted';
 
 const CONTROL_INPUT =
-  'min-w-[190px] rounded-[14px] border border-border-strong bg-surface-raised px-3.5 py-[11px] text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
+  'min-w-[190px] rounded-[14px] bordered-strong bg-surface-raised px-3.5 py-[11px] text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
 
 const SEGMENT_BASE =
-  'rounded-full border border-border-strong bg-surface-raised px-3.5 py-2.5 text-text-primary hover:border-accent-soft-border hover:bg-accent-soft-bg hover:text-accent-soft-text dark:text-[#dbe8f2]';
+  'rounded-full bordered-strong bg-surface-raised px-3.5 py-2.5 text-text-primary hover:border-accent-soft-border hover:bg-accent-soft-bg hover:text-accent-soft-text dark:text-[#dbe8f2]';
 
 function buildInitialState(sectionId: SettingsSectionId) {
   const controls = settingsFormSections[sectionId].flatMap(
@@ -167,7 +167,7 @@ export function SettingsControlsPage() {
           </div>
 
           <div className="flex items-start gap-[18px]">
-            <div className="grid size-16 flex-shrink-0 place-items-center rounded-[20px] bg-gradient-to-br from-[#9be8f7] to-[#5dc7de] text-white dark:from-[#235165] dark:to-[#1d7f95]">
+            <div className="gradient-accent grid size-16 flex-shrink-0 place-items-center rounded-[20px] text-white">
               <Icon size={28} />
             </div>
             <div className="min-w-0">

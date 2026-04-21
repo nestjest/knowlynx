@@ -5,7 +5,7 @@ import {
 } from '../../../entities/course/model/courseData';
 
 const INPUT_BASE =
-  'w-full rounded-[14px] border border-border-strong bg-surface-raised px-3.5 py-3 text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
+  'w-full rounded-[14px] bordered-strong bg-surface-raised px-3.5 py-3 text-text-primary dark:border-[rgba(57,78,95,0.9)] dark:bg-[rgba(18,28,36,0.95)] dark:text-[#e4eef6]';
 
 const META_TEXT = 'text-xs text-text-muted';
 
