@@ -14,7 +14,7 @@ import {
 } from '../model/settingsSections';
 
 const PANEL_BASE =
-  'rounded-3xl border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] shadow-card';
+  'rounded-3xl border border-border bg-(--panel-bg) p-[22px] shadow-card';
 
 const EYEBROW =
   'm-0 mb-1.5 text-[11px] font-bold uppercase tracking-[0.08em] text-text-muted';
@@ -150,11 +150,11 @@ export function SettingsControlsPage() {
   return (
     <DashboardEditorShell>
       <div className="mx-auto flex max-w-[1100px] flex-col gap-4 px-0 py-2">
-        <div className="shadow-card rounded-3xl border border-[rgba(219,229,238,0.95)] bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(247,250,253,0.94)_100%)] p-6 max-sm:rounded-[18px] dark:bg-[radial-gradient(circle_at_top_right,rgba(43,94,111,0.35),transparent_30%),rgba(18,26,34,0.94)]">
+        <div className="shadow-card border-border rounded-3xl border bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_30%),linear-gradient(180deg,rgba(255,255,255,0.82)_0%,rgba(247,250,253,0.94)_100%)] p-6 max-sm:rounded-[18px] dark:bg-[radial-gradient(circle_at_top_right,rgba(43,94,111,0.35),transparent_30%),rgba(18,26,34,0.94)]">
           <div className="mb-[18px] flex items-start justify-between gap-4">
             <Link
               to="/settings"
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(219,229,238,0.9)] bg-white/72 px-3 py-2 text-[#47606f] dark:text-[#b6c7d5]"
+              className="border-border-muted inline-flex items-center gap-2 rounded-full border bg-white/72 px-3 py-2 text-[#47606f] dark:text-[#b6c7d5]"
             >
               <ChevronLeft size={16} />
               Все настройки
@@ -167,7 +167,7 @@ export function SettingsControlsPage() {
           </div>
 
           <div className="flex items-start gap-[18px]">
-            <div className="gradient-accent grid size-16 flex-shrink-0 place-items-center rounded-[20px] text-white">
+            <div className="gradient-accent grid size-16 shrink-0 place-items-center rounded-[20px] text-white">
               <Icon size={28} />
             </div>
             <div className="min-w-0">
@@ -186,7 +186,7 @@ export function SettingsControlsPage() {
           {section.facts.map((fact) => (
             <article
               key={fact.label}
-              className={`shadow-card rounded-[18px] border border-[rgba(219,229,238,0.95)] p-4 ${fact.tone === 'accent' ? 'bg-gradient-to-b from-[rgba(155,232,247,0.2)] to-white/88' : 'bg-white/78'}`}
+              className={`shadow-card border-border rounded-[18px] border p-4 ${fact.tone === 'accent' ? 'bg-gradient-to-b from-[rgba(155,232,247,0.2)] to-white/88' : 'bg-white/78'}`}
             >
               <span className="mb-2 block text-xs text-[#7b8b98] dark:text-[#9eb1c2]">
                 {fact.label}
@@ -230,7 +230,7 @@ export function SettingsControlsPage() {
                           {control.description}
                         </span>
                       </div>
-                      <div className="flex flex-shrink-0 items-center justify-end">
+                      <div className="flex shrink-0 items-center justify-end">
                         {renderControl(control)}
                       </div>
                     </div>
@@ -271,9 +271,9 @@ export function SettingsControlsPage() {
                     <Link
                       key={item.id}
                       to={`/settings/${item.id}`}
-                      className="flex w-full items-center gap-3.5 rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/72 p-4 text-inherit"
+                      className="border-border flex w-full items-center gap-3.5 rounded-[18px] border bg-white/72 p-4 text-inherit"
                     >
-                      <span className="grid size-[38px] flex-shrink-0 place-items-center rounded-xl bg-[rgba(155,232,247,0.14)] text-[#38a8c0]">
+                      <span className="bg-accent-soft-bg-subtle grid size-[38px] shrink-0 place-items-center rounded-xl text-[#38a8c0]">
                         <RelatedIcon size={18} />
                       </span>
                       <span className="flex min-w-0 flex-1 flex-col gap-1">
@@ -286,7 +286,7 @@ export function SettingsControlsPage() {
                       </span>
                       <ChevronRight
                         size={16}
-                        className="text-text-muted flex-shrink-0 opacity-60"
+                        className="text-text-muted shrink-0 opacity-60"
                       />
                     </Link>
                   );

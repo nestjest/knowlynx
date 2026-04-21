@@ -56,7 +56,7 @@ export function DashboardBlockCard({
             </button>
             <button
               type="button"
-              className="border-danger-border bg-danger-bg text-danger-text mb-5 grid size-8 flex-shrink-0 place-items-center rounded-[10px] border text-lg leading-none"
+              className="border-danger-border bg-danger-bg text-danger-text mb-5 grid size-8 shrink-0 place-items-center rounded-[10px] border text-lg leading-none"
               onClick={onRemove}
               aria-label="Удалить блок"
             >

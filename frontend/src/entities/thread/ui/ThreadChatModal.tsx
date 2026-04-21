@@ -135,7 +135,7 @@ function renderFormattedText(text: string) {
     if (line.startsWith('- ')) {
       return (
         <div key={key} className="flex items-baseline gap-2">
-          <span className="h-1 w-1 rounded-full bg-current" />
+          <span className="size-1 rounded-full bg-current" />
           <span
             dangerouslySetInnerHTML={{
               __html: renderInlineMarkup(line.slice(2)),
@@ -197,7 +197,7 @@ type ThreadMessageMenuProps = {
 };
 
 const MENU_BUTTON =
-  'flex w-full items-center gap-2.5 rounded-[10px] border-0 bg-transparent px-3 py-2 text-left text-sm text-[#24313b] transition-colors duration-150 hover:bg-[rgba(155,232,247,0.14)] dark:text-[#eef5fb] dark:hover:bg-[rgba(48,114,132,0.22)]';
+  'flex w-full items-center gap-2.5 rounded-[10px] border-0 bg-transparent px-3 py-2 text-left text-sm text-[#24313b] transition-colors duration-150 hover:bg-accent-soft-bg-subtle dark:text-[#eef5fb] dark:hover:bg-[rgba(48,114,132,0.22)]';
 
 function ThreadMessageMenu({
   copiedMessageId,
@@ -217,7 +217,7 @@ function ThreadMessageMenu({
 
   return (
     <div
-      className={`fixed z-[80] flex w-[248px] flex-col gap-0.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/96 p-2 shadow-[0_18px_36px_rgba(37,50,63,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[18px] dark:bg-[rgba(15,23,30,0.96)] dark:shadow-[0_18px_36px_rgba(4,8,12,0.36)] ${placementClass}`}
+      className={`border-border-strong fixed z-[80] flex w-[248px] flex-col gap-0.5 rounded-2xl border bg-white/96 p-2 shadow-[0_18px_36px_rgba(37,50,63,0.18),inset_0_1px_0_rgba(255,255,255,0.9)] backdrop-blur-[18px] dark:bg-[rgba(15,23,30,0.96)] dark:shadow-[0_18px_36px_rgba(4,8,12,0.36)] ${placementClass}`}
       style={style}
       role="menu"
       aria-label="Действия с сообщением"
@@ -227,7 +227,7 @@ function ThreadMessageMenu({
           <button
             key={emoji}
             type="button"
-            className="grid size-8 place-items-center rounded-[10px] border-0 bg-transparent text-base transition-colors duration-150 hover:bg-[rgba(155,232,247,0.14)] dark:hover:bg-[rgba(48,114,132,0.22)]"
+            className="hover:bg-accent-soft-bg-subtle grid size-8 place-items-center rounded-[10px] border-0 bg-transparent text-base transition-colors duration-150 dark:hover:bg-[rgba(48,114,132,0.22)]"
             onClick={() => {
               onReact(message.id, emoji);
               onClose();
@@ -837,7 +837,7 @@ export function ThreadChatModal() {
       >
         <div className="flex items-start justify-between gap-4">
           <div className="flex min-w-0 flex-col gap-1">
-            <div className="inline-flex w-fit items-center gap-1.5 rounded-full bg-[rgba(155,232,247,0.22)] px-2 py-1 text-[11px] font-bold tracking-[0.06em] text-[#b9eef8] uppercase">
+            <div className="bg-accent-soft-bg inline-flex w-fit items-center gap-1.5 rounded-full px-2 py-1 text-[11px] font-bold tracking-[0.06em] text-[#b9eef8] uppercase">
               <Sparkles size={14} />
               <span>Thread Opened</span>
             </div>
@@ -849,7 +849,7 @@ export function ThreadChatModal() {
 
           <button
             type="button"
-            className="size-[34px] flex-shrink-0 rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16"
+            className="size-[34px] shrink-0 rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16"
             aria-label="Закрыть"
             onClick={closeThread}
           >
@@ -879,8 +879,8 @@ export function ThreadChatModal() {
         </div>
 
         {pinnedMessage ? (
-          <div className="flex items-start gap-2.5 rounded-2xl border border-white/14 bg-white/6 p-2.5 px-3 text-white dark:border-[rgba(60,82,98,0.38)] dark:bg-[rgba(22,30,40,0.62)]">
-            <Pin size={14} className="mt-0.5 flex-shrink-0" />
+          <div className="flex items-start gap-2.5 rounded-2xl border border-white/14 bg-white/6 p-2.5 px-3 text-white dark:border-[rgba(60,82,98,0.38)]">
+            <Pin size={14} className="mt-0.5 shrink-0" />
             <div className="min-w-0">
               <strong className="block text-xs text-white/88">
                 Закрепленное сообщение
@@ -972,7 +972,7 @@ export function ThreadChatModal() {
 
               <button
                 type="button"
-                className="absolute top-3 right-3 grid size-7 place-items-center rounded-full border-0 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:bg-[rgba(22,30,40,0.62)]"
+                className="absolute top-3 right-3 grid size-7 place-items-center rounded-full border-0 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16"
                 aria-label="Закрыть подтверждение удаления"
                 onClick={() => setDeleteDialogMessageId(null)}
               >
@@ -983,7 +983,7 @@ export function ThreadChatModal() {
         ) : null}
 
         {composerTarget ? (
-          <div className="flex items-start gap-2.5 rounded-2xl border border-white/14 bg-white/6 p-2.5 px-3 text-white dark:border-[rgba(60,82,98,0.38)] dark:bg-[rgba(22,30,40,0.62)]">
+          <div className="flex items-start gap-2.5 rounded-2xl border border-white/14 bg-white/6 p-2.5 px-3 text-white dark:border-[rgba(60,82,98,0.38)]">
             <div className="min-w-0 flex-1">
               <strong className="block text-xs text-white/88">
                 {composerMode.type === 'edit'
@@ -996,7 +996,7 @@ export function ThreadChatModal() {
             </div>
             <button
               type="button"
-              className="grid size-6 flex-shrink-0 place-items-center rounded-full border-0 bg-white/10 text-white transition-colors duration-150 hover:bg-white/18"
+              className="grid size-6 shrink-0 place-items-center rounded-full border-0 bg-white/10 text-white transition-colors duration-150 hover:bg-white/18"
               onClick={resetComposer}
               aria-label="Отменить действие"
             >
@@ -1006,7 +1006,7 @@ export function ThreadChatModal() {
         ) : null}
 
         <form
-          className={`flex flex-col gap-2.5 rounded-[18px] border border-white/14 bg-white/6 p-3 dark:border-[rgba(60,82,98,0.38)] dark:bg-[rgba(22,30,40,0.62)] ${isComposerCollapsed ? '[&_textarea]:max-h-10 [&_textarea]:min-h-10' : ''}`}
+          className={`flex flex-col gap-2.5 rounded-[18px] border border-white/14 bg-white/6 p-3 dark:border-[rgba(60,82,98,0.38)] ${isComposerCollapsed ? '[&_textarea]:max-h-10 [&_textarea]:min-h-10' : ''}`}
           onSubmit={handleSubmit}
         >
           <div className="flex items-center justify-between gap-2">

@@ -54,12 +54,12 @@ export function QuickAccessWidgetCard({
 
         <div
           aria-hidden="true"
-          className="border-accent-soft-border from-accent-soft-bg-subtle dark:border-accent-soft-border relative flex h-[92px] w-[92px] min-w-[92px] items-center justify-center rounded-3xl border bg-gradient-to-b to-white/40 p-3 max-sm:h-[88px] max-sm:w-[88px] max-sm:min-w-[88px] dark:from-[rgba(30,56,70,0.72)] dark:to-[rgba(20,32,42,0.82)]"
+          className="border-accent-soft-border from-accent-soft-bg-subtle dark:border-accent-soft-border relative flex size-[92px] min-w-[92px] items-center justify-center rounded-3xl border bg-gradient-to-b to-white/40 p-3 max-sm:size-[88px] max-sm:min-w-[88px] dark:from-[rgba(30,56,70,0.72)] dark:to-[rgba(20,32,42,0.82)]"
         >
           <div className="absolute inset-0 grid place-items-center">
-            <span className="bg-accent-soft-bg-subtle dark:bg-accent-soft-bg-subtle block h-[54px] w-[54px] rounded-[18px]" />
+            <span className="bg-accent-soft-bg-subtle dark:bg-accent-soft-bg-subtle block size-[54px] rounded-[18px]" />
           </div>
-          <div className="dark:bg-surface dark:text-text-primary grid h-12 w-12 place-items-center rounded-2xl bg-[rgba(233,250,254,0.95)] text-[#32404d] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)]">
+          <div className="dark:bg-surface dark:text-text-primary grid size-12 place-items-center rounded-2xl bg-[rgba(233,250,254,0.95)] text-[#32404d] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)]">
             <WidgetIcon size={32} />
           </div>
         </div>

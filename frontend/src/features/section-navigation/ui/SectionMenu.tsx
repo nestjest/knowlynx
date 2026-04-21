@@ -63,7 +63,7 @@ export function CourseSection() {
         {filteredCourses.map((course) => (
           <article
             key={course.id}
-            className="shadow-card rounded-[18px] border border-[rgba(219,229,238,0.95)] bg-white/84 p-4"
+            className="shadow-card border-border rounded-[18px] border bg-white/84 p-4"
           >
             <div className="mb-2 flex items-start justify-between gap-3">
               <h3 className="text-text-primary m-0 text-[15px] font-semibold">

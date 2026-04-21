@@ -898,7 +898,7 @@ export function ThreadsPage() {
       <div className="flex flex-col gap-6 px-0 py-2 pb-4">
         <section className="bordered gradient-card shadow-card grid grid-cols-[minmax(0,1.5fr)_minmax(280px,0.9fr)] gap-5 rounded-[28px] p-7 max-xl:grid-cols-1 max-sm:p-5">
           <div className="flex flex-col gap-3.5">
-            <div className="inline-flex w-fit items-center gap-2 rounded-full bg-[rgba(155,232,247,0.22)] px-3 py-2 text-xs font-bold tracking-[0.06em] text-[#215c69] uppercase dark:text-[#97e5f5]">
+            <div className="bg-accent-soft-bg inline-flex w-fit items-center gap-2 rounded-full px-3 py-2 text-xs font-bold tracking-[0.06em] text-[#215c69] uppercase dark:text-[#97e5f5]">
               <Sparkles size={14} />
               <span>Threads</span>
             </div>
@@ -939,7 +939,7 @@ export function ThreadsPage() {
               </article>
             </div>
 
-            <div className="flex w-fit max-w-full items-center gap-4 rounded-full border border-[rgba(207,220,231,0.88)] bg-white/72 px-4 py-3 dark:bg-[rgba(21,31,40,0.82)]">
+            <div className="flex w-fit max-w-full items-center gap-4 rounded-full border border-[rgba(207,220,231,0.88)] bg-white/72 px-4 py-3">
               <div className="flex items-center" aria-hidden="true">
                 {threadMocks.slice(0, 3).map((thread, idx) => (
                   <ThreadAvatar
@@ -963,13 +963,13 @@ export function ThreadsPage() {
           </div>
 
           <div className="grid gap-3.5">
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+            <article className="border-border-muted rounded-[22px] border bg-white/72 p-[18px_20px]">
               <span className="text-text-muted text-xs">Всего тредов</span>
               <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {threadMocks.length}
               </strong>
             </article>
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+            <article className="border-border-muted rounded-[22px] border bg-white/72 p-[18px_20px]">
               <span className="text-text-muted text-xs">Активных сейчас</span>
               <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {
@@ -978,7 +978,7 @@ export function ThreadsPage() {
                 }
               </strong>
             </article>
-            <article className="rounded-[22px] border border-[rgba(219,229,238,0.9)] bg-white/72 p-[18px_20px] dark:bg-[rgba(21,31,40,0.82)]">
+            <article className="border-border-muted rounded-[22px] border bg-white/72 p-[18px_20px]">
               <span className="text-text-muted text-xs">Новых сообщений</span>
               <strong className="text-text-primary mt-2 block text-[28px] leading-none">
                 {threadMocks.reduce(
@@ -990,7 +990,7 @@ export function ThreadsPage() {
           </div>
         </section>
 
-        <section className="shadow-card min-w-0 rounded-[26px] border border-[rgba(219,229,238,0.95)] bg-(--panel-bg) p-[22px] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)]">
+        <section className="shadow-card border-border min-w-0 rounded-[26px] border bg-(--panel-bg) p-[22px] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)]">
           <div className="mb-[18px] flex items-start justify-between gap-4">
             <div>
               <p className="text-text-muted text-xs">Список тредов</p>
@@ -998,13 +998,13 @@ export function ThreadsPage() {
                 Созданные пользователем обсуждения
               </h2>
             </div>
-            <span className="text-text-muted rounded-full bg-[rgba(155,232,247,0.14)] px-2.5 py-[7px] text-xs whitespace-nowrap">
+            <span className="text-text-muted bg-accent-soft-bg-subtle rounded-full px-2.5 py-[7px] text-xs whitespace-nowrap">
               Мок-данные
             </span>
           </div>
 
           <div className="mb-[18px] flex flex-col gap-4">
-            <label className="flex h-12 items-center gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.92)] bg-white/86 px-4 text-[#61707d] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
+            <label className="border-border-strong flex h-12 items-center gap-2.5 rounded-2xl border bg-white/86 px-4 text-[#61707d] dark:text-[#9eb1c2]">
               <Search size={16} />
               <input
                 type="search"
@@ -1032,7 +1032,7 @@ export function ThreadsPage() {
                   <button
                     key={value}
                     type="button"
-                    className={`h-10 rounded-full border px-3.5 transition-[0.18s_ease] hover:border-[rgba(93,199,222,0.48)] hover:bg-[rgba(155,232,247,0.2)] hover:text-[#1f4f5a] dark:hover:bg-[rgba(48,114,132,0.22)] ${active ? 'border-[rgba(93,199,222,0.48)] bg-[rgba(155,232,247,0.2)] text-[#1f4f5a]' : 'border-[rgba(209,221,235,0.92)] bg-white/76 text-[#53606c] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]'}`}
+                    className={`h-10 rounded-full border px-3.5 transition-[0.18s_ease] hover:border-[rgba(93,199,222,0.48)] hover:bg-[rgba(155,232,247,0.2)] hover:text-[#1f4f5a] dark:hover:bg-[rgba(48,114,132,0.22)] ${active ? 'border-[rgba(93,199,222,0.48)] bg-[rgba(155,232,247,0.2)] text-[#1f4f5a]' : 'border-border-strong bg-white/76 text-[#53606c] dark:text-[#9eb1c2]'}`}
                     onClick={() => setSelectedCategory(value)}
                   >
                     {label}
@@ -1054,7 +1054,7 @@ export function ThreadsPage() {
                   <button
                     key={thread.id}
                     type="button"
-                    className={`relative grid w-full grid-cols-[6px_minmax(0,1fr)] items-stretch gap-3.5 rounded-[20px] border p-4 text-left transition-[transform,border-color,box-shadow] duration-[0.18s] hover:-translate-y-0.5 hover:border-[rgba(93,199,222,0.55)] hover:shadow-[0_16px_30px_rgba(164,182,204,0.16)] dark:bg-[rgba(21,31,40,0.82)] ${isActive ? '-translate-y-0.5 border-[rgba(93,199,222,0.55)] shadow-[0_16px_30px_rgba(164,182,204,0.16)]' : 'border-[rgba(219,229,238,0.9)] bg-white/74'}`}
+                    className={`relative grid w-full grid-cols-[6px_minmax(0,1fr)] items-stretch gap-3.5 rounded-[20px] border p-4 text-left transition-[transform,border-color,box-shadow] duration-[0.18s] hover:-translate-y-0.5 hover:border-[rgba(93,199,222,0.55)] hover:shadow-[0_16px_30px_rgba(164,182,204,0.16)] ${isActive ? '-translate-y-0.5 border-[rgba(93,199,222,0.55)] shadow-[0_16px_30px_rgba(164,182,204,0.16)]' : 'border-border-muted bg-white/74'}`}
                     onClick={() => openThread(thread.id)}
                   >
                     <div
@@ -1077,7 +1077,7 @@ export function ThreadsPage() {
                             </p>
                           </div>
                         </div>
-                        <div className="flex flex-shrink-0 flex-col items-end gap-2">
+                        <div className="flex shrink-0 flex-col items-end gap-2">
                           <ThreadStatusBadge status={thread.status} />
                           <span className="text-text-muted text-xs">
                             {thread.updatedAt}
@@ -1086,7 +1086,7 @@ export function ThreadsPage() {
                       </div>
 
                       {threadPinnedMessage ? (
-                        <div className="mt-3.5 flex items-start gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.85)] bg-[rgba(155,232,247,0.12)] p-2.5 px-3 text-xs text-[#46606e] dark:bg-[rgba(21,31,40,0.82)] dark:text-[#9eb1c2]">
+                        <div className="bg-accent-soft-bg-subtle mt-3.5 flex items-start gap-2.5 rounded-2xl border border-[rgba(209,221,235,0.85)] p-2.5 px-3 text-xs text-[#46606e] dark:text-[#9eb1c2]">
                           <Pin size={14} />
                           <span>{threadPinnedMessage.text}</span>
                         </div>
@@ -1116,7 +1116,7 @@ export function ThreadsPage() {
                 );
               })
             ) : (
-              <div className="rounded-[20px] border border-dashed border-[rgba(155,232,247,0.6)] bg-white/66 p-[22px] dark:bg-[rgba(21,31,40,0.82)]">
+              <div className="rounded-[20px] border border-dashed border-[rgba(155,232,247,0.6)] bg-white/66 p-[22px]">
                 <strong className="text-text-primary mb-1.5 block">
                   Ничего не найдено
                 </strong>

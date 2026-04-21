@@ -83,7 +83,7 @@ const ICON_BUTTON_BASE =
   'grid size-[42px] place-items-center rounded-xl bordered-strong bg-surface-raised text-text-primary smooth-interact hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-accent-soft-border hover:text-accent-soft-text dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
 
 const PREVIEW_BOX =
-  'h-[34px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92';
+  'h-[34px] rounded-xl border border-border-muted bg-white/92';
 
 const PREVIEW_LINE = 'h-2.5 rounded-full bg-[rgba(75,98,116,0.18)]';
 
@@ -123,34 +123,34 @@ function renderDrawerPreview(preview: DrawerPreview) {
     case 'performance':
       return (
         <div className="grid grid-cols-2 gap-2">
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
         </div>
       );
     case 'deadlines':
       return (
         <div className="flex flex-col gap-2">
-          <span className="h-[42px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[42px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[42px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
+          <span className="border-border-muted h-[42px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[42px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[42px] rounded-xl border bg-white/92" />
         </div>
       );
     case 'activity':
       return (
         <div className="grid grid-cols-2 gap-2">
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[54px] rounded-xl border border-[rgba(214,225,235,0.9)] bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
+          <span className="border-border-muted h-[54px] rounded-xl border bg-white/92" />
         </div>
       );
     case 'recommendations':
       return (
         <div className="flex flex-wrap gap-2">
-          <span className="h-[30px] w-[120px] rounded-full border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[30px] w-[120px] rounded-full border border-[rgba(214,225,235,0.9)] bg-white/92" />
-          <span className="h-[30px] w-[92px] rounded-full border border-[rgba(214,225,235,0.9)] bg-white/92" />
+          <span className="border-border-muted h-[30px] w-[120px] rounded-full border bg-white/92" />
+          <span className="border-border-muted h-[30px] w-[120px] rounded-full border bg-white/92" />
+          <span className="border-border-muted h-[30px] w-[92px] rounded-full border bg-white/92" />
         </div>
       );
     default:
@@ -278,7 +278,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           {siteSearchQuery ? (
             <button
               type="button"
-              className="absolute top-1/2 right-2.5 grid size-6 -translate-y-1/2 place-items-center rounded-full bg-[rgba(155,232,247,0.12)] p-0 text-[#4b6fa1] transition-colors duration-200 hover:bg-[rgba(155,232,247,0.22)] hover:text-[#274f84] dark:bg-[rgba(64,129,151,0.2)] dark:text-[#8fc4d3] dark:hover:bg-[rgba(64,129,151,0.32)] dark:hover:text-[#d6f4fb]"
+              className="bg-accent-soft-bg-subtle hover:bg-accent-soft-bg absolute top-1/2 right-2.5 grid size-6 -translate-y-1/2 place-items-center rounded-full p-0 text-[#4b6fa1] transition-colors duration-200 hover:text-[#274f84] dark:bg-[rgba(64,129,151,0.2)] dark:text-[#8fc4d3] dark:hover:bg-[rgba(64,129,151,0.32)] dark:hover:text-[#d6f4fb]"
               aria-label="Очистить поиск"
               onMouseDown={() => {
                 setSiteSearchQuery('');
@@ -291,13 +291,13 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
           ) : null}
 
           {isSearchOpen && normalizedSiteSearch ? (
-            <div className="shadow-card absolute top-[calc(100%+10px)] left-0 z-[60] w-full rounded-[18px] border border-[rgba(209,221,235,0.92)] bg-white/96 p-2.5 dark:bg-[rgba(14,22,29,0.98)]">
+            <div className="shadow-card border-border-strong absolute top-[calc(100%+10px)] left-0 z-[60] w-full rounded-[18px] border bg-white/96 p-2.5 dark:bg-[rgba(14,22,29,0.98)]">
               {filteredSiteSuggestions.length ? (
                 filteredSiteSuggestions.map((suggestion) => (
                   <button
                     key={suggestion.id}
                     type="button"
-                    className="flex w-full flex-col gap-0.5 rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-[#31404d] hover:bg-[rgba(155,232,247,0.14)] dark:text-[#e7f1f8] dark:hover:bg-[rgba(48,114,132,0.22)]"
+                    className="hover:bg-accent-soft-bg-subtle flex w-full flex-col gap-0.5 rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-[#31404d] dark:text-[#e7f1f8] dark:hover:bg-[rgba(48,114,132,0.22)]"
                     onMouseDown={() => {
                       setSiteSearchQuery(suggestion.title);
                       setIsSearchOpen(false);
