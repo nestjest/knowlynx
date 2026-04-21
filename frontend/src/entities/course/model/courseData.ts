@@ -16,7 +16,7 @@ export const courses: Course[] = [
     teacher: 'Алина Сергеевна',
     progress: 68,
     category: 'active',
-    lessonsLeft: 6
+    lessonsLeft: 6,
   },
   {
     id: 'course-2',
@@ -24,7 +24,7 @@ export const courses: Course[] = [
     teacher: 'Игорь Михайлович',
     progress: 42,
     category: 'active',
-    lessonsLeft: 11
+    lessonsLeft: 11,
   },
   {
     id: 'course-3',
@@ -32,7 +32,7 @@ export const courses: Course[] = [
     teacher: 'Марина Викторовна',
     progress: 100,
     category: 'completed',
-    lessonsLeft: 0
+    lessonsLeft: 0,
   },
   {
     id: 'course-4',
@@ -40,7 +40,7 @@ export const courses: Course[] = [
     teacher: 'Елена Павловна',
     progress: 12,
     category: 'upcoming',
-    lessonsLeft: 18
+    lessonsLeft: 18,
   },
   {
     id: 'course-5',
@@ -48,6 +48,6 @@ export const courses: Course[] = [
     teacher: 'Дмитрий Андреевич',
     progress: 55,
     category: 'active',
-    lessonsLeft: 8
-  }
+    lessonsLeft: 8,
+  },
 ];

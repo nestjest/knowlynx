@@ -2,25 +2,38 @@ import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorShell';
-import { settingsFormSections, settingsReadonlyNotes, type SettingsControl } from '../model/settingsFormSections';
-import { settingsSections, settingsSectionsMap, type SettingsSectionId } from '../model/settingsSections';
+import {
+  settingsFormSections,
+  settingsReadonlyNotes,
+  type SettingsControl,
+} from '../model/settingsFormSections';
+import {
+  settingsSections,
+  settingsSectionsMap,
+  type SettingsSectionId,
+} from '../model/settingsSections';
 
 function buildInitialState(sectionId: SettingsSectionId) {
-  const controls = settingsFormSections[sectionId].flatMap((group) => group.controls);
+  const controls = settingsFormSections[sectionId].flatMap(
+    (group) => group.controls,
+  );
 
-  return controls.reduce<Record<string, string | boolean>>((accumulator, control) => {
-    if (control.type === 'toggle') {
+  return controls.reduce<Record<string, string | boolean>>(
+    (accumulator, control) => {
+      if (control.type === 'toggle') {
+        accumulator[control.id] = control.value;
+        return accumulator;
+      }
+
+      if (control.type === 'action') {
+        return accumulator;
+      }
+
       accumulator[control.id] = control.value;
       return accumulator;
-    }
-
-    if (control.type === 'action') {
-      return accumulator;
-    }
-
-    accumulator[control.id] = control.value;
-    return accumulator;
-  }, {});
+    },
+    {},
+  );
 }
 
 export function SettingsControlsPage() {
@@ -32,11 +45,13 @@ export function SettingsControlsPage() {
 
   const section = settingsSectionsMap[sectionId];
   const groups = settingsFormSections[sectionId];
-  const [values, setValues] = useState<Record<string, string | boolean>>(() => buildInitialState(sectionId));
+  const [values, setValues] = useState<Record<string, string | boolean>>(() =>
+    buildInitialState(sectionId),
+  );
   const Icon = section.icon;
   const relatedSections = useMemo(
     () => settingsSections.filter((item) => item.id !== section.id).slice(0, 3),
-    [section.id]
+    [section.id],
   );
 
   const setValue = (id: string, value: string | boolean) => {
@@ -124,7 +139,9 @@ export function SettingsControlsPage() {
               <ChevronLeft size={16} />
               Все настройки
             </Link>
-            {section.badge ? <span className="settings__badge">{section.badge}</span> : null}
+            {section.badge ? (
+              <span className="settings__badge">{section.badge}</span>
+            ) : null}
           </div>
 
           <div className="settings-page__hero-body">
@@ -141,7 +158,10 @@ export function SettingsControlsPage() {
 
         <div className="settings-page__facts">
           {section.facts.map((fact) => (
-            <article key={fact.label} className={`settings-page__fact settings-page__fact--${fact.tone ?? 'default'}`}>
+            <article
+              key={fact.label}
+              className={`settings-page__fact settings-page__fact--${fact.tone ?? 'default'}`}
+            >
               <span>{fact.label}</span>
               <strong>{fact.value}</strong>
             </article>
@@ -167,7 +187,9 @@ export function SettingsControlsPage() {
                         <strong>{control.label}</strong>
                         <span>{control.description}</span>
                       </div>
-                      <div className="settings-control__value">{renderControl(control)}</div>
+                      <div className="settings-control__value">
+                        {renderControl(control)}
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -193,7 +215,9 @@ export function SettingsControlsPage() {
             <article className="settings-page__related">
               <div>
                 <p className="settings-page__eyebrow">Соседние разделы</p>
-                <h2 className="settings-page__related-title">Другие настройки</h2>
+                <h2 className="settings-page__related-title">
+                  Другие настройки
+                </h2>
               </div>
 
               <div className="settings-page__related-list">
@@ -201,7 +225,11 @@ export function SettingsControlsPage() {
                   const RelatedIcon = item.icon;
 
                   return (
-                    <Link key={item.id} to={`/settings/${item.id}`} className="settings-page__related-card">
+                    <Link
+                      key={item.id}
+                      to={`/settings/${item.id}`}
+                      className="settings-page__related-card"
+                    >
                       <span className="settings-page__related-icon">
                         <RelatedIcon size={18} />
                       </span>
@@ -209,7 +237,10 @@ export function SettingsControlsPage() {
                         <strong>{item.shortTitle}</strong>
                         <span>{item.summary}</span>
                       </span>
-                      <ChevronRight size={16} className="settings__row-chevron" />
+                      <ChevronRight
+                        size={16}
+                        className="settings__row-chevron"
+                      />
                     </Link>
                   );
                 })}

@@ -13,5 +13,6 @@ export const useAppStore = create<AppState>((set) => ({
   connectionStatus: 'offline',
   isSidebarExpanded: false,
   setConnectionStatus: (status) => set({ connectionStatus: status }),
-  toggleSidebar: () => set((state) => ({ isSidebarExpanded: !state.isSidebarExpanded }))
+  toggleSidebar: () =>
+    set((state) => ({ isSidebarExpanded: !state.isSidebarExpanded })),
 }));

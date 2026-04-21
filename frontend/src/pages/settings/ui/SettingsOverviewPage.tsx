@@ -6,7 +6,7 @@ import {
   HardDrive,
   Lock,
   Palette,
-  User
+  User,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
@@ -34,9 +34,15 @@ export function SettingsOverviewPage() {
           </div>
           <div className="settings__profile-info">
             <h2 className="settings__profile-name">Максим Каревский</h2>
-            <p className="settings__profile-meta">@nestjest · Студент · Web Engineering</p>
+            <p className="settings__profile-meta">
+              @nestjest · Студент · Web Engineering
+            </p>
           </div>
-          <Link to="/settings/profile" className="settings__profile-edit" aria-label="Открыть настройки профиля">
+          <Link
+            to="/settings/profile"
+            className="settings__profile-edit"
+            aria-label="Открыть настройки профиля"
+          >
             <ChevronRight size={16} />
           </Link>
         </div>
@@ -74,7 +80,9 @@ export function SettingsOverviewPage() {
             </span>
             <span className="settings__row-content">
               <span className="settings__row-label">{notifications.title}</span>
-              <span className="settings__row-desc">{notifications.summary}</span>
+              <span className="settings__row-desc">
+                {notifications.summary}
+              </span>
             </span>
             <ChevronRight size={16} className="settings__row-chevron" />
           </Link>
@@ -119,8 +127,12 @@ export function SettingsOverviewPage() {
               <Palette size={18} />
             </span>
             <span className="settings__row-content">
-              <span className="settings__row-label">Быстрое переключение темы</span>
-              <span className="settings__row-desc">{theme === 'dark' ? 'Тёмная' : 'Светлая'}</span>
+              <span className="settings__row-label">
+                Быстрое переключение темы
+              </span>
+              <span className="settings__row-desc">
+                {theme === 'dark' ? 'Тёмная' : 'Светлая'}
+              </span>
             </span>
             <button
               type="button"

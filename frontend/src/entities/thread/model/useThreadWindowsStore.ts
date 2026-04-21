@@ -1,5 +1,8 @@
 import { create } from 'zustand';
-import { threadMocks, type ThreadMessage } from '../../../pages/threads/model/threadMocks';
+import {
+  threadMocks,
+  type ThreadMessage,
+} from '../../../pages/threads/model/threadMocks';
 
 export const THREAD_REACTION_EMOJIS = ['❤️', '🔥', '👏', '😂', '😮'] as const;
 
@@ -25,10 +28,16 @@ type ThreadWindowsState = {
   threadMessages: Record<string, UIThreadMessage[]>;
   openThread: (threadId: string) => void;
   closeActiveThread: () => void;
-  minimizeThread: (threadId: string, preview?: { text: string; timestamp: string }) => void;
+  minimizeThread: (
+    threadId: string,
+    preview?: { text: string; timestamp: string },
+  ) => void;
   restoreThread: (threadId: string) => void;
   removeMinimizedThread: (threadId: string) => void;
-  setThreadMessages: (threadId: string, updater: (messages: UIThreadMessage[]) => UIThreadMessage[]) => void;
+  setThreadMessages: (
+    threadId: string,
+    updater: (messages: UIThreadMessage[]) => UIThreadMessage[],
+  ) => void;
 };
 
 function createInitialThreadMessages() {
@@ -37,9 +46,9 @@ function createInitialThreadMessages() {
       thread.id,
       thread.messages.map((message) => ({
         ...message,
-        reactions: {}
-      }))
-    ])
+        reactions: {},
+      })),
+    ]),
   ) as Record<string, UIThreadMessage[]>;
 }
 
@@ -50,7 +59,9 @@ export const useThreadWindowsStore = create<ThreadWindowsState>((set) => ({
   openThread: (threadId) =>
     set((state) => ({
       activeThreadId: threadId,
-      minimizedThreads: state.minimizedThreads.filter((item) => item.threadId !== threadId)
+      minimizedThreads: state.minimizedThreads.filter(
+        (item) => item.threadId !== threadId,
+      ),
     })),
   closeActiveThread: () => set({ activeThreadId: null }),
   minimizeThread: (threadId, preview) =>
@@ -60,27 +71,38 @@ export const useThreadWindowsStore = create<ThreadWindowsState>((set) => ({
       const nextItem: MinimizedThreadItem = {
         threadId,
         previewText: preview?.text ?? fallbackPreview?.text ?? '',
-        previewTimestamp: preview?.timestamp ?? fallbackPreview?.timestamp ?? ''
+        previewTimestamp:
+          preview?.timestamp ?? fallbackPreview?.timestamp ?? '',
       };
 
       return {
-        activeThreadId: state.activeThreadId === threadId ? null : state.activeThreadId,
-        minimizedThreads: [...state.minimizedThreads.filter((item) => item.threadId !== threadId), nextItem]
+        activeThreadId:
+          state.activeThreadId === threadId ? null : state.activeThreadId,
+        minimizedThreads: [
+          ...state.minimizedThreads.filter(
+            (item) => item.threadId !== threadId,
+          ),
+          nextItem,
+        ],
       };
     }),
   restoreThread: (threadId) =>
     set((state) => ({
-      minimizedThreads: state.minimizedThreads.filter((item) => item.threadId !== threadId)
+      minimizedThreads: state.minimizedThreads.filter(
+        (item) => item.threadId !== threadId,
+      ),
     })),
   removeMinimizedThread: (threadId) =>
     set((state) => ({
-      minimizedThreads: state.minimizedThreads.filter((item) => item.threadId !== threadId)
+      minimizedThreads: state.minimizedThreads.filter(
+        (item) => item.threadId !== threadId,
+      ),
     })),
   setThreadMessages: (threadId, updater) =>
     set((state) => ({
       threadMessages: {
         ...state.threadMessages,
-        [threadId]: updater(state.threadMessages[threadId] ?? [])
-      }
-    }))
+        [threadId]: updater(state.threadMessages[threadId] ?? []),
+      },
+    })),
 }));

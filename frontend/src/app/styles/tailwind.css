@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+@custom-variant dark (&:where(.layout--dark, .layout--dark *, [data-theme="dark"], [data-theme="dark"] *));
 
 @theme static {
-  --font-sans: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
 
   --color-border-soft: #dbe5ee;
   --color-panel-bg: rgba(255, 255, 255, 0.82);
@@ -17,7 +17,8 @@
   --breakpoint-xl: 1200px;
 }
 
-:root[data-theme="dark"] {
+.layout--dark,
+:root[data-theme='dark'] {
   --color-border-soft: #253544;
   --color-panel-bg: rgba(20, 28, 36, 0.92);
   --color-soft-blue: #183746;

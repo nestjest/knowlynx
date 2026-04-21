@@ -11,20 +11,36 @@ export function DashboardBlockCard({
   panel,
   isEditMode = false,
   onRemove,
-  onResize
+  onResize,
 }: DashboardBlockCardProps) {
   return (
-    <section className={`content-panel ${panel.accent === 'soft' ? 'content-panel--soft' : ''}`}>
+    <section
+      className={`content-panel ${panel.accent === 'soft' ? 'content-panel--soft' : ''}`}
+    >
       <header className="content-panel__header">
         <div>
           <h3>{panel.title}</h3>
         </div>
         {isEditMode ? (
           <div className="content-panel__actions">
-            <button type="button" className="content-panel__size-button" onClick={onResize} aria-label="Изменить размер блока">
-              {panel.size === 'small' ? 'S' : panel.size === 'medium' ? 'M' : 'L'}
+            <button
+              type="button"
+              className="content-panel__size-button"
+              onClick={onResize}
+              aria-label="Изменить размер блока"
+            >
+              {panel.size === 'small'
+                ? 'S'
+                : panel.size === 'medium'
+                  ? 'M'
+                  : 'L'}
             </button>
-            <button type="button" className="content-panel__remove-button" onClick={onRemove} aria-label="Удалить блок">
+            <button
+              type="button"
+              className="content-panel__remove-button"
+              onClick={onRemove}
+              aria-label="Удалить блок"
+            >
               ×
             </button>
           </div>
@@ -35,15 +51,24 @@ export function DashboardBlockCard({
         <div className="content-panel__stack">
           <article className="content-panel__note">
             <span className="content-panel__tag">Система</span>
-            <p>Открыт новый модуль по веб-разработке. Доступ к заданиям активен до 20 апреля.</p>
+            <p>
+              Открыт новый модуль по веб-разработке. Доступ к заданиям активен
+              до 20 апреля.
+            </p>
           </article>
           <article className="content-panel__note">
             <span className="content-panel__tag">Преподаватель</span>
-            <p>Марина Викторовна добавила комментарии к последней лабораторной работе.</p>
+            <p>
+              Марина Викторовна добавила комментарии к последней лабораторной
+              работе.
+            </p>
           </article>
           <article className="content-panel__note">
             <span className="content-panel__tag">Куратор</span>
-            <p>Напоминание: завтра в 10:00 вебинар по итоговому проекту и вопросам по курсам.</p>
+            <p>
+              Напоминание: завтра в 10:00 вебинар по итоговому проекту и
+              вопросам по курсам.
+            </p>
           </article>
         </div>
       )}
@@ -136,7 +161,9 @@ export function DashboardBlockCard({
           </article>
           <article className="content-panel__deadline">
             <strong>Разбор типичных ошибок</strong>
-            <span>Пятница, 18:30. Сессия с преподавателем и разбором кейсов.</span>
+            <span>
+              Пятница, 18:30. Сессия с преподавателем и разбором кейсов.
+            </span>
           </article>
         </div>
       )}

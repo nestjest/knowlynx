@@ -23,7 +23,7 @@ export function SvgIcon({
     flexShrink: 0,
     lineHeight: 0,
     color: 'currentColor',
-    ...style
+    ...style,
   };
 
   return (

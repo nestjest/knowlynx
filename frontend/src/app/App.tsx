@@ -14,7 +14,7 @@ export function App() {
     const socket = createDashboardSocket({
       onOpen: () => setConnectionStatus('online'),
       onClose: () => setConnectionStatus('offline'),
-      onError: () => setConnectionStatus('error')
+      onError: () => setConnectionStatus('error'),
     });
 
     return () => socket.disconnect();

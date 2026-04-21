@@ -1,5 +1,8 @@
 import { useMemo, useState } from 'react';
-import { courses, type CourseCategory } from '../../../entities/course/model/courseData';
+import {
+  courses,
+  type CourseCategory,
+} from '../../../entities/course/model/courseData';
 
 export function CourseSection() {
   const [search, setSearch] = useState('');
@@ -7,7 +10,8 @@ export function CourseSection() {
 
   const filteredCourses = useMemo(() => {
     return courses.filter((course) => {
-      const matchesCategory = category === 'all' ? true : course.category === category;
+      const matchesCategory =
+        category === 'all' ? true : course.category === category;
       const matchesSearch =
         course.title.toLowerCase().includes(search.toLowerCase()) ||
         course.teacher.toLowerCase().includes(search.toLowerCase());
@@ -35,7 +39,9 @@ export function CourseSection() {
         <select
           className="course-section__select"
           value={category}
-          onChange={(event) => setCategory(event.target.value as CourseCategory)}
+          onChange={(event) =>
+            setCategory(event.target.value as CourseCategory)
+          }
         >
           <option value="all">Все курсы</option>
           <option value="active">Активные</option>
@@ -56,7 +62,9 @@ export function CourseSection() {
               <div style={{ width: `${course.progress}%` }} />
             </div>
             <span className="course-section__meta">
-              {course.lessonsLeft === 0 ? 'Курс завершён' : `Осталось занятий: ${course.lessonsLeft}`}
+              {course.lessonsLeft === 0
+                ? 'Курс завершён'
+                : `Осталось занятий: ${course.lessonsLeft}`}
             </span>
           </article>
         ))}

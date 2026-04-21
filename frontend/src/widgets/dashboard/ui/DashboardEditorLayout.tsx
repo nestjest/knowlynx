@@ -8,27 +8,45 @@ export function DashboardEditorLayout() {
   const quickItems = useDashboardEditorStore((state) => state.quickItems);
   const panels = useDashboardEditorStore((state) => state.panels);
   const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
-  const toggleEditMode = useDashboardEditorStore((state) => state.toggleEditMode);
-  const openBlockDrawer = useDashboardEditorStore((state) => state.openBlockDrawer);
-  const openWidgetDrawer = useDashboardEditorStore((state) => state.openWidgetDrawer);
+  const toggleEditMode = useDashboardEditorStore(
+    (state) => state.toggleEditMode,
+  );
+  const openBlockDrawer = useDashboardEditorStore(
+    (state) => state.openBlockDrawer,
+  );
+  const openWidgetDrawer = useDashboardEditorStore(
+    (state) => state.openWidgetDrawer,
+  );
   const removePanel = useDashboardEditorStore((state) => state.removePanel);
-  const cyclePanelSize = useDashboardEditorStore((state) => state.cyclePanelSize);
+  const cyclePanelSize = useDashboardEditorStore(
+    (state) => state.cyclePanelSize,
+  );
   const movePanel = useDashboardEditorStore((state) => state.movePanel);
   const [draggedPanelId, setDraggedPanelId] = useState<string | null>(null);
   const [dropTargetId, setDropTargetId] = useState<string | null>(null);
 
   return (
     <main className="dashboard">
-      <section className="dashboard__workspace dashboard__workspace--full" aria-label="Главная страница">
+      <section
+        className="dashboard__workspace dashboard__workspace--full"
+        aria-label="Главная страница"
+      >
         <header className="dashboard__header">
           <div>
             <h1 className="dashboard__title">Главная страница</h1>
-            <p className="dashboard__subtitle">Обзор обучения, задач и активности студента</p>
+            <p className="dashboard__subtitle">
+              Обзор обучения, задач и активности студента
+            </p>
           </div>
 
           <div className="dashboard__actions">
             {isEditMode ? (
-              <button type="button" className="dashboard__icon-button" aria-label="Добавить блок" onClick={openBlockDrawer}>
+              <button
+                type="button"
+                className="dashboard__icon-button"
+                aria-label="Добавить блок"
+                onClick={openBlockDrawer}
+              >
                 +
               </button>
             ) : null}

@@ -5,12 +5,12 @@ import {
   defaultEditorPanels,
   getNextPanelSize,
   type DashboardEditorPanel,
-  type DashboardEditorTemplateId
+  type DashboardEditorTemplateId,
 } from '../../entities/panel/model/dashboardEditorData';
 import {
   quickAccessItems,
   type QuickAccessItem,
-  type QuickAccessWidgetPreset
+  type QuickAccessWidgetPreset,
 } from '../../entities/quick-access/model/quickAccessEditorData';
 
 export type DashboardDrawerMode = 'blocks' | 'widgets' | null;
@@ -34,7 +34,10 @@ type DashboardEditorState = {
   addPanel: (templateId: DashboardEditorTemplateId) => void;
   removePanel: (panelId: string) => void;
   cyclePanelSize: (panelId: string) => void;
-  assignWidget: (quickItemId: string, widgetId: QuickAccessWidgetPreset['id']) => void;
+  assignWidget: (
+    quickItemId: string,
+    widgetId: QuickAccessWidgetPreset['id'],
+  ) => void;
   movePanel: (draggedId: string, targetId: string) => void;
 };
 
@@ -51,7 +54,7 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
       editingQuickItemId: null,
       toggleTheme: () =>
         set((state) => ({
-          theme: state.theme === 'light' ? 'dark' : 'light'
+          theme: state.theme === 'light' ? 'dark' : 'light',
         })),
       toggleEditMode: () =>
         set((state) => ({
@@ -59,28 +62,30 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
           drawerMode: state.isEditMode ? null : state.drawerMode,
           drawerSearch: '',
           editingPanelId: state.isEditMode ? null : state.editingPanelId,
-          editingQuickItemId: state.isEditMode ? null : state.editingQuickItemId
+          editingQuickItemId: state.isEditMode
+            ? null
+            : state.editingQuickItemId,
         })),
       openBlockDrawer: () =>
         set({
           drawerMode: 'blocks',
           drawerSearch: '',
           editingPanelId: null,
-          editingQuickItemId: null
+          editingQuickItemId: null,
         }),
       openWidgetDrawer: (quickItemId) =>
         set({
           drawerMode: 'widgets',
           drawerSearch: '',
           editingPanelId: null,
-          editingQuickItemId: quickItemId
+          editingQuickItemId: quickItemId,
         }),
       closeDrawer: () =>
         set({
           drawerMode: null,
           drawerSearch: '',
           editingPanelId: null,
-          editingQuickItemId: null
+          editingQuickItemId: null,
         }),
       setDrawerSearch: (value) => set({ drawerSearch: value }),
       addPanel: (templateId) =>
@@ -89,11 +94,11 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
           drawerMode: null,
           drawerSearch: '',
           editingPanelId: null,
-          editingQuickItemId: null
+          editingQuickItemId: null,
         })),
       removePanel: (panelId) =>
         set((state) => ({
-          panels: state.panels.filter((panel) => panel.id !== panelId)
+          panels: state.panels.filter((panel) => panel.id !== panelId),
         })),
       cyclePanelSize: (panelId) =>
         set((state) => ({
@@ -101,10 +106,10 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
             panel.id === panelId
               ? {
                   ...panel,
-                  size: getNextPanelSize(panel.size ?? 'medium')
+                  size: getNextPanelSize(panel.size ?? 'medium'),
                 }
-              : panel
-          )
+              : panel,
+          ),
         })),
       assignWidget: (quickItemId, widgetId) =>
         set((state) => ({
@@ -112,21 +117,29 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
             item.id === quickItemId
               ? {
                   ...item,
-                  widgetId
+                  widgetId,
                 }
-              : item
+              : item,
           ),
           drawerMode: null,
           drawerSearch: '',
           editingPanelId: null,
-          editingQuickItemId: null
+          editingQuickItemId: null,
         })),
       movePanel: (draggedId, targetId) =>
         set((state) => {
-          const draggedIndex = state.panels.findIndex((panel) => panel.id === draggedId);
-          const targetIndex = state.panels.findIndex((panel) => panel.id === targetId);
+          const draggedIndex = state.panels.findIndex(
+            (panel) => panel.id === draggedId,
+          );
+          const targetIndex = state.panels.findIndex(
+            (panel) => panel.id === targetId,
+          );
 
-          if (draggedIndex === -1 || targetIndex === -1 || draggedIndex === targetIndex) {
+          if (
+            draggedIndex === -1 ||
+            targetIndex === -1 ||
+            draggedIndex === targetIndex
+          ) {
             return state;
           }
 
@@ -135,17 +148,17 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
           nextPanels.splice(targetIndex, 0, draggedPanel);
 
           return {
-            panels: nextPanels
+            panels: nextPanels,
           };
-        })
+        }),
     }),
     {
       name: 'knowlynx-dashboard-editor',
       partialize: (state) => ({
         theme: state.theme,
         quickItems: state.quickItems,
-        panels: state.panels
-      })
-    }
-  )
+        panels: state.panels,
+      }),
+    },
+  ),
 );
