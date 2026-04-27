@@ -71,15 +71,13 @@ type MenuState = {
 const THREAD_AVATAR_BASE =
   'gradient-accent inline-flex size-11 shrink-0 items-center justify-center rounded-full text-[13px] font-extrabold tracking-[0.04em] text-[#173844] shadow-[inset_0_1px_0_rgba(255,255,255,0.44)]';
 
-function ThreadAvatar({
-  label,
-  name,
-  className = '',
-}: {
+function ThreadAvatar(props: {
   label: string;
   name: string;
   className?: string;
 }) {
+  const { label, name, className = '' } = props;
+
   return (
     <span
       className={`${THREAD_AVATAR_BASE} ${className}`.trim()}
@@ -103,7 +101,9 @@ const HERO_INSIGHT_CARD =
 const HERO_STAT =
   'bordered-soft rounded-[22px] bg-white/72 p-[18px_20px] dark:bg-surface-muted';
 
-function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
+function ThreadStatusBadge(props: { status: ThreadItem['status'] }) {
+  const { status } = props;
+
   return (
     <span className={`status-pill status-pill-${status}`}>
       {STATUS_LABEL[status]}
@@ -211,19 +211,21 @@ type ThreadMessageMenuProps = {
   onReply: (message: UIThreadMessage) => void;
 };
 
-function ThreadMessageMenu({
-  copiedMessageId,
-  message,
-  placement = 'below',
-  style,
-  onClose,
-  onCopy,
-  onEdit,
-  onPin,
-  onReact,
-  onRemove,
-  onReply,
-}: ThreadMessageMenuProps) {
+function ThreadMessageMenu(props: ThreadMessageMenuProps) {
+  const {
+    copiedMessageId,
+    message,
+    placement = 'below',
+    style,
+    onClose,
+    onCopy,
+    onEdit,
+    onPin,
+    onReact,
+    onRemove,
+    onReply,
+  } = props;
+
   return (
     <div
       className={`thread-message-menu thread-message-menu--${placement}`}
@@ -315,11 +317,8 @@ type ThreadMessageBubbleProps = {
   onOpenMenu: (event: ReactMouseEvent<HTMLElement>, messageId: string) => void;
 };
 
-function ThreadMessageBubble({
-  allMessages,
-  message,
-  onOpenMenu,
-}: ThreadMessageBubbleProps) {
+function ThreadMessageBubble(props: ThreadMessageBubbleProps) {
+  const { allMessages, message, onOpenMenu } = props;
   const authorLabel = getMessageAuthorLabel(message.author);
   const repliedMessage = message.replyToId
     ? findMessage(allMessages, message.replyToId)

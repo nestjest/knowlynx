@@ -6,14 +6,9 @@ type SvgIconProps = HTMLAttributes<HTMLSpanElement> & {
   title?: string;
 };
 
-export function SvgIcon({
-  svg,
-  size = 24,
-  title,
-  className,
-  style,
-  ...props
-}: SvgIconProps) {
+export function SvgIcon(props: SvgIconProps) {
+  const { svg, size = 24, title, className, style, ...rest } = props;
+
   const mergedStyle: CSSProperties = {
     width: size,
     height: size,
@@ -33,7 +28,7 @@ export function SvgIcon({
       className={className}
       style={mergedStyle}
       dangerouslySetInnerHTML={{ __html: svg }}
-      {...props}
+      {...rest}
     />
   );
 }

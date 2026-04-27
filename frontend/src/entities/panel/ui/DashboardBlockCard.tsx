@@ -1,6 +1,6 @@
 import type { DashboardEditorPanel } from '../model/dashboardEditorData';
 
-type DashboardBlockCardProps = {
+type Props = {
   panel: DashboardEditorPanel;
   isEditMode?: boolean;
   onRemove?: () => void;
@@ -24,12 +24,9 @@ const HEADING_STRONG = 'mb-1.5 block text-lg text-text-primary';
 
 const METRIC_STRONG = 'mb-1 block text-2xl text-text-primary';
 
-export function DashboardBlockCard({
-  panel,
-  isEditMode = false,
-  onRemove,
-  onResize,
-}: DashboardBlockCardProps) {
+export function DashboardBlockCard(props: Props) {
+  const { panel, isEditMode = false, onRemove, onResize } = props;
+
   return (
     <section
       className={`${CARD_BASE} ${CARD_MIN_HEIGHT[panel.size ?? 'small']} ${panel.accent === 'soft' ? CARD_SOFT : ''}`}

@@ -70,15 +70,13 @@ const STATUS_LABEL: Record<ThreadItem['status'], string> = {
 const TOOLBAR_BUTTON =
   'grid size-9 place-items-center rounded-[10px] border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.06)] text-white transition-colors duration-150 hover:bg-[rgba(255,255,255,0.12)]';
 
-function ThreadAvatar({
-  label,
-  name,
-  className = '',
-}: {
+function ThreadAvatar(props: {
   label: string;
   name: string;
   className?: string;
 }) {
+  const { label, name, className = '' } = props;
+
   return (
     <span
       className={`${THREAD_AVATAR_BASE} ${className}`.trim()}
@@ -90,7 +88,9 @@ function ThreadAvatar({
   );
 }
 
-function ThreadStatusBadge({ status }: { status: ThreadItem['status'] }) {
+function ThreadStatusBadge(props: { status: ThreadItem['status'] }) {
+  const { status } = props;
+
   return (
     <span className={`status-pill status-pill-${status}`}>
       {STATUS_LABEL[status]}
@@ -199,19 +199,20 @@ type ThreadMessageMenuProps = {
 const MENU_BUTTON =
   'flex w-full items-center gap-2.5 rounded-[10px] border-0 bg-transparent px-3 py-2 text-left text-sm text-[#24313b] transition-colors duration-150 hover:bg-accent-soft-bg-subtle dark:text-[#eef5fb] dark:hover:bg-[rgba(48,114,132,0.22)]';
 
-function ThreadMessageMenu({
-  copiedMessageId,
-  message,
-  placement = 'below',
-  style,
-  onClose,
-  onCopy,
-  onEdit,
-  onPin,
-  onReact,
-  onRemove,
-  onReply,
-}: ThreadMessageMenuProps) {
+function ThreadMessageMenu(props: ThreadMessageMenuProps) {
+  const {
+    copiedMessageId,
+    message,
+    placement = 'below',
+    style,
+    onClose,
+    onCopy,
+    onEdit,
+    onPin,
+    onReact,
+    onRemove,
+    onReply,
+  } = props;
   const placementClass =
     placement === 'above' ? '-translate-y-full' : 'translate-y-0';
 
@@ -311,11 +312,8 @@ type ThreadMessageBubbleProps = {
   onOpenMenu: (event: ReactMouseEvent<HTMLElement>, messageId: string) => void;
 };
 
-function ThreadMessageBubble({
-  allMessages,
-  message,
-  onOpenMenu,
-}: ThreadMessageBubbleProps) {
+function ThreadMessageBubble(props: ThreadMessageBubbleProps) {
+  const { allMessages, message, onOpenMenu } = props;
   const authorLabel = getMessageAuthorLabel(message.author);
   const repliedMessage = message.replyToId
     ? findMessage(allMessages, message.replyToId)

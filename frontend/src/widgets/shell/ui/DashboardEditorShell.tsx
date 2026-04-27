@@ -31,7 +31,7 @@ const bottomNavItems: NavItem[] = [
   { id: 'analytics', label: 'Аналитика' },
 ];
 
-type DashboardEditorShellProps = {
+type Props = {
   children: ReactNode;
 };
 
@@ -164,7 +164,8 @@ function renderDrawerPreview(preview: DrawerPreview) {
   }
 }
 
-export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
+export function DashboardEditorShell(props: Props) {
+  const { children } = props;
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useDashboardEditorStore((state) => state.theme);

@@ -4,17 +4,15 @@ import {
   type QuickAccessItem,
 } from '../model/quickAccessEditorData';
 
-type QuickAccessWidgetCardProps = {
+type Props = {
   item: QuickAccessItem;
   isEditMode?: boolean;
   onEditWidget?: () => void;
 };
 
-export function QuickAccessWidgetCard({
-  item,
-  isEditMode = false,
-  onEditWidget,
-}: QuickAccessWidgetCardProps) {
+export function QuickAccessWidgetCard(props: Props) {
+  const { item, isEditMode = false, onEditWidget } = props;
+
   const widget = quickAccessWidgetPresets.find(
     (entry) => entry.id === item.widgetId,
   );

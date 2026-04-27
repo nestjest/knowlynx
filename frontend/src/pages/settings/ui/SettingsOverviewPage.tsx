@@ -35,14 +35,16 @@ const ROW_CHEVRON = 'shrink-0 text-text-muted opacity-60';
 const DIVIDER =
   'mx-4 ml-16 h-px bg-[rgba(219,229,238,0.6)] dark:bg-[rgba(42,60,74,0.6)]';
 
-type SettingsRowProps = {
+type Props = {
   to: string;
   icon: React.ReactNode;
   label: string;
   desc: string;
 };
 
-function SettingsRow({ to, icon, label, desc }: SettingsRowProps) {
+function SettingsRow(props: Props) {
+  const { to, icon, label, desc } = props;
+
   return (
     <Link to={to} className={ROW_BASE}>
       <span className={ROW_ICON}>{icon}</span>
