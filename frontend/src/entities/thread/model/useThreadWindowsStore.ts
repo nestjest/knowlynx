@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import {
   threadMocks,
   type ThreadMessage,
-} from '../../../pages/threads/model/threadMocks';
+} from '@/pages/threads/model/threadMocks';
 
 export const THREAD_REACTION_EMOJIS = ['❤️', '🔥', '👏', '😂', '😮'] as const;
 

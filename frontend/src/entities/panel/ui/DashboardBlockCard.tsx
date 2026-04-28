@@ -1,4 +1,4 @@
-import type { DashboardEditorPanel } from '../model/dashboardEditorData';
+import type { DashboardEditorPanel } from '@/entities/panel/model/dashboardEditorData';
 
 type Props = {
   panel: DashboardEditorPanel;

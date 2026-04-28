@@ -6,12 +6,12 @@ import {
   getNextPanelSize,
   type DashboardEditorPanel,
   type DashboardEditorTemplateId,
-} from '../../entities/panel/model/dashboardEditorData';
+} from '@/entities/panel/model/dashboardEditorData';
 import {
   quickAccessItems,
   type QuickAccessItem,
   type QuickAccessWidgetPreset,
-} from '../../entities/quick-access/model/quickAccessEditorData';
+} from '@/entities/quick-access/model/quickAccessEditorData';
 
 export type DashboardDrawerMode = 'blocks' | 'widgets' | null;
 export type AppTheme = 'light' | 'dark';

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { CourseSection } from '../../../features/section-navigation/ui/SectionMenu';
-import { QuickAccessWidgetCard } from '../../../entities/quick-access/ui/QuickAccessWidgetCard';
-import { DashboardBlockCard } from '../../../entities/panel/ui/DashboardBlockCard';
-import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
+import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
+import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
+import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
+import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
 
 const ICON_BUTTON =
   'h-[34px] w-[34px] rounded-[10px] border border-[rgba(209,221,235,0.95)] bg-white/96 text-[#2f3b46] shadow-card-raised dark:text-[#dbe8f2] dark:shadow-none';

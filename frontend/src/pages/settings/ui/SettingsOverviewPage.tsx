@@ -9,9 +9,9 @@ import {
   User,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
-import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorShell';
-import { settingsSectionsMap } from '../model/settingsSections';
+import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
+import { DashboardEditorShell } from '@/widgets/shell/ui/DashboardEditorShell';
+import { settingsSectionsMap } from '@/pages/settings/model/settingsSections';
 
 const CARD_BASE =
   'overflow-hidden rounded-[22px] border border-border bg-(--panel-bg) shadow-card';

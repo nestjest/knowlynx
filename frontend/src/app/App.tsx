@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { HomePage } from '../pages/home/ui/HomePage';
-import { SettingsControlsPage } from '../pages/settings/ui/SettingsControlsPage';
-import { SettingsOverviewPage } from '../pages/settings/ui/SettingsOverviewPage';
-import { ThreadsPage } from '../pages/threads/ui/ThreadsPage';
-import { useAppStore } from '../shared/model/useAppStore';
-import { createDashboardSocket } from '../shared/lib/ws/createDashboardSocket';
+import { HomePage } from '@/pages/home/ui/HomePage';
+import { SettingsControlsPage } from '@/pages/settings/ui/SettingsControlsPage';
+import { SettingsOverviewPage } from '@/pages/settings/ui/SettingsOverviewPage';
+import { ThreadsPage } from '@/pages/threads/ui/ThreadsPage';
+import { useAppStore } from '@/shared/model/useAppStore';
+import { createDashboardSocket } from '@/shared/lib/ws/createDashboardSocket';
 
 export function App() {
   const setConnectionStatus = useAppStore((state) => state.setConnectionStatus);

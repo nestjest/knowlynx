@@ -1,13 +1,13 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Settings, Sun, Moon, X } from 'lucide-react';
-import logoUrl from '../../../app/logo.svg';
-import { dashboardEditorPanelTemplates } from '../../../entities/panel/model/dashboardEditorData';
-import { quickAccessWidgetPresets } from '../../../entities/quick-access/model/quickAccessEditorData';
-import { ThreadChatModal } from '../../../entities/thread/ui/ThreadChatModal';
-import { threadMocksMap } from '../../../pages/threads/model/threadMocks';
-import { useThreadWindowsStore } from '../../../entities/thread/model/useThreadWindowsStore';
-import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
+import logoUrl from '@/app/logo.svg';
+import { dashboardEditorPanelTemplates } from '@/entities/panel/model/dashboardEditorData';
+import { quickAccessWidgetPresets } from '@/entities/quick-access/model/quickAccessEditorData';
+import { ThreadChatModal } from '@/entities/thread/ui/ThreadChatModal';
+import { threadMocksMap } from '@/pages/threads/model/threadMocks';
+import { useThreadWindowsStore } from '@/entities/thread/model/useThreadWindowsStore';
+import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
 
 type NavItem = {
   id: string;

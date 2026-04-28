@@ -1,17 +1,17 @@
 import { useMemo, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Link, Navigate, useParams } from 'react-router-dom';
-import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorShell';
+import { DashboardEditorShell } from '@/widgets/shell/ui/DashboardEditorShell';
 import {
   settingsFormSections,
   settingsReadonlyNotes,
   type SettingsControl,
-} from '../model/settingsFormSections';
+} from '@/pages/settings/model/settingsFormSections';
 import {
   settingsSections,
   settingsSectionsMap,
   type SettingsSectionId,
-} from '../model/settingsSections';
+} from '@/pages/settings/model/settingsSections';
 
 const PANEL_BASE =
   'rounded-3xl border border-border bg-(--panel-bg) p-[22px] shadow-card';

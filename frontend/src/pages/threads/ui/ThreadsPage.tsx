@@ -32,14 +32,14 @@ import {
   X,
 } from 'lucide-react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { useThreadWindowsStore } from '../../../entities/thread/model/useThreadWindowsStore';
-import { DashboardEditorShell } from '../../../widgets/shell/ui/DashboardEditorShell';
+import { useThreadWindowsStore } from '@/entities/thread/model/useThreadWindowsStore';
+import { DashboardEditorShell } from '@/widgets/shell/ui/DashboardEditorShell';
 import {
   threadMocks,
   threadMocksMap,
   type ThreadItem,
   type ThreadMessage,
-} from '../model/threadMocks';
+} from '@/pages/threads/model/threadMocks';
 
 const THREAD_MESSAGE_LIMIT = 900;
 const REACTION_EMOJIS = ['❤️', '🔥', '👏', '😂', '😮'] as const;

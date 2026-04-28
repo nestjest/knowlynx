@@ -36,12 +36,12 @@ import {
   type ThreadReaction,
   type ThreadReactionMap,
   type UIThreadMessage,
-} from '../model/useThreadWindowsStore';
+} from '@/entities/thread/model/useThreadWindowsStore';
 import {
   threadMocksMap,
   type ThreadItem,
   type ThreadMessage,
-} from '../../../pages/threads/model/threadMocks';
+} from '@/pages/threads/model/threadMocks';
 
 const THREAD_MESSAGE_LIMIT = 900;
 const THREAD_MINIMIZE_ANIMATION_MS = 320;

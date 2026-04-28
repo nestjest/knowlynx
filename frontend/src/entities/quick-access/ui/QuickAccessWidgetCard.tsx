@@ -1,8 +1,8 @@
-import { WidgetIcon } from '../../../shared/ui/icons';
+import { WidgetIcon } from '@/shared/ui/icons';
 import {
   quickAccessWidgetPresets,
   type QuickAccessItem,
-} from '../model/quickAccessEditorData';
+} from '@/entities/quick-access/model/quickAccessEditorData';
 
 type Props = {
   item: QuickAccessItem;
