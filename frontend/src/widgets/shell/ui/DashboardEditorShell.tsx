@@ -1,5 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { Button } from '@heroui/react';
 import { Settings, Sun, Moon, X } from 'lucide-react';
 import logoUrl from '@/app/logo.svg';
 import { dashboardEditorPanelTemplates } from '@/entities/panel/model/dashboardEditorData';
@@ -78,9 +79,6 @@ const HEADER_LINK_ACTIVE_BG =
 
 const HEADER_LINK_ACTIVE_BORDER =
   'dark:border-[rgba(88,174,199,0.4)] dark:text-[#eaf8fd]';
-
-const ICON_BUTTON_BASE =
-  'grid size-[42px] place-items-center rounded-xl bordered-strong bg-surface-raised text-text-primary smooth-interact hover:bg-gradient-to-r hover:from-[rgba(155,232,247,0.26)] hover:to-[rgba(188,238,255,0.32)] hover:border-accent-soft-border hover:text-accent-soft-text dark:text-[#dbe8f2] dark:shadow-none dark:hover:from-[rgba(48,114,132,0.38)] dark:hover:to-[rgba(63,140,162,0.34)] dark:hover:border-[rgba(88,174,199,0.4)] dark:hover:text-[#eaf8fd]';
 
 const PREVIEW_BOX =
   'h-[34px] rounded-xl border border-border-muted bg-white/92';
@@ -277,18 +275,19 @@ export function DashboardEditorShell(props: Props) {
             }}
           />
           {siteSearchQuery ? (
-            <button
-              type="button"
-              className="bg-accent-soft-bg-subtle hover:bg-accent-soft-bg absolute top-1/2 right-2.5 grid size-6 -translate-y-1/2 place-items-center rounded-full p-0 text-[#4b6fa1] transition-colors duration-200 hover:text-[#274f84] dark:bg-[rgba(64,129,151,0.2)] dark:text-[#8fc4d3] dark:hover:bg-[rgba(64,129,151,0.32)] dark:hover:text-[#d6f4fb]"
+            <Button
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded-full"
               aria-label="Очистить поиск"
-              onMouseDown={() => {
+              onPressStart={() => {
                 setSiteSearchQuery('');
                 setIsSearchOpen(false);
               }}
             >
-              <span className="absolute h-0.5 w-2.5 rotate-45 rounded-full bg-current" />
-              <span className="absolute h-0.5 w-2.5 -rotate-45 rounded-full bg-current" />
-            </button>
+              <X size={14} />
+            </Button>
           ) : null}
 
           {isSearchOpen && normalizedSiteSearch ? (
@@ -322,22 +321,24 @@ export function DashboardEditorShell(props: Props) {
         </div>
 
         <div className="flex shrink-0 items-center gap-2.5">
-          <button
-            type="button"
-            className={ICON_BUTTON_BASE}
+          <Button
+            isIconOnly
+            variant="ghost"
             aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-            onClick={toggleTheme}
+            onPress={toggleTheme}
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          <button
-            type="button"
-            className={`${ICON_BUTTON_BASE} ${location.pathname.startsWith('/settings') ? `${HEADER_LINK_ACTIVE_BG} border-accent-soft-border text-accent-soft-text ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
+          </Button>
+          <Button
+            isIconOnly
+            variant={
+              location.pathname.startsWith('/settings') ? 'primary' : 'ghost'
+            }
             aria-label="Настройки"
-            onClick={() => navigate('/settings')}
+            onPress={() => navigate('/settings')}
           >
             <Settings size={20} />
-          </button>
+          </Button>
         </div>
       </header>
 
@@ -358,14 +359,14 @@ export function DashboardEditorShell(props: Props) {
                   : 'Список заглушек-виджетов для выбранного блока.'}
               </p>
             </div>
-            <button
-              type="button"
-              className="size-[34px] rounded-[10px] border border-white/18 bg-white/8 text-white"
-              onClick={closeDrawer}
+            <Button
+              isIconOnly
+              variant="ghost"
               aria-label="Закрыть drawer"
+              onPress={closeDrawer}
             >
-              ×
-            </button>
+              <X size={16} />
+            </Button>
           </div>
 
           <input

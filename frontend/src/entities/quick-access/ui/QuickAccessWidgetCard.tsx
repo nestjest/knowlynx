@@ -1,3 +1,5 @@
+import { Button } from '@heroui/react';
+import { Pencil } from 'lucide-react';
 import { WidgetIcon } from '@/shared/ui/icons';
 import {
   quickAccessWidgetPresets,
@@ -40,14 +42,14 @@ export function QuickAccessWidgetCard(props: Props) {
 
       <div className="flex flex-col items-end justify-between gap-3 max-sm:flex-row max-sm:items-center">
         {isEditMode ? (
-          <button
-            type="button"
-            className="icon-button size-8 rounded-[10px]"
-            onClick={onEditWidget}
+          <Button
+            isIconOnly
+            variant="ghost"
             aria-label="Изменить виджет"
+            onPress={onEditWidget}
           >
-            ✎
-          </button>
+            <Pencil size={16} />
+          </Button>
         ) : null}
 
         <div

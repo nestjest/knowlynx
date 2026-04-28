@@ -9,6 +9,7 @@ import {
   type MouseEvent as ReactMouseEvent,
 } from 'react';
 import { createPortal } from 'react-dom';
+import { Button } from '@heroui/react';
 import {
   ArrowDown,
   ArrowUp,
@@ -66,9 +67,6 @@ const STATUS_LABEL: Record<ThreadItem['status'], string> = {
   draft: 'Черновик',
   archived: 'Архив',
 };
-
-const TOOLBAR_BUTTON =
-  'grid size-9 place-items-center rounded-[10px] border border-[rgba(255,255,255,0.16)] bg-[rgba(255,255,255,0.06)] text-white transition-colors duration-150 hover:bg-[rgba(255,255,255,0.12)]';
 
 function ThreadAvatar(props: {
   label: string;
@@ -225,17 +223,19 @@ function ThreadMessageMenu(props: ThreadMessageMenuProps) {
     >
       <div className="mb-1 flex items-center gap-1 border-b border-[rgba(219,229,238,0.6)] pb-1.5 dark:border-[rgba(42,60,74,0.6)]">
         {THREAD_REACTION_EMOJIS.map((emoji) => (
-          <button
+          <Button
             key={emoji}
-            type="button"
-            className="hover:bg-accent-soft-bg-subtle grid size-8 place-items-center rounded-[10px] border-0 bg-transparent text-base transition-colors duration-150 dark:hover:bg-[rgba(48,114,132,0.22)]"
-            onClick={() => {
+            isIconOnly
+            size="sm"
+            variant="ghost"
+            aria-label={`Реакция ${emoji}`}
+            onPress={() => {
               onReact(message.id, emoji);
               onClose();
             }}
           >
             {emoji}
-          </button>
+          </Button>
         ))}
       </div>
 
@@ -845,24 +845,25 @@ export function ThreadChatModal() {
             </p>
           </div>
 
-          <button
-            type="button"
-            className="size-[34px] shrink-0 rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16"
+          <Button
+            isIconOnly
+            variant="ghost"
             aria-label="Закрыть"
-            onClick={closeThread}
+            onPress={closeThread}
           >
             <X size={18} />
-          </button>
+          </Button>
         </div>
 
-        <button
-          type="button"
-          className="absolute top-[18px] right-[52px] size-[34px] rounded-[10px] border border-white/18 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16 dark:border-[rgba(60,82,98,0.46)] dark:bg-[rgba(22,30,40,0.72)] dark:text-[#dbe8f2]"
+        <Button
+          isIconOnly
+          variant="ghost"
+          className="absolute top-[18px] right-[52px]"
           aria-label="Свернуть тред"
-          onClick={minimizeThreadWindow}
+          onPress={minimizeThreadWindow}
         >
           <Minus size={18} />
-        </button>
+        </Button>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-white/78">
           <ThreadStatusBadge status={selectedThread.status} />
@@ -968,14 +969,16 @@ export function ThreadChatModal() {
                 </button>
               </div>
 
-              <button
-                type="button"
-                className="absolute top-3 right-3 grid size-7 place-items-center rounded-full border-0 bg-white/8 text-white transition-colors duration-150 hover:bg-white/16"
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
+                className="absolute top-3 right-3 rounded-full"
                 aria-label="Закрыть подтверждение удаления"
-                onClick={() => setDeleteDialogMessageId(null)}
+                onPress={() => setDeleteDialogMessageId(null)}
               >
                 <X size={16} />
-              </button>
+              </Button>
             </div>
           </div>
         ) : null}
@@ -992,14 +995,16 @@ export function ThreadChatModal() {
                 {composerTarget.text}
               </span>
             </div>
-            <button
-              type="button"
-              className="grid size-6 shrink-0 place-items-center rounded-full border-0 bg-white/10 text-white transition-colors duration-150 hover:bg-white/18"
-              onClick={resetComposer}
+            <Button
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              className="rounded-full"
               aria-label="Отменить действие"
+              onPress={resetComposer}
             >
               <X size={14} />
-            </button>
+            </Button>
           </div>
         ) : null}
 
@@ -1009,62 +1014,68 @@ export function ThreadChatModal() {
         >
           <div className="flex items-center justify-between gap-2">
             <div className="flex flex-wrap items-center gap-1">
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
-                onClick={() => applyFormatting('bold')}
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label="Жирный текст"
+                onPress={() => applyFormatting('bold')}
               >
                 <Bold size={16} />
-              </button>
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
-                onClick={() => applyFormatting('italic')}
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label="Курсив"
+                onPress={() => applyFormatting('italic')}
               >
                 <Italic size={16} />
-              </button>
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
-                onClick={() => applyFormatting('code')}
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label="Код"
+                onPress={() => applyFormatting('code')}
               >
                 <Code2 size={16} />
-              </button>
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
-                onClick={() => applyFormatting('quote')}
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label="Цитата"
+                onPress={() => applyFormatting('quote')}
               >
                 <CornerUpLeft size={16} />
-              </button>
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
-                onClick={() => applyFormatting('list')}
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label="Список"
+                onPress={() => applyFormatting('list')}
               >
                 <List size={16} />
-              </button>
-              <button
-                type="button"
-                className={TOOLBAR_BUTTON}
+              </Button>
+              <Button
+                isIconOnly
+                size="sm"
+                variant="ghost"
                 aria-label={
                   isComposerCollapsed
                     ? 'Развернуть поле сообщения'
                     : 'Свернуть поле сообщения'
                 }
-                onClick={() => setIsComposerCollapsed((current) => !current)}
+                onPress={() => setIsComposerCollapsed((current) => !current)}
               >
                 {isComposerCollapsed ? (
                   <ChevronUp size={16} />
                 ) : (
                   <ChevronDown size={16} />
                 )}
-              </button>
+              </Button>
             </div>
           </div>
 
@@ -1087,22 +1098,23 @@ export function ThreadChatModal() {
             </div>
 
             <div className="flex flex-col items-end justify-between gap-2.5">
-              <button
-                type="button"
-                className={`grid size-9 place-items-center rounded-full border border-white/16 bg-white/8 text-white transition-[opacity,background] duration-150 hover:bg-white/16 ${shouldShowScrollControl ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+              <Button
+                isIconOnly
+                variant="ghost"
+                className={`rounded-full ${shouldShowScrollControl ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
                 aria-label={
                   isScrollControlPointingDown
                     ? 'Перейти вниз'
                     : 'Вернуться наверх'
                 }
-                onClick={toggleHistoryScrollDirection}
+                onPress={toggleHistoryScrollDirection}
               >
                 {isScrollControlPointingDown ? (
                   <ArrowDown size={16} />
                 ) : (
                   <ArrowUp size={16} />
                 )}
-              </button>
+              </Button>
 
               <button
                 type="submit"

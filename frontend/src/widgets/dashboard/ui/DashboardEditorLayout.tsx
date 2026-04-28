@@ -1,14 +1,10 @@
 import { useState } from 'react';
+import { Button } from '@heroui/react';
+import { Pencil, Plus } from 'lucide-react';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
 import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
-
-const ICON_BUTTON =
-  'h-[34px] w-[34px] rounded-[10px] border border-[rgba(209,221,235,0.95)] bg-white/96 text-[#2f3b46] shadow-card-raised dark:text-[#dbe8f2] dark:shadow-none';
-
-const ICON_BUTTON_ACTIVE =
-  'bg-gradient-to-r from-[#9be8f7] to-[#bceeff] text-[#1e4b57]';
 
 const SLOT_COL_SPAN: Record<'small' | 'medium' | 'large', string> = {
   small: 'col-span-4 max-xl:col-span-3 max-sm:col-span-full',
@@ -61,23 +57,23 @@ export function DashboardEditorLayout() {
 
           <div className="ml-auto flex items-center gap-2.5">
             {isEditMode ? (
-              <button
-                type="button"
-                className={ICON_BUTTON}
+              <Button
+                isIconOnly
+                variant="ghost"
                 aria-label="Добавить блок"
-                onClick={openBlockDrawer}
+                onPress={openBlockDrawer}
               >
-                +
-              </button>
+                <Plus size={18} />
+              </Button>
             ) : null}
-            <button
-              type="button"
-              className={`${ICON_BUTTON} ${isEditMode ? ICON_BUTTON_ACTIVE : ''}`}
+            <Button
+              isIconOnly
+              variant={isEditMode ? 'primary' : 'ghost'}
               aria-label="Редактировать макет"
-              onClick={toggleEditMode}
+              onPress={toggleEditMode}
             >
-              ✎
-            </button>
+              <Pencil size={18} />
+            </Button>
           </div>
         </header>
 

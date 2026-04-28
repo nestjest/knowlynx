@@ -1,3 +1,5 @@
+import { Button } from '@heroui/react';
+import { X } from 'lucide-react';
 import type { DashboardEditorPanel } from '@/entities/panel/model/dashboardEditorData';
 
 type Props = {
@@ -51,14 +53,14 @@ export function DashboardBlockCard(props: Props) {
                   ? 'M'
                   : 'L'}
             </button>
-            <button
-              type="button"
-              className="border-danger-border bg-danger-bg text-danger-text mb-5 grid size-8 shrink-0 place-items-center rounded-[10px] border text-lg leading-none"
-              onClick={onRemove}
+            <Button
+              isIconOnly
+              variant="danger"
               aria-label="Удалить блок"
+              onPress={onRemove}
             >
-              ×
-            </button>
+              <X size={16} />
+            </Button>
           </div>
         ) : null}
       </header>
