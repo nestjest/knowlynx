@@ -1,22 +1,18 @@
-import { useState } from 'react';
 import { Button, Tooltip } from '@heroui/react';
+import {
+  closestCenter,
+  DndContext,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import { Pencil, Plus } from 'lucide-react';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
-import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
-
-const SLOT_COL_SPAN: Record<'small' | 'medium' | 'large', string> = {
-  small: 'col-span-4 max-xl:col-span-3 max-sm:col-span-full',
-  medium: 'col-span-6 max-xl:col-span-3 max-sm:col-span-full',
-  large: 'col-span-full',
-};
-
-const SLOT_EDITABLE =
-  'cursor-grab relative rounded-[28px] border border-dashed border-[rgba(137,213,228,0.6)] bg-[linear-gradient(0deg,rgba(155,232,247,0.08),rgba(155,232,247,0.08)),rgba(255,255,255,0.22)] p-2.5 active:cursor-grabbing dark:border-[rgba(72,146,168,0.55)] dark:bg-[linear-gradient(0deg,rgba(43,94,111,0.15),rgba(43,94,111,0.15)),rgba(16,24,31,0.3)]';
-
-const SLOT_TARGET =
-  'border-[rgba(82,196,220,0.95)] bg-[linear-gradient(0deg,rgba(155,232,247,0.18),rgba(155,232,247,0.18)),rgba(255,255,255,0.32)] shadow-[0_0_0_2px_rgba(82,196,220,0.16)] dark:border-[rgba(88,174,199,0.9)] dark:bg-[linear-gradient(0deg,rgba(43,94,111,0.22),rgba(43,94,111,0.22)),rgba(16,24,31,0.42)]';
+import { SortablePanel } from './SortablePanel';
 
 export function DashboardEditorLayout() {
   const quickItems = useDashboardEditorStore((state) => state.quickItems);
@@ -36,8 +32,16 @@ export function DashboardEditorLayout() {
     (state) => state.cyclePanelSize,
   );
   const movePanel = useDashboardEditorStore((state) => state.movePanel);
-  const [draggedPanelId, setDraggedPanelId] = useState<string | null>(null);
-  const [dropTargetId, setDropTargetId] = useState<string | null>(null);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (over && active.id !== over.id) {
+      movePanel(String(active.id), String(over.id));
+    }
+  };
 
   return (
     <main className="min-h-[calc(100vh-44px)]">
@@ -96,65 +100,31 @@ export function DashboardEditorLayout() {
           ))}
         </section>
 
-        <section
-          className="grid grid-cols-12 items-stretch gap-7 max-xl:grid-cols-6"
-          aria-label="Контент"
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
         >
-          {panels.map((panel) => {
-            const size = panel.size ?? 'medium';
-            const classes = [
-              'h-full min-w-0',
-              SLOT_COL_SPAN[size],
-              isEditMode ? SLOT_EDITABLE : '',
-              dropTargetId === panel.id ? SLOT_TARGET : '',
-            ]
-              .filter(Boolean)
-              .join(' ');
-
-            return (
-              <div
-                key={panel.id}
-                className={classes}
-                draggable={isEditMode}
-                onDragStart={() => {
-                  setDraggedPanelId(panel.id);
-                  setDropTargetId(panel.id);
-                }}
-                onDragOver={(event) => {
-                  if (isEditMode) {
-                    event.preventDefault();
-                    if (dropTargetId !== panel.id) {
-                      setDropTargetId(panel.id);
-                    }
-                  }
-                }}
-                onDrop={() => {
-                  if (isEditMode && draggedPanelId) {
-                    movePanel(draggedPanelId, panel.id);
-                    setDraggedPanelId(null);
-                    setDropTargetId(null);
-                  }
-                }}
-                onDragEnd={() => {
-                  setDraggedPanelId(null);
-                  setDropTargetId(null);
-                }}
-              >
-                {isEditMode ? (
-                  <span className="absolute -top-2.5 left-4 rounded-full border border-[rgba(155,232,247,0.55)] bg-[#f3fbff] px-2.5 py-0.5 text-[11px] text-[#4f7482] opacity-[0.92] dark:border-[rgba(72,146,168,0.45)] dark:bg-[#14202a] dark:text-[#9bc4d0]">
-                    Перетащи блок в нужную ячейку
-                  </span>
-                ) : null}
-                <DashboardBlockCard
+          <SortableContext
+            items={panels.map((panel) => panel.id)}
+            strategy={rectSortingStrategy}
+          >
+            <section
+              className="grid grid-cols-12 items-stretch gap-7 max-xl:grid-cols-6"
+              aria-label="Контент"
+            >
+              {panels.map((panel) => (
+                <SortablePanel
+                  key={panel.id}
                   panel={panel}
                   isEditMode={isEditMode}
                   onRemove={() => removePanel(panel.id)}
                   onResize={() => cyclePanelSize(panel.id)}
                 />
-              </div>
-            );
-          })}
-        </section>
+              ))}
+            </section>
+          </SortableContext>
+        </DndContext>
 
         <CourseSection />
       </section>
