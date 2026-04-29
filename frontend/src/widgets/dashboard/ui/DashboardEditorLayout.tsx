@@ -57,11 +57,11 @@ export function DashboardEditorLayout() {
       isEditMode
         ? [
             {
-              id: 'save-layout',
-              label: 'Сохранить макет',
-              icon: Check,
-              variant: 'primary' as const,
-              onPress: commitLayout,
+              id: 'cancel-edit',
+              label: 'Отменить',
+              icon: X,
+              variant: 'ghost' as const,
+              onPress: cancelLayoutEdit,
             },
             {
               id: 'reset-layout',
@@ -71,11 +71,11 @@ export function DashboardEditorLayout() {
               onPress: resetLayoutToDefault,
             },
             {
-              id: 'cancel-edit',
-              label: 'Отменить',
-              icon: X,
-              variant: 'ghost' as const,
-              onPress: cancelLayoutEdit,
+              id: 'save-layout',
+              label: 'Сохранить макет',
+              icon: Check,
+              variant: 'primary' as const,
+              onPress: commitLayout,
             },
           ]
         : null,
