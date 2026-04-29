@@ -7,6 +7,16 @@ import {
   type DashboardEditorPanel,
   type DashboardEditorTemplateId,
 } from '@/entities/panel/model/dashboardEditorData';
+
+function cloneDefaultPanels(): DashboardEditorPanel[] {
+  return defaultEditorPanels.map((panel) => ({ ...panel }));
+}
+
+function clonePanels(
+  panels: DashboardEditorPanel[],
+): DashboardEditorPanel[] {
+  return panels.map((panel) => ({ ...panel }));
+}
 import {
   quickAccessItems,
   type QuickAccessItem,
@@ -19,6 +29,7 @@ export type AppTheme = 'light' | 'dark';
 type DashboardEditorState = {
   quickItems: QuickAccessItem[];
   panels: DashboardEditorPanel[];
+  draftPanels: DashboardEditorPanel[] | null;
   theme: AppTheme;
   isEditMode: boolean;
   drawerMode: DashboardDrawerMode;
@@ -27,6 +38,9 @@ type DashboardEditorState = {
   editingQuickItemId: string | null;
   toggleTheme: () => void;
   toggleEditMode: () => void;
+  commitLayout: () => void;
+  cancelLayoutEdit: () => void;
+  resetLayoutToDefault: () => void;
   openBlockDrawer: () => void;
   openWidgetDrawer: (quickItemId: string) => void;
   closeDrawer: () => void;
@@ -46,6 +60,7 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
     (set) => ({
       quickItems: quickAccessItems,
       panels: defaultEditorPanels,
+      draftPanels: null,
       theme: 'light',
       isEditMode: false,
       drawerMode: null,
@@ -57,15 +72,43 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
           theme: state.theme === 'light' ? 'dark' : 'light',
         })),
       toggleEditMode: () =>
+        set((state) => {
+          if (state.isEditMode) {
+            return {
+              isEditMode: false,
+              draftPanels: null,
+              drawerMode: null,
+              drawerSearch: '',
+              editingPanelId: null,
+              editingQuickItemId: null,
+            };
+          }
+          return {
+            isEditMode: true,
+            draftPanels: clonePanels(state.panels),
+          };
+        }),
+      commitLayout: () =>
         set((state) => ({
-          isEditMode: !state.isEditMode,
-          drawerMode: state.isEditMode ? null : state.drawerMode,
+          panels: state.draftPanels ?? state.panels,
+          draftPanels: null,
+          isEditMode: false,
+          drawerMode: null,
           drawerSearch: '',
-          editingPanelId: state.isEditMode ? null : state.editingPanelId,
-          editingQuickItemId: state.isEditMode
-            ? null
-            : state.editingQuickItemId,
+          editingPanelId: null,
+          editingQuickItemId: null,
         })),
+      cancelLayoutEdit: () =>
+        set({
+          draftPanels: null,
+          isEditMode: false,
+          drawerMode: null,
+          drawerSearch: '',
+          editingPanelId: null,
+          editingQuickItemId: null,
+        }),
+      resetLayoutToDefault: () =>
+        set({ draftPanels: cloneDefaultPanels() }),
       openBlockDrawer: () =>
         set({
           drawerMode: 'blocks',
@@ -89,32 +132,49 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
         }),
       setDrawerSearch: (value) => set({ drawerSearch: value }),
       addPanel: (templateId) =>
-        set((state) => ({
-          panels: [...state.panels, createEditorPanel(templateId)],
-          drawerMode: null,
-          drawerSearch: '',
-          editingPanelId: null,
-          editingQuickItemId: null,
-        })),
+        set((state) => {
+          const sourcePanels = state.draftPanels ?? state.panels;
+          const nextPanels = [...sourcePanels, createEditorPanel(templateId)];
+          return state.draftPanels !== null
+            ? {
+                draftPanels: nextPanels,
+                drawerMode: null,
+                drawerSearch: '',
+                editingPanelId: null,
+                editingQuickItemId: null,
+              }
+            : {
+                panels: nextPanels,
+                drawerMode: null,
+                drawerSearch: '',
+                editingPanelId: null,
+                editingQuickItemId: null,
+              };
+        }),
       togglePanelVisibility: (panelId) =>
-        set((state) => ({
-          panels: state.panels.map((panel) =>
+        set((state) => {
+          const sourcePanels = state.draftPanels ?? state.panels;
+          const nextPanels = sourcePanels.map((panel) =>
             panel.id === panelId
               ? { ...panel, isHidden: !panel.isHidden }
               : panel,
-          ),
-        })),
+          );
+          return state.draftPanels !== null
+            ? { draftPanels: nextPanels }
+            : { panels: nextPanels };
+        }),
       cyclePanelSize: (panelId) =>
-        set((state) => ({
-          panels: state.panels.map((panel) =>
+        set((state) => {
+          const sourcePanels = state.draftPanels ?? state.panels;
+          const nextPanels = sourcePanels.map((panel) =>
             panel.id === panelId
-              ? {
-                  ...panel,
-                  size: getNextPanelSize(panel.size ?? 'medium'),
-                }
+              ? { ...panel, size: getNextPanelSize(panel.size ?? 'medium') }
               : panel,
-          ),
-        })),
+          );
+          return state.draftPanels !== null
+            ? { draftPanels: nextPanels }
+            : { panels: nextPanels };
+        }),
       assignWidget: (quickItemId, widgetId) =>
         set((state) => ({
           quickItems: state.quickItems.map((item) =>
@@ -132,10 +192,11 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
         })),
       movePanel: (draggedId, targetId) =>
         set((state) => {
-          const draggedIndex = state.panels.findIndex(
+          const sourcePanels = state.draftPanels ?? state.panels;
+          const draggedIndex = sourcePanels.findIndex(
             (panel) => panel.id === draggedId,
           );
-          const targetIndex = state.panels.findIndex(
+          const targetIndex = sourcePanels.findIndex(
             (panel) => panel.id === targetId,
           );
 
@@ -147,13 +208,13 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
             return state;
           }
 
-          const nextPanels = [...state.panels];
+          const nextPanels = [...sourcePanels];
           const [draggedPanel] = nextPanels.splice(draggedIndex, 1);
           nextPanels.splice(targetIndex, 0, draggedPanel);
 
-          return {
-            panels: nextPanels,
-          };
+          return state.draftPanels !== null
+            ? { draftPanels: nextPanels }
+            : { panels: nextPanels };
         }),
     }),
     {

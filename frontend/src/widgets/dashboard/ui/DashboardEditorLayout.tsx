@@ -21,7 +21,9 @@ import { SortablePanel } from './SortablePanel';
 
 export function DashboardEditorLayout() {
   const quickItems = useDashboardEditorStore((state) => state.quickItems);
-  const panels = useDashboardEditorStore((state) => state.panels);
+  const savedPanels = useDashboardEditorStore((state) => state.panels);
+  const draftPanels = useDashboardEditorStore((state) => state.draftPanels);
+  const panels = draftPanels ?? savedPanels;
   const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
   const toggleEditMode = useDashboardEditorStore(
     (state) => state.toggleEditMode,
