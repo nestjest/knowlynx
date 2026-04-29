@@ -10,12 +10,33 @@ export type DashboardEditorPanelType =
 
 export type DashboardEditorPanelAccent = 'soft' | 'plain';
 export type DashboardEditorPanelSize = 'small' | 'medium' | 'large';
+export type DashboardEditorPanelCategory =
+  | 'learning'
+  | 'metrics'
+  | 'news'
+  | 'achievements';
+
+export const panelCategoryLabels: Record<DashboardEditorPanelCategory, string> =
+  {
+    learning: 'Обучение',
+    metrics: 'Метрики',
+    news: 'Уведомления',
+    achievements: 'Награды',
+  };
+
+export const panelCategoryOrder: DashboardEditorPanelCategory[] = [
+  'learning',
+  'metrics',
+  'news',
+  'achievements',
+];
 
 export type DashboardEditorPanelTemplate = {
   templateId: string;
   accent: DashboardEditorPanelAccent;
   title: string;
   type: DashboardEditorPanelType;
+  category: DashboardEditorPanelCategory;
 };
 
 export type DashboardWidgetPreset = {
@@ -28,6 +49,7 @@ export type DashboardEditorPanel = DashboardEditorPanelTemplate & {
   id: string;
   widgetId: DashboardWidgetPreset['id'];
   size: DashboardEditorPanelSize;
+  isHidden?: boolean;
 };
 
 export const dashboardEditorPanelTemplates = [
@@ -36,48 +58,56 @@ export const dashboardEditorPanelTemplates = [
     accent: 'soft',
     title: 'Уведомления системы и преподавателей',
     type: 'notifications',
+    category: 'news',
   },
   {
     templateId: 'progress',
     accent: 'plain',
     title: 'Текущий курс и прогресс',
     type: 'progress',
+    category: 'learning',
   },
   {
     templateId: 'performance',
     accent: 'plain',
     title: 'Успеваемость студента',
     type: 'performance',
+    category: 'metrics',
   },
   {
     templateId: 'deadlines',
     accent: 'plain',
     title: 'Ближайшие дедлайны',
     type: 'deadlines',
+    category: 'learning',
   },
   {
     templateId: 'activity',
     accent: 'plain',
     title: 'Активность за неделю',
     type: 'activity',
+    category: 'metrics',
   },
   {
     templateId: 'recommendations',
     accent: 'plain',
     title: 'Рекомендовано к изучению',
     type: 'recommendations',
+    category: 'learning',
   },
   {
     templateId: 'webinars',
     accent: 'plain',
     title: 'Ближайшие вебинары',
     type: 'webinars',
+    category: 'learning',
   },
   {
     templateId: 'certificates',
     accent: 'plain',
     title: 'Сертификаты и достижения',
     type: 'certificates',
+    category: 'achievements',
   },
 ] satisfies DashboardEditorPanelTemplate[];
 

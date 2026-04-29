@@ -32,7 +32,7 @@ type DashboardEditorState = {
   closeDrawer: () => void;
   setDrawerSearch: (value: string) => void;
   addPanel: (templateId: DashboardEditorTemplateId) => void;
-  removePanel: (panelId: string) => void;
+  togglePanelVisibility: (panelId: string) => void;
   cyclePanelSize: (panelId: string) => void;
   assignWidget: (
     quickItemId: string,
@@ -96,9 +96,13 @@ export const useDashboardEditorStore = create<DashboardEditorState>()(
           editingPanelId: null,
           editingQuickItemId: null,
         })),
-      removePanel: (panelId) =>
+      togglePanelVisibility: (panelId) =>
         set((state) => ({
-          panels: state.panels.filter((panel) => panel.id !== panelId),
+          panels: state.panels.map((panel) =>
+            panel.id === panelId
+              ? { ...panel, isHidden: !panel.isHidden }
+              : panel,
+          ),
         })),
       cyclePanelSize: (panelId) =>
         set((state) => ({

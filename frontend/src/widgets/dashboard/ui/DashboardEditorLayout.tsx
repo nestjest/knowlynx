@@ -32,7 +32,9 @@ export function DashboardEditorLayout() {
   const openWidgetDrawer = useDashboardEditorStore(
     (state) => state.openWidgetDrawer,
   );
-  const removePanel = useDashboardEditorStore((state) => state.removePanel);
+  const togglePanelVisibility = useDashboardEditorStore(
+    (state) => state.togglePanelVisibility,
+  );
   const cyclePanelSize = useDashboardEditorStore(
     (state) => state.cyclePanelSize,
   );
@@ -135,7 +137,7 @@ export function DashboardEditorLayout() {
                   key={panel.id}
                   panel={panel}
                   isEditMode={isEditMode}
-                  onRemove={() => removePanel(panel.id)}
+                  onRemove={() => togglePanelVisibility(panel.id)}
                   onResize={() => cyclePanelSize(panel.id)}
                 />
               ))}
