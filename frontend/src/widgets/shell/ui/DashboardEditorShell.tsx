@@ -75,6 +75,12 @@ export function DashboardEditorShell(props: Props) {
   const theme = useDashboardEditorStore((state) => state.theme);
   const drawerMode = useDashboardEditorStore((state) => state.drawerMode);
   const drawerSearch = useDashboardEditorStore((state) => state.drawerSearch);
+  const savedPanels = useDashboardEditorStore((state) => state.panels);
+  const draftPanels = useDashboardEditorStore((state) => state.draftPanels);
+  const effectivePanels = draftPanels ?? savedPanels;
+  const togglePanelVisibility = useDashboardEditorStore(
+    (state) => state.togglePanelVisibility,
+  );
   const editingQuickItemId = useDashboardEditorStore(
     (state) => state.editingQuickItemId,
   );
@@ -252,10 +258,12 @@ export function DashboardEditorShell(props: Props) {
         drawerSearch={drawerSearch}
         blockOptions={blockOptions}
         widgetOptions={widgetOptions}
+        panels={effectivePanels}
         editingQuickItemId={editingQuickItemId}
         onClose={closeDrawer}
         onSearchChange={setDrawerSearch}
         onAddPanel={addPanel}
+        onTogglePanelVisibility={togglePanelVisibility}
         onAssignWidget={assignWidget}
       />
 
