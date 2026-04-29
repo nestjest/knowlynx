@@ -18,12 +18,12 @@ const SLOT_OVER =
 type Props = {
   panel: DashboardEditorPanel;
   isEditMode: boolean;
-  onRemove: () => void;
+  onToggleVisibility: () => void;
   onResize: () => void;
 };
 
 export function SortablePanel(props: Props) {
-  const { panel, isEditMode, onRemove, onResize } = props;
+  const { panel, isEditMode, onToggleVisibility, onResize } = props;
   const { attributes, listeners, setNodeRef, isDragging, isOver } = useSortable({
     id: panel.id,
     disabled: !isEditMode,
@@ -56,7 +56,7 @@ export function SortablePanel(props: Props) {
       <DashboardBlockCard
         panel={panel}
         isEditMode={isEditMode}
-        onRemove={onRemove}
+        onToggleVisibility={onToggleVisibility}
         onResize={onResize}
       />
     </motion.div>

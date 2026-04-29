@@ -1,11 +1,11 @@
 import { Button } from '@heroui/react';
-import { X } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import type { DashboardEditorPanel } from '@/entities/panel/model/dashboardEditorData';
 
 type Props = {
   panel: DashboardEditorPanel;
   isEditMode?: boolean;
-  onRemove?: () => void;
+  onToggleVisibility?: () => void;
   onResize?: () => void;
 };
 
@@ -27,7 +27,8 @@ const HEADING_STRONG = 'mb-1.5 block text-lg text-text-primary';
 const METRIC_STRONG = 'mb-1 block text-2xl text-text-primary';
 
 export function DashboardBlockCard(props: Props) {
-  const { panel, isEditMode = false, onRemove, onResize } = props;
+  const { panel, isEditMode = false, onToggleVisibility, onResize } = props;
+  const isHidden = panel.isHidden ?? false;
 
   return (
     <section
@@ -55,11 +56,11 @@ export function DashboardBlockCard(props: Props) {
             </button>
             <Button
               isIconOnly
-              variant="danger"
-              aria-label="Удалить блок"
-              onPress={onRemove}
+              variant="ghost"
+              aria-label={isHidden ? 'Вернуть блок на холст' : 'Скрыть блок'}
+              onPress={onToggleVisibility}
             >
-              <X size={16} />
+              {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
             </Button>
           </div>
         ) : null}

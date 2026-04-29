@@ -24,6 +24,7 @@ export function DashboardEditorLayout() {
   const savedPanels = useDashboardEditorStore((state) => state.panels);
   const draftPanels = useDashboardEditorStore((state) => state.draftPanels);
   const panels = draftPanels ?? savedPanels;
+  const visiblePanels = panels.filter((panel) => !panel.isHidden);
   const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
   const toggleEditMode = useDashboardEditorStore(
     (state) => state.toggleEditMode,
@@ -127,19 +128,19 @@ export function DashboardEditorLayout() {
           onDragCancel={handleDragCancel}
         >
           <SortableContext
-            items={panels.map((panel) => panel.id)}
+            items={visiblePanels.map((panel) => panel.id)}
             strategy={rectSortingStrategy}
           >
             <section
               className="grid grid-cols-12 items-stretch gap-7 max-xl:grid-cols-6"
               aria-label="Контент"
             >
-              {panels.map((panel) => (
+              {visiblePanels.map((panel) => (
                 <SortablePanel
                   key={panel.id}
                   panel={panel}
                   isEditMode={isEditMode}
-                  onRemove={() => togglePanelVisibility(panel.id)}
+                  onToggleVisibility={() => togglePanelVisibility(panel.id)}
                   onResize={() => cyclePanelSize(panel.id)}
                 />
               ))}
