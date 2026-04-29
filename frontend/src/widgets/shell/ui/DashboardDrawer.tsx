@@ -1,10 +1,21 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Button } from '@heroui/react';
-import { Check, EyeOff, Plus, X } from 'lucide-react';
+import {
+  BarChart3,
+  Bell,
+  Check,
+  EyeOff,
+  GraduationCap,
+  Plus,
+  Trophy,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
 import {
   panelCategoryLabels,
   panelCategoryOrder,
   type DashboardEditorPanel,
+  type DashboardEditorPanelCategory,
   type DashboardEditorPanelTemplate,
   type DashboardEditorTemplateId,
 } from '@/entities/panel/model/dashboardEditorData';
@@ -32,8 +43,30 @@ type Props = {
   ) => void;
 };
 
-const SECTION_TITLE =
+const NEUTRAL_SECTION_TITLE =
   'mb-2 text-[11px] font-bold uppercase tracking-[0.08em] text-white/64';
+
+const CATEGORY_STYLE: Record<
+  DashboardEditorPanelCategory,
+  { icon: LucideIcon; stripe: string; text: string }
+> = {
+  learning: {
+    icon: GraduationCap,
+    stripe: 'border-sky-500',
+    text: 'text-sky-300',
+  },
+  metrics: {
+    icon: BarChart3,
+    stripe: 'border-emerald-500',
+    text: 'text-emerald-300',
+  },
+  news: { icon: Bell, stripe: 'border-amber-500', text: 'text-amber-300' },
+  achievements: {
+    icon: Trophy,
+    stripe: 'border-violet-500',
+    text: 'text-violet-300',
+  },
+};
 
 const CARD_BASE =
   'flex flex-col gap-1.5 rounded-2xl border border-white/12 bg-white/6 p-3.5 text-left text-white transition-colors duration-150 hover:bg-white/10 dark:border-white/8 dark:bg-white/4';
@@ -76,7 +109,7 @@ export function DashboardDrawer(props: Props) {
           exit={{ opacity: 0, y: 24 }}
           transition={{ duration: 0.24, ease: 'easeOut' }}
           style={{ left: '50%', x: '-50%' }}
-          className="bordered-overlay shadow-panel bg-surface-overlay fixed bottom-24 z-[29] mb-2.5 flex max-h-[72vh] w-[min(720px,calc(100vw-64px))] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] p-[18px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))]"
+          className="bordered-overlay shadow-panel bg-surface-overlay fixed bottom-24 z-29 mb-2.5 flex max-h-[72vh] w-[min(720px,calc(100vw-64px))] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] p-[18px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))]"
         >
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -170,7 +203,7 @@ function BlockCatalog(props: BlockCatalogProps) {
     <>
       {hiddenPanels.length > 0 ? (
         <section>
-          <h4 className={SECTION_TITLE}>
+          <h4 className={NEUTRAL_SECTION_TITLE}>
             Скрытые блоки · {hiddenPanels.length}
           </h4>
           <div className="grid grid-cols-3 gap-3 max-sm:grid-cols-2">
@@ -209,9 +242,19 @@ function BlockCatalog(props: BlockCatalogProps) {
         const allOnCanvas = templates.every((item) =>
           onCanvasTemplateIds.has(item.templateId),
         );
+        const { icon: CategoryIcon, stripe, text } = CATEGORY_STYLE[category];
         return (
           <section key={category}>
-            <h4 className={SECTION_TITLE}>{panelCategoryLabels[category]}</h4>
+            <header
+              className={`mb-2.5 flex items-center gap-2.5 border-l-[3px] pl-3 ${stripe}`}
+            >
+              <CategoryIcon size={14} className={text} />
+              <h4
+                className={`m-0 text-[12px] font-bold tracking-[0.08em] uppercase ${text}`}
+              >
+                {panelCategoryLabels[category]}
+              </h4>
+            </header>
             {allOnCanvas ? (
               <p className="m-0 rounded-[12px] border border-white/8 bg-white/4 p-3 text-xs text-white/56">
                 Все блоки этой группы уже на холсте.
