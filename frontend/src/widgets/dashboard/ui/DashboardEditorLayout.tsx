@@ -7,6 +7,7 @@ import {
   useSensors,
   type DragEndEvent,
 } from '@dnd-kit/core';
+import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import { Pencil, Plus } from 'lucide-react';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
@@ -103,6 +104,7 @@ export function DashboardEditorLayout() {
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
+          modifiers={[restrictToParentElement]}
           onDragEnd={handleDragEnd}
         >
           <SortableContext
