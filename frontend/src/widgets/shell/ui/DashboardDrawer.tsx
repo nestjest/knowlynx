@@ -34,6 +34,7 @@ type Props = {
   panels: DashboardEditorPanel[];
   editingQuickItemId: string | null;
   onClose: () => void;
+  onClickOutside: () => void;
   onSearchChange: (value: string) => void;
   onAddPanel: (templateId: DashboardEditorTemplateId) => void;
   onTogglePanelVisibility: (panelId: string) => void;
@@ -86,6 +87,7 @@ export function DashboardDrawer(props: Props) {
     panels,
     editingQuickItemId,
     onClose,
+    onClickOutside,
     onSearchChange,
     onAddPanel,
     onTogglePanelVisibility,
@@ -102,15 +104,25 @@ export function DashboardDrawer(props: Props) {
   return (
     <AnimatePresence>
       {drawerMode ? (
-        <motion.div
-          key="drawer"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 24 }}
-          transition={{ duration: 0.24, ease: 'easeOut' }}
-          style={{ left: '50%', x: '-50%' }}
-          className="bordered-overlay shadow-panel bg-surface-overlay fixed bottom-24 z-29 mb-2.5 flex max-h-[72vh] w-[min(720px,calc(100vw-64px))] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] p-[18px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))]"
-        >
+        <>
+          <motion.div
+            key="drawer-backdrop"
+            initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            animate={{ opacity: 1, backdropFilter: 'blur(3px)' }}
+            exit={{ opacity: 0, backdropFilter: 'blur(0px)' }}
+            transition={{ duration: 0.24, ease: 'easeOut' }}
+            className="fixed inset-0 z-28 bg-black/40"
+            onClick={onClickOutside}
+          />
+          <motion.div
+            key="drawer"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 24 }}
+            transition={{ duration: 0.24, ease: 'easeOut' }}
+            style={{ left: '50%', x: '-50%' }}
+            className="bordered-overlay shadow-panel bg-surface-overlay fixed bottom-24 z-29 mb-2.5 flex max-h-[72vh] w-[min(720px,calc(100vw-64px))] flex-col gap-3.5 rounded-t-3xl rounded-b-[18px] p-[18px] [backdrop-filter:blur(22px)_saturate(135%)] max-lg:bottom-[88px] max-lg:max-h-[74vh] max-lg:w-[min(100%,calc(100vw-32px))]"
+          >
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="m-0 mb-1 text-xl text-white">
@@ -176,7 +188,8 @@ export function DashboardDrawer(props: Props) {
               </div>
             )}
           </div>
-        </motion.div>
+          </motion.div>
+        </>
       ) : null}
     </AnimatePresence>
   );

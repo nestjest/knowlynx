@@ -9,7 +9,9 @@ import { ThreadChatModal } from '@/entities/thread/ui/ThreadChatModal';
 import { threadMocksMap } from '@/pages/threads/model/threadMocks';
 import { useThreadWindowsStore } from '@/entities/thread/model/useThreadWindowsStore';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
+import { useHasUnsavedLayout } from '@/shared/lib/useHasUnsavedLayout';
 import { ActionBar } from '@/shared/ui/ActionBar';
+import { UnsavedChangesPrompt } from '@/shared/ui/UnsavedChangesPrompt';
 import { DashboardDrawer } from './DashboardDrawer';
 
 type NavItem = {
@@ -84,6 +86,14 @@ export function DashboardEditorShell(props: Props) {
   const editingQuickItemId = useDashboardEditorStore(
     (state) => state.editingQuickItemId,
   );
+  const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
+  const toggleEditMode = useDashboardEditorStore(
+    (state) => state.toggleEditMode,
+  );
+  const commitLayout = useDashboardEditorStore((state) => state.commitLayout);
+  const cancelLayoutEdit = useDashboardEditorStore(
+    (state) => state.cancelLayoutEdit,
+  );
   const toggleTheme = useDashboardEditorStore((state) => state.toggleTheme);
   const closeDrawer = useDashboardEditorStore((state) => state.closeDrawer);
   const setDrawerSearch = useDashboardEditorStore(
@@ -91,6 +101,18 @@ export function DashboardEditorShell(props: Props) {
   );
   const addPanel = useDashboardEditorStore((state) => state.addPanel);
   const assignWidget = useDashboardEditorStore((state) => state.assignWidget);
+  const [isUnsavedPromptOpen, setIsUnsavedPromptOpen] = useState(false);
+  const hasUnsavedLayout = useHasUnsavedLayout();
+
+  const handleClickOutsideDrawer = () => {
+    closeDrawer();
+    if (!isEditMode) return;
+    if (hasUnsavedLayout) {
+      setIsUnsavedPromptOpen(true);
+    } else {
+      toggleEditMode();
+    }
+  };
   const activeThreadId = useThreadWindowsStore((state) => state.activeThreadId);
   const openThread = useThreadWindowsStore((state) => state.openThread);
   const minimizedThreads = useThreadWindowsStore(
@@ -261,10 +283,24 @@ export function DashboardEditorShell(props: Props) {
         panels={effectivePanels}
         editingQuickItemId={editingQuickItemId}
         onClose={closeDrawer}
+        onClickOutside={handleClickOutsideDrawer}
         onSearchChange={setDrawerSearch}
         onAddPanel={addPanel}
         onTogglePanelVisibility={togglePanelVisibility}
         onAssignWidget={assignWidget}
+      />
+
+      <UnsavedChangesPrompt
+        isOpen={isUnsavedPromptOpen}
+        onSave={() => {
+          setIsUnsavedPromptOpen(false);
+          commitLayout();
+        }}
+        onDiscard={() => {
+          setIsUnsavedPromptOpen(false);
+          cancelLayoutEdit();
+        }}
+        onCancel={() => setIsUnsavedPromptOpen(false)}
       />
 
       <ThreadChatModal />
