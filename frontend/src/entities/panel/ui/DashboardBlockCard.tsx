@@ -43,7 +43,7 @@ export function DashboardBlockCard(props: Props) {
           <div className="flex items-center gap-2">
             <button
               type="button"
-              className="icon-button mb-5 size-8 rounded-[10px] text-xs font-bold tracking-[0.06em]"
+              className="icon-button size-8 rounded-[10px] text-xs font-bold tracking-[0.06em]"
               onClick={onResize}
               aria-label="Изменить размер блока"
             >
