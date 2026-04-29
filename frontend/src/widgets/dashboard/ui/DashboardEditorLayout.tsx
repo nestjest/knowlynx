@@ -1,15 +1,19 @@
+import { useState } from 'react';
 import { Button, Tooltip } from '@heroui/react';
 import {
   closestCenter,
   DndContext,
+  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragStartEvent,
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
 import { Pencil, Plus } from 'lucide-react';
+import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
@@ -33,16 +37,25 @@ export function DashboardEditorLayout() {
     (state) => state.cyclePanelSize,
   );
   const movePanel = useDashboardEditorStore((state) => state.movePanel);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const activePanel = activeId
+    ? (panels.find((panel) => panel.id === activeId) ?? null)
+    : null;
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
   );
 
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
+  };
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
       movePanel(String(active.id), String(over.id));
     }
+    setActiveId(null);
   };
+  const handleDragCancel = () => setActiveId(null);
 
   return (
     <main className="min-h-[calc(100vh-44px)]">
@@ -105,7 +118,9 @@ export function DashboardEditorLayout() {
           sensors={sensors}
           collisionDetection={closestCenter}
           modifiers={[restrictToParentElement]}
+          onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
+          onDragCancel={handleDragCancel}
         >
           <SortableContext
             items={panels.map((panel) => panel.id)}
@@ -126,6 +141,16 @@ export function DashboardEditorLayout() {
               ))}
             </section>
           </SortableContext>
+          <DragOverlay dropAnimation={null}>
+            {activePanel ? (
+              <div className="h-full w-full opacity-95 shadow-2xl">
+                <DashboardBlockCard
+                  panel={activePanel}
+                  isEditMode={isEditMode}
+                />
+              </div>
+            ) : null}
+          </DragOverlay>
         </DndContext>
 
         <CourseSection />
