@@ -77,13 +77,18 @@ export function ActionBar() {
           >
             {actions.map((action) => {
               const Icon = action.icon;
+              const variant = action.variant ?? 'ghost';
+              const onDarkBg =
+                variant === 'ghost' ||
+                variant === 'outline' ||
+                variant === 'tertiary';
               return (
                 <Button
                   key={action.id}
-                  variant={action.variant ?? 'ghost'}
+                  variant={variant}
                   isDisabled={action.isDisabled}
                   onPress={action.onPress}
-                  className="h-[50px] gap-1.5 whitespace-nowrap text-[13px]"
+                  className={`h-[50px] gap-1.5 whitespace-nowrap text-[13px] ${onDarkBg ? 'text-white hover:bg-white/12' : ''}`}
                 >
                   {Icon ? <Icon size={16} /> : null}
                   {action.label}
