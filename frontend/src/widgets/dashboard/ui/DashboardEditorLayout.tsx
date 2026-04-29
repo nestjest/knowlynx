@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button } from '@heroui/react';
+import { Button, Tooltip } from '@heroui/react';
 import { Pencil, Plus } from 'lucide-react';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
@@ -66,14 +66,19 @@ export function DashboardEditorLayout() {
                 <Plus size={18} />
               </Button>
             ) : null}
-            <Button
-              isIconOnly
-              variant={isEditMode ? 'primary' : 'ghost'}
-              aria-label="Редактировать макет"
-              onPress={toggleEditMode}
-            >
-              <Pencil size={18} />
-            </Button>
+            <Tooltip delay={0}>
+              <Button
+                isIconOnly
+                variant={isEditMode ? 'primary' : 'ghost'}
+                aria-label="Редактировать макет"
+                onPress={toggleEditMode}
+              >
+                <Pencil size={18} />
+              </Button>
+              <Tooltip.Content>
+                <p>Редактировать макет</p>
+              </Tooltip.Content>
+            </Tooltip>
           </div>
         </header>
 
