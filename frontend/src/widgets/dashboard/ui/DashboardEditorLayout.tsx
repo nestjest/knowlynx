@@ -17,6 +17,7 @@ import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
 import { useActionBar } from '@/shared/lib/useActionBar';
+import { useUnsavedChangesGuard } from '@/shared/lib/useUnsavedChangesGuard';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
 import { SortablePanel } from './SortablePanel';
 
@@ -81,6 +82,7 @@ export function DashboardEditorLayout() {
     [isEditMode, commitLayout, resetLayoutToDefault, cancelLayoutEdit],
   );
   useActionBar(editActions);
+  useUnsavedChangesGuard(draftPanels !== null);
   const [activeId, setActiveId] = useState<string | null>(null);
   const activePanel = activeId
     ? (panels.find((panel) => panel.id === activeId) ?? null)
