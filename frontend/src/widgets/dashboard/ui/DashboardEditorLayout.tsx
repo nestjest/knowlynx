@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Button, Tooltip } from '@heroui/react';
 import {
   closestCenter,
@@ -12,10 +12,11 @@ import {
 } from '@dnd-kit/core';
 import { restrictToParentElement } from '@dnd-kit/modifiers';
 import { rectSortingStrategy, SortableContext } from '@dnd-kit/sortable';
-import { Pencil, Plus } from 'lucide-react';
+import { Check, Pencil, Plus, RotateCcw, X } from 'lucide-react';
 import { DashboardBlockCard } from '@/entities/panel/ui/DashboardBlockCard';
 import { CourseSection } from '@/features/section-navigation/ui/SectionMenu';
 import { QuickAccessWidgetCard } from '@/entities/quick-access/ui/QuickAccessWidgetCard';
+import { useActionBar } from '@/shared/lib/useActionBar';
 import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
 import { SortablePanel } from './SortablePanel';
 
@@ -42,6 +43,44 @@ export function DashboardEditorLayout() {
     (state) => state.cyclePanelSize,
   );
   const movePanel = useDashboardEditorStore((state) => state.movePanel);
+  const commitLayout = useDashboardEditorStore((state) => state.commitLayout);
+  const cancelLayoutEdit = useDashboardEditorStore(
+    (state) => state.cancelLayoutEdit,
+  );
+  const resetLayoutToDefault = useDashboardEditorStore(
+    (state) => state.resetLayoutToDefault,
+  );
+
+  const editActions = useMemo(
+    () =>
+      isEditMode
+        ? [
+            {
+              id: 'save-layout',
+              label: 'Сохранить макет',
+              icon: Check,
+              variant: 'primary' as const,
+              onPress: commitLayout,
+            },
+            {
+              id: 'reset-layout',
+              label: 'Сбросить на стандартный',
+              icon: RotateCcw,
+              variant: 'ghost' as const,
+              onPress: resetLayoutToDefault,
+            },
+            {
+              id: 'cancel-edit',
+              label: 'Отменить',
+              icon: X,
+              variant: 'ghost' as const,
+              onPress: cancelLayoutEdit,
+            },
+          ]
+        : null,
+    [isEditMode, commitLayout, resetLayoutToDefault, cancelLayoutEdit],
+  );
+  useActionBar(editActions);
   const [activeId, setActiveId] = useState<string | null>(null);
   const activePanel = activeId
     ? (panels.find((panel) => panel.id === activeId) ?? null)
