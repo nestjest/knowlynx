@@ -1,15 +1,18 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Settings, Sun, Moon, ArrowUpRight, X } from 'lucide-react';
-import logoUrl from '../../../app/logo.svg';
-import {
-  dashboardEditorPanelTemplates
-} from '../../../entities/panel/model/dashboardEditorData';
-import { quickAccessWidgetPresets } from '../../../entities/quick-access/model/quickAccessEditorData';
-import { ThreadChatModal } from '../../../entities/thread/ui/ThreadChatModal';
-import { threadMocksMap } from '../../../pages/threads/model/threadMocks';
-import { useThreadWindowsStore } from '../../../entities/thread/model/useThreadWindowsStore';
-import { useDashboardEditorStore } from '../../../shared/model/useDashboardEditorStore';
+import { Button } from '@heroui/react';
+import { Settings, Sun, Moon, X } from 'lucide-react';
+import logoUrl from '@/app/logo.svg';
+import { dashboardEditorPanelTemplates } from '@/entities/panel/model/dashboardEditorData';
+import { quickAccessWidgetPresets } from '@/entities/quick-access/model/quickAccessEditorData';
+import { ThreadChatModal } from '@/entities/thread/ui/ThreadChatModal';
+import { threadMocksMap } from '@/pages/threads/model/threadMocks';
+import { useThreadWindowsStore } from '@/entities/thread/model/useThreadWindowsStore';
+import { useDashboardEditorStore } from '@/shared/model/useDashboardEditorStore';
+import { useHasUnsavedLayout } from '@/shared/lib/useHasUnsavedLayout';
+import { ActionBar } from '@/shared/ui/ActionBar';
+import { UnsavedChangesPrompt } from '@/shared/ui/UnsavedChangesPrompt';
+import { DashboardDrawer } from './DashboardDrawer';
 
 type NavItem = {
   id: string;
@@ -23,25 +26,11 @@ const headerNavItems: NavItem[] = [
   { id: 'assignments', label: 'Задания' },
   { id: 'practice', label: 'Практика' },
   { id: 'library', label: 'Библиотека' },
-  { id: 'faq', label: 'FAQ' }
+  { id: 'faq', label: 'FAQ' },
 ];
 
-const bottomNavItems: NavItem[] = [
-  { id: 'best', label: 'Лучшие', path: '/' },
-  { id: 'threads', label: 'Треды', path: '/threads' },
-  { id: 'teachers', label: 'Преподаватели' },
-  { id: 'analytics', label: 'Аналитика' }
-];
-
-type DashboardEditorShellProps = {
+type Props = {
   children: ReactNode;
-};
-
-type DrawerPreview = {
-  id: string;
-  title: string;
-  description: string;
-  mode: 'blocks' | 'widgets';
 };
 
 type SiteSearchSuggestion = {
@@ -51,114 +40,95 @@ type SiteSearchSuggestion = {
 };
 
 const siteSearchSuggestions: SiteSearchSuggestion[] = [
-  { id: 'search-schedule', title: 'Расписание на неделю', meta: 'Раздел расписания' },
-  { id: 'search-sql', title: 'Лабораторная по SQL', meta: 'Ближайшие дедлайны' },
+  {
+    id: 'search-schedule',
+    title: 'Расписание на неделю',
+    meta: 'Раздел расписания',
+  },
+  {
+    id: 'search-sql',
+    title: 'Лабораторная по SQL',
+    meta: 'Ближайшие дедлайны',
+  },
   { id: 'search-web', title: 'Веб-разработка', meta: 'Текущий курс' },
-  { id: 'search-messages', title: 'Сообщения преподавателей', meta: 'Коммуникации' },
-  { id: 'search-library', title: 'Библиотека материалов', meta: 'Учебные ресурсы' },
-  { id: 'search-faq', title: 'Часто задаваемые вопросы', meta: 'FAQ' }
+  {
+    id: 'search-messages',
+    title: 'Сообщения преподавателей',
+    meta: 'Коммуникации',
+  },
+  {
+    id: 'search-library',
+    title: 'Библиотека материалов',
+    meta: 'Учебные ресурсы',
+  },
+  { id: 'search-faq', title: 'Часто задаваемые вопросы', meta: 'FAQ' },
 ];
 
-function renderDrawerPreview(preview: DrawerPreview) {
-  if (preview.mode === 'widgets') {
-    return (
-      <div className="dashboard-drawer__preview-body">
-        <span className="dashboard-drawer__preview-chip" />
-        <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--long" />
-        <span className="dashboard-drawer__preview-line" />
-      </div>
-    );
-  }
+const HEADER_LINK_ACTIVE_BG =
+  'bg-gradient-to-r from-[rgba(155,232,247,0.26)] to-[rgba(188,238,255,0.32)] dark:from-[rgba(48,114,132,0.38)] dark:to-[rgba(63,140,162,0.34)]';
 
-  switch (preview.id) {
-    case 'notifications':
-      return (
-        <div className="dashboard-drawer__preview-body">
-          <span className="dashboard-drawer__preview-chip" />
-          <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--long" />
-          <span className="dashboard-drawer__preview-box" />
-          <span className="dashboard-drawer__preview-box" />
-        </div>
-      );
-    case 'progress':
-      return (
-        <div className="dashboard-drawer__preview-body">
-          <span className="dashboard-drawer__preview-chip" />
-          <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--long" />
-          <span className="dashboard-drawer__preview-progress" />
-          <div className="dashboard-drawer__preview-metrics">
-            <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--metric" />
-            <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--metric" />
-          </div>
-        </div>
-      );
-    case 'performance':
-      return (
-        <div className="dashboard-drawer__preview-grid">
-          <span className="dashboard-drawer__preview-stat" />
-          <span className="dashboard-drawer__preview-stat" />
-          <span className="dashboard-drawer__preview-stat" />
-          <span className="dashboard-drawer__preview-stat" />
-        </div>
-      );
-    case 'deadlines':
-      return (
-        <div className="dashboard-drawer__preview-body">
-          <span className="dashboard-drawer__preview-box dashboard-drawer__preview-box--tall" />
-          <span className="dashboard-drawer__preview-box dashboard-drawer__preview-box--tall" />
-          <span className="dashboard-drawer__preview-box dashboard-drawer__preview-box--tall" />
-        </div>
-      );
-    case 'activity':
-      return (
-        <div className="dashboard-drawer__preview-grid">
-          <span className="dashboard-drawer__preview-stat" />
-          <span className="dashboard-drawer__preview-stat" />
-          <span className="dashboard-drawer__preview-stat" />
-        </div>
-      );
-    case 'recommendations':
-      return (
-        <div className="dashboard-drawer__preview-tags">
-          <span className="dashboard-drawer__preview-tag" />
-          <span className="dashboard-drawer__preview-tag" />
-          <span className="dashboard-drawer__preview-tag dashboard-drawer__preview-tag--short" />
-        </div>
-      );
-    default:
-      return (
-        <div className="dashboard-drawer__preview-body">
-          <span className="dashboard-drawer__preview-line dashboard-drawer__preview-line--long" />
-          <span className="dashboard-drawer__preview-box" />
-          <span className="dashboard-drawer__preview-box" />
-        </div>
-      );
-  }
-}
+const HEADER_LINK_ACTIVE_BORDER =
+  'dark:border-[rgba(88,174,199,0.4)] dark:text-[#eaf8fd]';
 
-export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
+export function DashboardEditorShell(props: Props) {
+  const { children } = props;
   const navigate = useNavigate();
   const location = useLocation();
   const theme = useDashboardEditorStore((state) => state.theme);
   const drawerMode = useDashboardEditorStore((state) => state.drawerMode);
   const drawerSearch = useDashboardEditorStore((state) => state.drawerSearch);
-  const editingQuickItemId = useDashboardEditorStore((state) => state.editingQuickItemId);
+  const savedPanels = useDashboardEditorStore((state) => state.panels);
+  const draftPanels = useDashboardEditorStore((state) => state.draftPanels);
+  const effectivePanels = draftPanels ?? savedPanels;
+  const togglePanelVisibility = useDashboardEditorStore(
+    (state) => state.togglePanelVisibility,
+  );
+  const editingQuickItemId = useDashboardEditorStore(
+    (state) => state.editingQuickItemId,
+  );
+  const isEditMode = useDashboardEditorStore((state) => state.isEditMode);
+  const toggleEditMode = useDashboardEditorStore(
+    (state) => state.toggleEditMode,
+  );
+  const commitLayout = useDashboardEditorStore((state) => state.commitLayout);
+  const cancelLayoutEdit = useDashboardEditorStore(
+    (state) => state.cancelLayoutEdit,
+  );
   const toggleTheme = useDashboardEditorStore((state) => state.toggleTheme);
   const closeDrawer = useDashboardEditorStore((state) => state.closeDrawer);
-  const setDrawerSearch = useDashboardEditorStore((state) => state.setDrawerSearch);
+  const setDrawerSearch = useDashboardEditorStore(
+    (state) => state.setDrawerSearch,
+  );
   const addPanel = useDashboardEditorStore((state) => state.addPanel);
   const assignWidget = useDashboardEditorStore((state) => state.assignWidget);
+  const [isUnsavedPromptOpen, setIsUnsavedPromptOpen] = useState(false);
+  const hasUnsavedLayout = useHasUnsavedLayout();
+
+  const handleClickOutsideDrawer = () => {
+    closeDrawer();
+    if (!isEditMode) return;
+    if (hasUnsavedLayout) {
+      setIsUnsavedPromptOpen(true);
+    } else {
+      toggleEditMode();
+    }
+  };
   const activeThreadId = useThreadWindowsStore((state) => state.activeThreadId);
   const openThread = useThreadWindowsStore((state) => state.openThread);
-  const minimizedThreads = useThreadWindowsStore((state) => state.minimizedThreads);
+  const minimizedThreads = useThreadWindowsStore(
+    (state) => state.minimizedThreads,
+  );
   const restoreThread = useThreadWindowsStore((state) => state.restoreThread);
-  const removeMinimizedThread = useThreadWindowsStore((state) => state.removeMinimizedThread);
-  const [hoveredPreview, setHoveredPreview] = useState<DrawerPreview | null>(null);
+  const removeMinimizedThread = useThreadWindowsStore(
+    (state) => state.removeMinimizedThread,
+  );
   const [siteSearchQuery, setSiteSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const visibleMinimizedThreads = minimizedThreads.filter(
-    (item) => item.threadId !== activeThreadId && !location.pathname.startsWith(`/threads/${item.threadId}`)
+    (item) =>
+      item.threadId !== activeThreadId &&
+      !location.pathname.startsWith(`/threads/${item.threadId}`),
   );
 
   const normalizedSearch = drawerSearch.toLowerCase();
@@ -166,20 +136,20 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
   const blockOptions = dashboardEditorPanelTemplates.filter(
     (item) =>
       item.title.toLowerCase().includes(normalizedSearch) ||
-      item.templateId.toLowerCase().includes(normalizedSearch)
+      item.templateId.toLowerCase().includes(normalizedSearch),
   );
 
   const widgetOptions = quickAccessWidgetPresets.filter(
     (item) =>
       item.title.toLowerCase().includes(normalizedSearch) ||
-      item.description.toLowerCase().includes(normalizedSearch)
+      item.description.toLowerCase().includes(normalizedSearch),
   );
   const normalizedSiteSearch = siteSearchQuery.trim().toLowerCase();
   const filteredSiteSuggestions = normalizedSiteSearch
     ? siteSearchSuggestions.filter(
         (item) =>
           item.title.toLowerCase().includes(normalizedSiteSearch) ||
-          item.meta.toLowerCase().includes(normalizedSiteSearch)
+          item.meta.toLowerCase().includes(normalizedSiteSearch),
       )
     : [];
 
@@ -189,30 +159,41 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
   }, [theme]);
 
   return (
-    <div className={`layout ${theme === 'dark' ? 'layout--dark' : ''}`}>
-      <header className="site-header">
-        <div className="site-header__brand">
-          <img src={logoUrl} alt="logo" className="brand-mark" />
-          <span className="site-header__brand-text">Knowlynx</span>
+    <div
+      className={`min-h-screen px-5 pt-[18px] pb-28 max-lg:px-3.5 max-lg:pt-3.5 max-lg:pb-[102px] ${theme === 'dark' ? 'layout--dark' : ''}`}
+    >
+      <header className="shadow-card relative z-20 mb-6 flex min-h-[78px] items-center justify-between gap-[18px] overflow-visible rounded-3xl border border-[rgba(209,221,235,0.82)] bg-white/82 p-[14px_18px] backdrop-blur-[18px] max-xl:flex-wrap max-lg:min-h-0 max-lg:p-3.5 max-sm:gap-1.5 dark:border-[rgba(57,78,95,0.82)] dark:bg-[rgba(15,21,28,0.82)]">
+        <div className="flex shrink-0 items-center gap-3">
+          <img
+            src={logoUrl}
+            alt="logo"
+            className="shadow-card grid size-[60px] min-h-11 min-w-11 shrink-0 place-items-center rounded-[14px] bg-[#2d3137] text-lg font-extrabold text-white"
+          />
+          <span className="text-text-primary text-2xl font-bold tracking-[0.01em]">
+            Knowlynx
+          </span>
         </div>
 
-        <nav className="site-header__nav">
-          {headerNavItems.map((item) => (
-            <button
-              key={item.id}
-              className={`site-header__link ${location.pathname === (item.path ?? `/${item.id}`) ? 'site-header__link--active' : ''}`}
-              type="button"
-              onClick={() => item.path ? navigate(item.path) : undefined}
-            >
-              {item.label}
-            </button>
-          ))}
+        <nav className="flex shrink-0 items-center gap-2 overflow-visible [-webkit-overflow-scrolling:touch] max-xl:order-4 max-xl:w-full max-xl:flex-nowrap max-xl:overflow-x-auto [&::-webkit-scrollbar]:hidden">
+          {headerNavItems.map((item) => {
+            const isActive = location.pathname === (item.path ?? `/${item.id}`);
+            return (
+              <button
+                key={item.id}
+                type="button"
+                className={`smooth-interact h-[42px] rounded-[14px] border border-transparent bg-transparent px-4 whitespace-nowrap text-[#53606c] hover:${HEADER_LINK_ACTIVE_BG} dark:text-[#b6c6d4] ${isActive ? `${HEADER_LINK_ACTIVE_BG} ${HEADER_LINK_ACTIVE_BORDER}` : ''}`}
+                onClick={() => (item.path ? navigate(item.path) : undefined)}
+              >
+                {item.label}
+              </button>
+            );
+          })}
         </nav>
 
-        <div className="site-header__search">
+        <div className="relative z-[42] max-w-[500px] min-w-[200px] flex-1 max-xl:order-3 max-xl:w-full max-xl:max-w-none max-xl:flex-[unset]">
           <input
             type="search"
-            className="site-header__search-input"
+            className="border-border-strong bg-surface-raised text-text-primary h-[42px] w-full rounded-[14px] border px-3.5 pr-11 placeholder:text-[#80909f] dark:bg-[rgba(18,28,36,0.96)] dark:text-[#e7f1f8] dark:placeholder:text-[#8fa4b5] [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
             placeholder="Поиск по сайту"
             value={siteSearchQuery}
             onFocus={() => setIsSearchOpen(true)}
@@ -225,164 +206,110 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
             }}
           />
           {siteSearchQuery ? (
-            <button
-              type="button"
-              className="site-header__search-clear"
+            <Button
+              isIconOnly
+              size="sm"
+              variant="ghost"
+              className="absolute top-1/2 right-2.5 -translate-y-1/2 rounded-full"
               aria-label="Очистить поиск"
-              onMouseDown={() => {
+              onPressStart={() => {
                 setSiteSearchQuery('');
                 setIsSearchOpen(false);
               }}
             >
-              <span />
-              <span />
-            </button>
+              <X size={14} />
+            </Button>
           ) : null}
 
           {isSearchOpen && normalizedSiteSearch ? (
-            <div className="site-header__search-dropdown">
+            <div className="shadow-card border-border-strong absolute top-[calc(100%+10px)] left-0 z-[60] w-full rounded-[18px] border bg-white/96 p-2.5 dark:bg-[rgba(14,22,29,0.98)]">
               {filteredSiteSuggestions.length ? (
                 filteredSiteSuggestions.map((suggestion) => (
                   <button
                     key={suggestion.id}
                     type="button"
-                    className="site-header__search-suggestion"
+                    className="hover:bg-accent-soft-bg-subtle flex w-full flex-col gap-0.5 rounded-xl border-0 bg-transparent px-3 py-2.5 text-left text-[#31404d] dark:text-[#e7f1f8] dark:hover:bg-[rgba(48,114,132,0.22)]"
                     onMouseDown={() => {
                       setSiteSearchQuery(suggestion.title);
                       setIsSearchOpen(false);
                     }}
                   >
-                    <strong>{suggestion.title}</strong>
-                    <span>{suggestion.meta}</span>
+                    <strong className="text-sm font-semibold">
+                      {suggestion.title}
+                    </strong>
+                    <span className="text-xs text-[#7e8d9a] dark:text-[#9eb1c2]">
+                      {suggestion.meta}
+                    </span>
                   </button>
                 ))
               ) : (
-                <div className="site-header__search-empty">Ничего не найдено</div>
+                <div className="px-3 py-2.5 text-xs text-[#7e8d9a] dark:text-[#9eb1c2]">
+                  Ничего не найдено
+                </div>
               )}
             </div>
           ) : null}
         </div>
 
-        <div className="site-header__actions">
-          <button
-            type="button"
-            className="site-header__icon-button"
+        <div className="flex shrink-0 items-center gap-2.5">
+          <Button
+            isIconOnly
+            variant="ghost"
             aria-label={theme === 'dark' ? 'Светлая тема' : 'Тёмная тема'}
-            onClick={toggleTheme}
+            onPress={toggleTheme}
           >
             {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          <button
-            type="button"
-            className={`site-header__icon-button ${location.pathname.startsWith('/settings') ? 'site-header__icon-button--active' : ''}`}
+          </Button>
+          <Button
+            isIconOnly
+            variant={
+              location.pathname.startsWith('/settings') ? 'primary' : 'ghost'
+            }
             aria-label="Настройки"
-            onClick={() => navigate('/settings')}
+            onPress={() => navigate('/settings')}
           >
             <Settings size={20} />
-          </button>
+          </Button>
         </div>
       </header>
 
-      <div className="layout__content">{children}</div>
+      <div className="relative px-2">{children}</div>
 
-      {drawerMode ? (
-        <div className="dashboard-drawer">
-          <div className="dashboard-drawer__header">
-            <div>
-              <h3>{drawerMode === 'blocks' ? 'Добавить новый блок' : 'Выбрать виджет'}</h3>
-              <p>
-                {drawerMode === 'blocks'
-                  ? 'Список доступных блоков для текущего макета дашборда.'
-                  : 'Список заглушек-виджетов для выбранного блока.'}
-              </p>
-            </div>
-            <button type="button" className="dashboard-drawer__close" onClick={closeDrawer} aria-label="Закрыть drawer">
-              ×
-            </button>
-          </div>
+      <DashboardDrawer
+        drawerMode={drawerMode}
+        drawerSearch={drawerSearch}
+        blockOptions={blockOptions}
+        widgetOptions={widgetOptions}
+        panels={effectivePanels}
+        editingQuickItemId={editingQuickItemId}
+        onClose={closeDrawer}
+        onClickOutside={handleClickOutsideDrawer}
+        onSearchChange={setDrawerSearch}
+        onAddPanel={addPanel}
+        onTogglePanelVisibility={togglePanelVisibility}
+        onAssignWidget={assignWidget}
+      />
 
-          <input
-            className="dashboard-drawer__search"
-            type="search"
-            placeholder={drawerMode === 'blocks' ? 'Поиск блока' : 'Поиск виджета'}
-            value={drawerSearch}
-            onChange={(event) => setDrawerSearch(event.target.value)}
-          />
-
-          <div className="dashboard-drawer__body">
-            <div className="dashboard-drawer__list">
-            {drawerMode === 'blocks'
-              ? blockOptions.map((item) => (
-                  <button
-                    key={item.templateId}
-                    type="button"
-                    className="dashboard-drawer__item"
-                    onMouseEnter={() =>
-                      setHoveredPreview({
-                        id: item.templateId,
-                        title: item.title,
-                        description: 'Блок можно добавить в макет, затем менять размер и положение.',
-                        mode: 'blocks'
-                      })
-                    }
-                    onMouseLeave={() => setHoveredPreview(null)}
-                    onClick={() => addPanel(item.templateId)}
-                  >
-                    <strong>{item.title}</strong>
-                    <span>Добавить блок в текущий макет</span>
-                  </button>
-                ))
-              : widgetOptions.map((item) => (
-                  <button
-                    key={item.id}
-                    type="button"
-                    className="dashboard-drawer__item"
-                    onMouseEnter={() =>
-                      setHoveredPreview({
-                        id: item.id,
-                        title: item.title,
-                        description: item.description,
-                        mode: 'widgets'
-                      })
-                    }
-                    onMouseLeave={() => setHoveredPreview(null)}
-                    onClick={() => {
-                      if (editingQuickItemId) {
-                        assignWidget(editingQuickItemId, item.id);
-                      }
-                    }}
-                  >
-                    <strong>{item.title}</strong>
-                    <span>{item.description}</span>
-                  </button>
-                ))}
-            </div>
-
-            <aside className={`dashboard-drawer__preview ${hoveredPreview ? 'dashboard-drawer__preview--visible' : ''}`}>
-              {hoveredPreview ? (
-                <>
-                  <div className={`dashboard-drawer__preview-card dashboard-drawer__preview-card--${hoveredPreview.mode}`}>
-                    <div className="dashboard-drawer__preview-header" />
-                    {renderDrawerPreview(hoveredPreview)}
-                  </div>
-                  <strong className="dashboard-drawer__preview-title">{hoveredPreview.title}</strong>
-                  <p className="dashboard-drawer__preview-text">{hoveredPreview.description}</p>
-                </>
-              ) : (
-                <>
-                  <strong className="dashboard-drawer__preview-title">Предпросмотр</strong>
-                  <p className="dashboard-drawer__preview-text">Наведи на элемент в списке, чтобы увидеть его внешний вид и краткое описание.</p>
-                </>
-              )}
-            </aside>
-          </div>
-        </div>
-      ) : null}
+      <UnsavedChangesPrompt
+        isOpen={isUnsavedPromptOpen}
+        onSave={() => {
+          setIsUnsavedPromptOpen(false);
+          commitLayout();
+        }}
+        onDiscard={() => {
+          setIsUnsavedPromptOpen(false);
+          cancelLayoutEdit();
+        }}
+        onCancel={() => setIsUnsavedPromptOpen(false)}
+      />
 
       <ThreadChatModal />
 
       {visibleMinimizedThreads.length ? (
-        <div className="threads-dock-orbs" aria-label="Свернутые треды">
+        <div
+          className="fixed bottom-4 left-4 z-[31] flex max-w-[min(420px,calc(100vw-32px))] items-center gap-3 overflow-x-auto p-1.5 px-1 [scrollbar-width:none] max-lg:left-3 max-lg:max-w-[calc(100vw-24px)] max-lg:gap-2.5 [&::-webkit-scrollbar]:hidden"
+          aria-label="Свернутые треды"
+        >
           {visibleMinimizedThreads.map((item) => {
             const thread = threadMocksMap[item.threadId];
 
@@ -394,18 +321,20 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
               <button
                 key={item.threadId}
                 type="button"
-                className="threads-dock-orb"
+                className="group smooth-transform shadow-soft dark:from-surface relative inline-flex size-16 shrink-0 [animation:threads-dock-orb-enter_340ms_cubic-bezier(0.22,1,0.36,1)] cursor-pointer items-center justify-center rounded-full border border-[rgba(155,232,247,0.28)] bg-gradient-to-b from-[rgba(250,253,255,0.96)] to-[rgba(228,239,246,0.92)] p-0 backdrop-blur-[18px] hover:-translate-y-1 hover:scale-[1.03] focus-visible:-translate-y-1 focus-visible:scale-[1.03] max-lg:size-[58px] dark:border-[rgba(88,174,199,0.28)] dark:to-[rgba(24,34,44,0.94)]"
                 aria-label={`Открыть тред ${thread.title}`}
                 onClick={() => {
                   restoreThread(item.threadId);
                   openThread(item.threadId);
                 }}
               >
-                <span className="threads-dock-orb__halo" />
-                <span className="threads-dock-orb__avatar">{thread.creator.avatar}</span>
+                <span className="pointer-events-none absolute -inset-2 rounded-[inherit] bg-[radial-gradient(circle,rgba(124,223,245,0.22)_0%,rgba(124,223,245,0)_72%)] opacity-60" />
+                <span className="gradient-accent shadow-soft dark:border-surface relative z-[1] inline-flex size-[52px] items-center justify-center rounded-[inherit] border-[3px] border-[rgba(244,249,252,0.96)] font-extrabold text-[#215260] max-lg:size-[46px]">
+                  {thread.creator.avatar}
+                </span>
 
                 <span
-                  className="threads-dock-orb__dismiss"
+                  className="shadow-soft absolute -top-1 -right-1 z-[2] inline-flex size-[22px] items-center justify-center rounded-full bg-[rgba(33,40,48,0.76)] text-[#f6fbff]"
                   onClick={(event) => {
                     event.stopPropagation();
                     removeMinimizedThread(item.threadId);
@@ -414,12 +343,18 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
                   <X size={12} />
                 </span>
 
-                <span className="threads-dock-orb__preview">
-                  <span className="threads-dock-orb__preview-head">
-                    <strong>{thread.title}</strong>
-                    <span>{item.previewTimestamp || thread.updatedAt}</span>
+                <span className="hover-reveal bordered-soft shadow-elevated dark:from-surface absolute bottom-[82px] left-0 w-[min(300px,calc(100vw-32px))] rounded-[22px] bg-gradient-to-b from-[rgba(252,254,255,0.97)] to-[rgba(237,244,249,0.95)] p-3.5 px-4 text-left max-lg:bottom-[74px] max-lg:w-[min(260px,calc(100vw-24px))] dark:to-[rgba(22,31,40,0.96)]">
+                  <span className="mb-1.5 flex items-start justify-between gap-2.5">
+                    <strong className="text-text-primary text-sm leading-[1.35]">
+                      {thread.title}
+                    </strong>
+                    <span className="meta-text leading-normal">
+                      {item.previewTimestamp || thread.updatedAt}
+                    </span>
                   </span>
-                  <span className="threads-dock-orb__preview-text">{item.previewText || thread.summary}</span>
+                  <span className="meta-text line-clamp-3 overflow-hidden leading-normal">
+                    {item.previewText || thread.summary}
+                  </span>
                 </span>
               </button>
             );
@@ -427,28 +362,7 @@ export function DashboardEditorShell({ children }: DashboardEditorShellProps) {
         </div>
       ) : null}
 
-      <div className="bottom-dock">
-        <div className="bottom-dock__brand">
-          <img src={logoUrl} alt="logo" className="brand-mark" />
-        </div>
-
-        <nav className="bottom-dock__nav">
-          {bottomNavItems.map((item) => (
-            <button
-              key={item.id}
-              className={`bottom-dock__link ${item.path && (location.pathname === item.path || location.pathname.startsWith(`${item.path}/`)) ? 'bottom-dock__link--active' : ''}`}
-              type="button"
-              onClick={() => item.path ? navigate(item.path) : undefined}
-            >
-              {item.label}
-            </button>
-          ))}
-        </nav>
-
-        <button type="button" className="bottom-dock__cta bottom-dock__cta--accent">
-          К работам
-        </button>
-      </div>
+      <ActionBar />
     </div>
   );
 }

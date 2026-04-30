@@ -1,49 +1,65 @@
-import { WidgetIcon } from '../../../shared/ui/icons';
+import { Button } from '@heroui/react';
+import { Pencil } from 'lucide-react';
+import { WidgetIcon } from '@/shared/ui/icons';
 import {
   quickAccessWidgetPresets,
-  type QuickAccessItem
-} from '../model/quickAccessEditorData';
+  type QuickAccessItem,
+} from '@/entities/quick-access/model/quickAccessEditorData';
 
-type QuickAccessWidgetCardProps = {
+type Props = {
   item: QuickAccessItem;
   isEditMode?: boolean;
   onEditWidget?: () => void;
 };
 
-export function QuickAccessWidgetCard({
-  item,
-  isEditMode = false,
-  onEditWidget
-}: QuickAccessWidgetCardProps) {
-  const widget = quickAccessWidgetPresets.find((entry) => entry.id === item.widgetId);
+export function QuickAccessWidgetCard(props: Props) {
+  const { item, isEditMode = false, onEditWidget } = props;
+
+  const widget = quickAccessWidgetPresets.find(
+    (entry) => entry.id === item.widgetId,
+  );
 
   if (!widget) {
     return null;
   }
 
   return (
-    <article className="quick-card quick-card--minimal">
-      <div className="quick-card__content">
-        <span className="quick-card__eyebrow">Быстрый доступ</span>
+    <article className="rounded-card-lg border-border shadow-card dark:from-surface dark:to-surface flex min-h-[146px] justify-between gap-4 overflow-hidden border bg-gradient-to-b from-white/85 to-[rgba(245,248,252,0.92)] px-[18px] py-5 max-sm:min-h-[132px] max-sm:flex-col max-sm:items-stretch max-sm:rounded-[18px]">
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
+        <span className="eyebrow text-accent-eyebrow tracking-[0.04em]">
+          Быстрый доступ
+        </span>
 
-        <div className="quick-card__text">
-          <h3>{widget.title}</h3>
-          <p>{widget.description}</p>
+        <div>
+          <h3 className="text-text-primary mb-1.5 text-lg font-semibold">
+            {widget.title}
+          </h3>
+          <p className="text-text-secondary max-w-[320px] text-xs leading-[1.45]">
+            {widget.description}
+          </p>
         </div>
       </div>
 
-      <div className="quick-card__side">
+      <div className="flex flex-col items-end justify-between gap-3 max-sm:flex-row max-sm:items-center">
         {isEditMode ? (
-          <button type="button" className="quick-card__edit-button" onClick={onEditWidget} aria-label="Изменить виджет">
-            ✎
-          </button>
+          <Button
+            isIconOnly
+            variant="ghost"
+            aria-label="Изменить виджет"
+            onPress={onEditWidget}
+          >
+            <Pencil size={16} />
+          </Button>
         ) : null}
 
-        <div className="quick-card__visual quick-card__visual--minimal" aria-hidden="true">
-          <div className="quick-card__visual-shape">
-            <span />
+        <div
+          aria-hidden="true"
+          className="border-accent-soft-border from-accent-soft-bg-subtle dark:border-accent-soft-border relative flex size-[92px] min-w-[92px] items-center justify-center rounded-3xl border bg-gradient-to-b to-white/40 p-3 max-sm:size-[88px] max-sm:min-w-[88px] dark:from-[rgba(30,56,70,0.72)] dark:to-[rgba(20,32,42,0.82)]"
+        >
+          <div className="absolute inset-0 grid place-items-center">
+            <span className="bg-accent-soft-bg-subtle dark:bg-accent-soft-bg-subtle block size-[54px] rounded-[18px]" />
           </div>
-          <div className="quick-card__badge quick-card__badge--minimal">
+          <div className="dark:bg-surface dark:text-text-primary grid size-12 place-items-center rounded-2xl bg-[rgba(233,250,254,0.95)] text-[#32404d] shadow-[inset_0_1px_0_rgba(255,255,255,0.72)]">
             <WidgetIcon size={32} />
           </div>
         </div>

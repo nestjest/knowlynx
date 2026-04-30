@@ -1,151 +1,208 @@
-import type { DashboardEditorPanel } from '../model/dashboardEditorData';
+import { Button } from '@heroui/react';
+import { Eye, EyeOff } from 'lucide-react';
+import type { DashboardEditorPanel } from '@/entities/panel/model/dashboardEditorData';
 
-type DashboardBlockCardProps = {
+type Props = {
   panel: DashboardEditorPanel;
   isEditMode?: boolean;
-  onRemove?: () => void;
+  onToggleVisibility?: () => void;
   onResize?: () => void;
 };
 
-export function DashboardBlockCard({
-  panel,
-  isEditMode = false,
-  onRemove,
-  onResize
-}: DashboardBlockCardProps) {
+const CARD_BASE = 'card flex h-full flex-col max-sm:rounded-[18px]';
+
+const CARD_MIN_HEIGHT: Record<'small' | 'medium' | 'large', string> = {
+  small: 'min-h-[160px]',
+  medium: 'min-h-[230px]',
+  large: 'min-h-[260px]',
+};
+
+const CARD_SOFT =
+  'bg-gradient-to-b from-white/84 to-[rgba(246,250,255,0.92)] dark:from-surface dark:to-surface';
+
+const NOTE_P = 'm-0 text-[13px] leading-[1.45] text-text-secondary';
+
+const HEADING_STRONG = 'mb-1.5 block text-lg text-text-primary';
+
+const METRIC_STRONG = 'mb-1 block text-2xl text-text-primary';
+
+export function DashboardBlockCard(props: Props) {
+  const { panel, isEditMode = false, onToggleVisibility, onResize } = props;
+  const isHidden = panel.isHidden ?? false;
+
   return (
-    <section className={`content-panel ${panel.accent === 'soft' ? 'content-panel--soft' : ''}`}>
-      <header className="content-panel__header">
+    <section
+      className={`${CARD_BASE} ${CARD_MIN_HEIGHT[panel.size ?? 'small']} ${panel.accent === 'soft' ? CARD_SOFT : ''}`}
+    >
+      <header className="flex items-start justify-between gap-3">
         <div>
-          <h3>{panel.title}</h3>
+          <h3 className="text-text-primary mb-2 text-base font-semibold">
+            {panel.title}
+          </h3>
         </div>
         {isEditMode ? (
-          <div className="content-panel__actions">
-            <button type="button" className="content-panel__size-button" onClick={onResize} aria-label="Изменить размер блока">
-              {panel.size === 'small' ? 'S' : panel.size === 'medium' ? 'M' : 'L'}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              className="icon-button size-8 rounded-[10px] text-xs font-bold tracking-[0.06em]"
+              onClick={onResize}
+              aria-label="Изменить размер блока"
+            >
+              {panel.size === 'small'
+                ? 'S'
+                : panel.size === 'medium'
+                  ? 'M'
+                  : 'L'}
             </button>
-            <button type="button" className="content-panel__remove-button" onClick={onRemove} aria-label="Удалить блок">
-              ×
-            </button>
+            <Button
+              isIconOnly
+              variant="ghost"
+              aria-label={isHidden ? 'Вернуть блок на холст' : 'Скрыть блок'}
+              onPress={onToggleVisibility}
+            >
+              {isHidden ? <EyeOff size={16} /> : <Eye size={16} />}
+            </Button>
           </div>
         ) : null}
       </header>
 
       {panel.type === 'notifications' && (
-        <div className="content-panel__stack">
-          <article className="content-panel__note">
-            <span className="content-panel__tag">Система</span>
-            <p>Открыт новый модуль по веб-разработке. Доступ к заданиям активен до 20 апреля.</p>
+        <div className="flex flex-col gap-3">
+          <article className="note-box">
+            <span className="tag">Система</span>
+            <p className={NOTE_P}>
+              Открыт новый модуль по веб-разработке. Доступ к заданиям активен
+              до 20 апреля.
+            </p>
           </article>
-          <article className="content-panel__note">
-            <span className="content-panel__tag">Преподаватель</span>
-            <p>Марина Викторовна добавила комментарии к последней лабораторной работе.</p>
+          <article className="note-box">
+            <span className="tag">Преподаватель</span>
+            <p className={NOTE_P}>
+              Марина Викторовна добавила комментарии к последней лабораторной
+              работе.
+            </p>
           </article>
-          <article className="content-panel__note">
-            <span className="content-panel__tag">Куратор</span>
-            <p>Напоминание: завтра в 10:00 вебинар по итоговому проекту и вопросам по курсам.</p>
+          <article className="note-box">
+            <span className="tag">Куратор</span>
+            <p className={NOTE_P}>
+              Напоминание: завтра в 10:00 вебинар по итоговому проекту и
+              вопросам по курсам.
+            </p>
           </article>
         </div>
       )}
 
       {panel.type === 'progress' && (
-        <div className="content-panel__progress">
+        <div className="flex flex-col gap-3.5">
           <div>
-            <span className="content-panel__eyebrow">Сейчас в работе</span>
-            <strong>Веб-разработка</strong>
-            <p>Следующий урок: WebSocket и real-time обновления интерфейса.</p>
+            <span className="tag">Сейчас в работе</span>
+            <strong className={HEADING_STRONG}>Веб-разработка</strong>
+            <p className={NOTE_P}>
+              Следующий урок: WebSocket и real-time обновления интерфейса.
+            </p>
           </div>
-          <div className="content-panel__progress-bar">
-            <div style={{ width: '68%' }} />
+          <div className="h-3 overflow-hidden rounded-full bg-[#e7eef5] dark:bg-[#253441]">
+            <div
+              className="from-accent-gradient-from to-accent h-full rounded-[inherit] bg-gradient-to-r"
+              style={{ width: '68%' }}
+            />
           </div>
-          <div className="content-panel__metrics">
-            <span>Прогресс: 68%</span>
-            <span>До завершения: 6 занятий</span>
+          <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+            <span className="meta-text">Прогресс: 68%</span>
+            <span className="meta-text">До завершения: 6 занятий</span>
           </div>
         </div>
       )}
 
       {panel.type === 'performance' && (
-        <div className="content-panel__stats-grid">
-          <article>
-            <strong>4.7 / 5</strong>
-            <span>Средний балл</span>
+        <div className="grid grid-cols-2 gap-3">
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>4.7 / 5</strong>
+            <span className="meta-text">Средний балл</span>
           </article>
-          <article>
-            <strong>92%</strong>
-            <span>Выполнено заданий</span>
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>92%</strong>
+            <span className="meta-text">Выполнено заданий</span>
           </article>
-          <article>
-            <strong>6 место</strong>
-            <span>В рейтинге группы</span>
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>6 место</strong>
+            <span className="meta-text">В рейтинге группы</span>
           </article>
-          <article>
-            <strong>11</strong>
-            <span>Курсов завершено</span>
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>11</strong>
+            <span className="meta-text">Курсов завершено</span>
           </article>
         </div>
       )}
 
       {panel.type === 'deadlines' && (
-        <div className="content-panel__stack">
-          <article className="content-panel__deadline">
-            <strong>Лабораторная по SQL</strong>
-            <span>Сдать до 18 апреля, 23:59</span>
+        <div className="flex flex-col gap-3">
+          <article className="note-box">
+            <strong className={HEADING_STRONG}>Лабораторная по SQL</strong>
+            <span className={NOTE_P}>Сдать до 18 апреля, 23:59</span>
           </article>
-          <article className="content-panel__deadline">
-            <strong>Тест по UX-исследованиям</strong>
-            <span>Сдать до 19 апреля, 18:00</span>
+          <article className="note-box">
+            <strong className={HEADING_STRONG}>Тест по UX-исследованиям</strong>
+            <span className={NOTE_P}>Сдать до 19 апреля, 18:00</span>
           </article>
-          <article className="content-panel__deadline">
-            <strong>Черновик дипломного проекта</strong>
-            <span>Показать куратору 22 апреля</span>
+          <article className="note-box">
+            <strong className={HEADING_STRONG}>
+              Черновик дипломного проекта
+            </strong>
+            <span className={NOTE_P}>Показать куратору 22 апреля</span>
           </article>
         </div>
       )}
 
       {panel.type === 'activity' && (
-        <div className="content-panel__mini-metrics">
-          <article>
-            <strong>14 ч</strong>
-            <span>Время обучения</span>
+        <div className="grid grid-cols-2 gap-3 max-sm:grid-cols-1">
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>14 ч</strong>
+            <span className="meta-text">Время обучения</span>
           </article>
-          <article>
-            <strong>9</strong>
-            <span>Пройдено уроков</span>
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>9</strong>
+            <span className="meta-text">Пройдено уроков</span>
           </article>
-          <article>
-            <strong>3</strong>
-            <span>Онлайн-сессии</span>
+          <article className="metric-article">
+            <strong className={METRIC_STRONG}>3</strong>
+            <span className="meta-text">Онлайн-сессии</span>
           </article>
         </div>
       )}
 
       {panel.type === 'recommendations' && (
-        <div className="content-panel__chips">
-          <span>Финальный тренажер по JS</span>
-          <span>Повторение по БД</span>
-          <span>Воркшоп по soft skills</span>
+        <div className="flex flex-wrap gap-2.5">
+          <span className="chip">Финальный тренажер по JS</span>
+          <span className="chip">Повторение по БД</span>
+          <span className="chip">Воркшоп по soft skills</span>
         </div>
       )}
 
       {panel.type === 'webinars' && (
-        <div className="content-panel__stack">
-          <article className="content-panel__deadline">
-            <strong>Live Q&amp;A по итоговому проекту</strong>
-            <span>Сегодня, 19:00. Подключение по ссылке из курса.</span>
+        <div className="flex flex-col gap-3">
+          <article className="note-box">
+            <strong className={HEADING_STRONG}>
+              Live Q&amp;A по итоговому проекту
+            </strong>
+            <span className={NOTE_P}>
+              Сегодня, 19:00. Подключение по ссылке из курса.
+            </span>
           </article>
-          <article className="content-panel__deadline">
-            <strong>Разбор типичных ошибок</strong>
-            <span>Пятница, 18:30. Сессия с преподавателем и разбором кейсов.</span>
+          <article className="note-box">
+            <strong className={HEADING_STRONG}>Разбор типичных ошибок</strong>
+            <span className={NOTE_P}>
+              Пятница, 18:30. Сессия с преподавателем и разбором кейсов.
+            </span>
           </article>
         </div>
       )}
 
       {panel.type === 'certificates' && (
-        <div className="content-panel__chips">
-          <span>Сертификат: SQL Basics</span>
-          <span>Достижение: 30 дней подряд</span>
-          <span>Бейдж: Лучший прогресс недели</span>
+        <div className="flex flex-wrap gap-2.5">
+          <span className="chip">Сертификат: SQL Basics</span>
+          <span className="chip">Достижение: 30 дней подряд</span>
+          <span className="chip">Бейдж: Лучший прогресс недели</span>
         </div>
       )}
     </section>

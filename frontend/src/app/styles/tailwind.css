@@ -1,0 +1,300 @@
+@import 'tailwindcss';
+@import '@heroui/styles';
+
+@custom-variant dark (&:where(.layout--dark, .layout--dark *, [data-theme="dark"], [data-theme="dark"] *));
+
+@theme static {
+  --font-sans: 'IBM Plex Sans', 'Segoe UI', sans-serif;
+
+  /* Borders */
+  --color-border: #dbe5eef2;
+  --color-border-muted: #d6e1ebe6;
+  --color-border-strong: #d1ddebeb;
+  --color-border-overlay: #ffffff2e;
+
+  /* Surfaces (cards/panels/containers) */
+  --color-surface: #ffffffd1;
+  --color-surface-raised: #fffffff5;
+  --color-surface-muted: #ffffffc7;
+  --color-surface-subtle: #ffffffbd;
+  --color-surface-note: #ffffffb3;
+  --color-surface-overlay: #363134c7;
+
+  /* Text */
+  --color-text-primary: #24313b;
+  --color-text-secondary: #637180;
+  --color-text-muted: #7b8995;
+  --color-text-inverse: #ffffff;
+
+  /* Accent (soft blue spectrum) */
+  --color-accent: #5dc7de;
+  --color-accent-strong: #1d7f95;
+  --color-accent-gradient-from: #9be8f7;
+  --color-accent-gradient-to: #5dc7de;
+  --color-accent-soft-bg: #9be8f738;
+  --color-accent-soft-bg-subtle: #9be8f724;
+  --color-accent-soft-bg-hover: #9be8f733;
+  --color-accent-soft-border: #9be8f780;
+  --color-accent-soft-text: #1f4f5a;
+  --color-accent-eyebrow: #215c69;
+
+  /* Status */
+  --color-status-active-bg: #7ed98a2e;
+  --color-status-active-text: #2f7a40;
+  --color-status-draft-bg: #ffb86b2e;
+  --color-status-draft-text: #996126;
+  --color-status-archived-bg: #b0bec938;
+  --color-status-archived-text: #586673;
+
+  /* Danger */
+  --color-danger-border: #ffd3d6f2;
+  --color-danger-bg: #fff7f8f5;
+  --color-danger-text: #a94c58;
+
+  /* Shadows + radius + breakpoints */
+  --shadow-card: 0 18px 45px #a4b6cc1f;
+  --shadow-card-raised: 0 12px 26px #c6d1dd47;
+  --shadow-panel-inset: inset 0 1px 0 #ffffffb3;
+  --shadow-overlay:
+    0 18px 38px #3023283d, inset 0 1px 0 #ffffff29;
+
+  --radius-card: 22px;
+  --radius-card-lg: 28px;
+  --radius-control: 14px;
+  --radius-pill: 999px;
+
+  --breakpoint-sm: 640px;
+  --breakpoint-lg: 900px;
+  --breakpoint-xl: 1200px;
+}
+
+.layout--dark,
+:root[data-theme='dark'] {
+  --color-border: #293946f2;
+  --color-border-muted: #2a3c4ae6;
+  --color-border-strong: #394e5ff2;
+  --color-border-overlay: #3c526261;
+
+  --color-surface: #121a22eb;
+  --color-surface-raised: #151f28f5;
+  --color-surface-muted: #151f28d1;
+  --color-surface-subtle: #17222ceb;
+  --color-surface-note: #16222ceb;
+  --color-surface-overlay: #0c1218eb;
+
+  --color-text-primary: #eef5fb;
+  --color-text-secondary: #9eb1c2;
+  --color-text-muted: #9eb1c2;
+
+  --color-accent-soft-bg: #3994ad3d;
+  --color-accent-soft-bg-subtle: #30728438;
+  --color-accent-soft-bg-hover: #30728438;
+  --color-accent-soft-border: #58aec766;
+  --color-accent-soft-text: #97e5f5;
+  --color-accent-eyebrow: #97e5f5;
+
+  --color-danger-border: #9c56637a;
+  --color-danger-bg: #3c1a2085;
+  --color-danger-text: #f0c2ca;
+
+  --shadow-card: 0 18px 45px #04080c57;
+  --shadow-card-raised: 0 12px 26px #04080c4d;
+  --shadow-panel-inset: inset 0 1px 0 #ffffff0a;
+}
+
+@keyframes threads-dock-orb-enter {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.86);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes threads-modal-minimize-soft {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(-50%) translate3d(0, 0, 0) scale(1);
+  }
+  36% {
+    opacity: 0.96;
+    transform: translateX(-50%) translate3d(-16px, -2px, 0) scaleX(0.99)
+      scaleY(1.01);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateX(calc(-50vw + 88px)) translate3d(0, 18px, 0)
+      scale(0.24);
+  }
+}
+
+@layer components {
+  /* Card — basic container for dashboard panels, thread cards, settings cards */
+  .card {
+    @apply rounded-card border-border bg-surface shadow-card border p-5;
+  }
+  .card-raised {
+    @apply rounded-card border-border bg-surface-raised shadow-card-raised border;
+  }
+  .card-subtle {
+    @apply border-border-muted bg-surface-subtle rounded-[20px] border p-4;
+  }
+
+  /* Note-box — notification / deadline entries inside panels */
+  .note-box {
+    @apply border-border-muted bg-surface-note rounded-2xl border p-3.5;
+  }
+
+  /* Metric — stats-grid article */
+  .metric-article {
+    @apply border-border-muted bg-surface-subtle rounded-2xl border p-3.5;
+  }
+
+  /* Chip — pill-shaped static tag */
+  .chip {
+    @apply border-border bg-surface-muted text-text-secondary rounded-full border px-3 py-2.5 text-[13px];
+  }
+
+  /* Tag — accent-soft inline badge */
+  .tag {
+    @apply bg-accent-soft-bg text-accent-soft-text mb-2 inline-flex w-fit items-center rounded-full px-2 py-1 text-[11px] font-semibold;
+  }
+
+  /* Eyebrow — uppercase caption above heading */
+  .eyebrow {
+    @apply text-text-muted text-[11px] font-bold tracking-[0.08em] uppercase;
+  }
+
+  /* Meta-text — small muted caption */
+  .meta-text {
+    @apply text-text-muted text-xs;
+  }
+
+  /* Icon-button — 42x42 header/toolbar button */
+  .icon-button {
+    @apply border-border-strong bg-surface-raised text-text-primary hover:border-accent-soft-border hover:bg-accent-soft-bg hover:text-accent-soft-text grid size-[42px] place-items-center rounded-xl border transition-[background,color,border-color] duration-200;
+  }
+  .icon-button-active {
+    @apply border-accent-soft-border bg-accent-soft-bg text-accent-soft-text;
+  }
+
+  /* Control input / select */
+  .control-input {
+    @apply rounded-control border-border-strong bg-surface-raised text-text-primary placeholder:text-text-muted w-full border px-3.5 py-3;
+  }
+
+  /* Segment / filter chip */
+  .filter-chip {
+    @apply border-border-strong bg-surface-muted text-text-secondary hover:border-accent-soft-border hover:bg-accent-soft-bg-hover hover:text-accent-soft-text h-10 rounded-full border px-3.5 transition-[0.18s_ease];
+  }
+  .filter-chip-active {
+    @apply border-accent-soft-border bg-accent-soft-bg-hover text-accent-soft-text;
+  }
+
+  /* Toggle switch — settings pages */
+  .toggle-switch {
+    @apply relative rounded-full border-0 p-0 transition-colors duration-200;
+  }
+  .toggle-thumb {
+    @apply absolute rounded-full bg-white shadow-[0_1px_3px_rgba(0,0,0,0.15)] transition-transform duration-200;
+  }
+
+  /* Settings row — clickable link inside a settings card */
+  .settings-row {
+    @apply hover:bg-accent-soft-bg-subtle flex w-full cursor-pointer items-center gap-3.5 border-none bg-transparent px-4 py-3.5 text-left text-inherit transition-[background] duration-150;
+  }
+  .settings-row-icon {
+    @apply bg-accent-soft-bg-subtle text-accent grid size-8 shrink-0 place-items-center rounded-lg;
+  }
+
+  /* Accent CTA (primary action) */
+  .accent-cta {
+    @apply rounded-control from-accent-gradient-from to-accent-gradient-to dark:border-accent-soft-border inline-flex items-center gap-2 border border-[rgba(93,199,222,0.6)] bg-linear-to-br font-bold text-[#275d69] transition-[background,box-shadow] duration-200 hover:shadow-[0_4px_16px_rgba(93,199,222,0.3)] disabled:cursor-not-allowed disabled:opacity-50 dark:from-[#235165] dark:to-accent-strong dark:text-[#e8f8fc];
+  }
+
+  /* Status pill — active/draft/archived */
+  .status-pill {
+    @apply inline-flex w-fit items-center justify-center rounded-full px-2.5 py-1 text-[11px] font-bold;
+  }
+  .status-pill-active {
+    @apply bg-status-active-bg text-status-active-text;
+  }
+  .status-pill-draft {
+    @apply bg-status-draft-bg text-status-draft-text;
+  }
+  .status-pill-archived {
+    @apply bg-status-archived-bg text-status-archived-text;
+  }
+}
+
+@layer utilities {
+  /* Переходы */
+  .smooth {
+    @apply transition-all duration-150 ease-out;
+  }
+  .smooth-interact {
+    @apply transition-[background,color,border-color] duration-200;
+  }
+  .smooth-transform {
+    @apply transition-[transform,box-shadow,border-color] duration-200;
+  }
+
+  /* Рамки поверх токенов border-* */
+  .bordered {
+    @apply border-border border;
+  }
+  .bordered-soft {
+    @apply border-border-muted border;
+  }
+  .bordered-strong {
+    @apply border-border-strong border;
+  }
+  .bordered-overlay {
+    @apply border-border-overlay border;
+  }
+
+  /* Тени */
+  .shadow-soft {
+    @apply shadow-[0_8px_18px_rgba(112,130,145,0.14)];
+  }
+  .shadow-elevated {
+    @apply shadow-[0_14px_28px_rgba(37,50,63,0.14),inset_0_1px_0_rgba(255,255,255,0.82)];
+  }
+  .shadow-panel {
+    @apply shadow-[0_20px_42px_rgba(48,35,40,0.28),inset_0_1px_0_rgba(255,255,255,0.12)];
+  }
+
+  /* Интерактивность */
+  .hoverable {
+    @apply hover:bg-accent-soft-bg-subtle transition-colors duration-150;
+  }
+
+  /* Позиционирование */
+  .fixed-centered {
+    @apply fixed left-1/2 -translate-x-1/2;
+  }
+
+  /* Reveal-эффекты (для дочернего элемента group с hover) */
+  .hover-reveal {
+    @apply pointer-events-none transform-[translateY(8px)_scale(0.96)] opacity-0 transition-[opacity,transform] duration-200 group-hover:opacity-100 group-focus-visible:transform-[translateY(0)_scale(1)] group-focus-visible:opacity-100;
+  }
+
+  /* Overlay */
+  .overlay-backdrop {
+    @apply fixed inset-0 bg-[linear-gradient(180deg,rgba(15,21,28,0.04)_0%,rgba(15,21,28,0.32)_100%)];
+  }
+
+  /* Градиент для hero-карточек (radial + linear) */
+  .gradient-card {
+    @apply bg-[radial-gradient(circle_at_top_right,rgba(155,232,247,0.22),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.94)_0%,rgba(245,248,252,0.96)_100%)] dark:bg-[radial-gradient(circle_at_top_right,rgba(29,127,149,0.14),transparent_32%),rgba(18,26,34,0.92)];
+  }
+
+  /* Accent-градиент (CTA, avatar) */
+  .gradient-accent {
+    @apply bg-linear-to-br from-accent-gradient-from to-[#5dc7de] dark:from-[#235165] dark:to-accent-strong;
+  }
+}

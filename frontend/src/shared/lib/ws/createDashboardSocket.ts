@@ -11,9 +11,12 @@ type DashboardSocketConnection = {
 const DEFAULT_WS_URL = 'ws://localhost:8080/ws';
 
 export function createDashboardSocket(
-  handlers: DashboardSocketHandlers = {}
+  handlers: DashboardSocketHandlers = {},
 ): DashboardSocketConnection {
-  if (typeof window === 'undefined' || typeof window.WebSocket === 'undefined') {
+  if (
+    typeof window === 'undefined' ||
+    typeof window.WebSocket === 'undefined'
+  ) {
     return { disconnect() {} };
   }
 
@@ -33,6 +36,6 @@ export function createDashboardSocket(
       if (socket && socket.readyState < WebSocket.CLOSING) {
         socket.close();
       }
-    }
+    },
   };
 }

@@ -10,12 +10,33 @@ export type DashboardEditorPanelType =
 
 export type DashboardEditorPanelAccent = 'soft' | 'plain';
 export type DashboardEditorPanelSize = 'small' | 'medium' | 'large';
+export type DashboardEditorPanelCategory =
+  | 'learning'
+  | 'metrics'
+  | 'news'
+  | 'achievements';
+
+export const panelCategoryLabels: Record<DashboardEditorPanelCategory, string> =
+  {
+    learning: 'Обучение',
+    metrics: 'Метрики',
+    news: 'Уведомления',
+    achievements: 'Награды',
+  };
+
+export const panelCategoryOrder: DashboardEditorPanelCategory[] = [
+  'learning',
+  'metrics',
+  'news',
+  'achievements',
+];
 
 export type DashboardEditorPanelTemplate = {
   templateId: string;
   accent: DashboardEditorPanelAccent;
   title: string;
   type: DashboardEditorPanelType;
+  category: DashboardEditorPanelCategory;
 };
 
 export type DashboardWidgetPreset = {
@@ -28,29 +49,100 @@ export type DashboardEditorPanel = DashboardEditorPanelTemplate & {
   id: string;
   widgetId: DashboardWidgetPreset['id'];
   size: DashboardEditorPanelSize;
+  isHidden?: boolean;
 };
 
 export const dashboardEditorPanelTemplates = [
-  { templateId: 'notifications', accent: 'soft', title: 'Уведомления системы и преподавателей', type: 'notifications' },
-  { templateId: 'progress', accent: 'plain', title: 'Текущий курс и прогресс', type: 'progress' },
-  { templateId: 'performance', accent: 'plain', title: 'Успеваемость студента', type: 'performance' },
-  { templateId: 'deadlines', accent: 'plain', title: 'Ближайшие дедлайны', type: 'deadlines' },
-  { templateId: 'activity', accent: 'plain', title: 'Активность за неделю', type: 'activity' },
-  { templateId: 'recommendations', accent: 'plain', title: 'Рекомендовано к изучению', type: 'recommendations' },
-  { templateId: 'webinars', accent: 'plain', title: 'Ближайшие вебинары', type: 'webinars' },
-  { templateId: 'certificates', accent: 'plain', title: 'Сертификаты и достижения', type: 'certificates' }
+  {
+    templateId: 'notifications',
+    accent: 'soft',
+    title: 'Уведомления системы и преподавателей',
+    type: 'notifications',
+    category: 'news',
+  },
+  {
+    templateId: 'progress',
+    accent: 'plain',
+    title: 'Текущий курс и прогресс',
+    type: 'progress',
+    category: 'learning',
+  },
+  {
+    templateId: 'performance',
+    accent: 'plain',
+    title: 'Успеваемость студента',
+    type: 'performance',
+    category: 'metrics',
+  },
+  {
+    templateId: 'deadlines',
+    accent: 'plain',
+    title: 'Ближайшие дедлайны',
+    type: 'deadlines',
+    category: 'learning',
+  },
+  {
+    templateId: 'activity',
+    accent: 'plain',
+    title: 'Активность за неделю',
+    type: 'activity',
+    category: 'metrics',
+  },
+  {
+    templateId: 'recommendations',
+    accent: 'plain',
+    title: 'Рекомендовано к изучению',
+    type: 'recommendations',
+    category: 'learning',
+  },
+  {
+    templateId: 'webinars',
+    accent: 'plain',
+    title: 'Ближайшие вебинары',
+    type: 'webinars',
+    category: 'learning',
+  },
+  {
+    templateId: 'certificates',
+    accent: 'plain',
+    title: 'Сертификаты и достижения',
+    type: 'certificates',
+    category: 'achievements',
+  },
 ] satisfies DashboardEditorPanelTemplate[];
 
 export const dashboardWidgetPresets = [
-  { id: 'widget-overview', title: 'Обзор курса', description: 'Краткая сводка по содержимому блока и ключевым данным.' },
-  { id: 'widget-tasks', title: 'Список задач', description: 'Связанные задания, чеклисты и ближайшие действия.' },
-  { id: 'widget-progress', title: 'Индикатор прогресса', description: 'Визуализация прогресса, KPI и контрольных точек.' },
-  { id: 'widget-team', title: 'Команда курса', description: 'Преподаватели, кураторы и контакты по курсу.' },
-  { id: 'widget-media', title: 'Медиатека', description: 'Видео, файлы, вебинары и дополнительные материалы.' }
+  {
+    id: 'widget-overview',
+    title: 'Обзор курса',
+    description: 'Краткая сводка по содержимому блока и ключевым данным.',
+  },
+  {
+    id: 'widget-tasks',
+    title: 'Список задач',
+    description: 'Связанные задания, чеклисты и ближайшие действия.',
+  },
+  {
+    id: 'widget-progress',
+    title: 'Индикатор прогресса',
+    description: 'Визуализация прогресса, KPI и контрольных точек.',
+  },
+  {
+    id: 'widget-team',
+    title: 'Команда курса',
+    description: 'Преподаватели, кураторы и контакты по курсу.',
+  },
+  {
+    id: 'widget-media',
+    title: 'Медиатека',
+    description: 'Видео, файлы, вебинары и дополнительные материалы.',
+  },
 ] satisfies DashboardWidgetPreset[];
 
-export type DashboardEditorTemplateId = (typeof dashboardEditorPanelTemplates)[number]['templateId'];
-export type DashboardWidgetPresetId = (typeof dashboardWidgetPresets)[number]['id'];
+export type DashboardEditorTemplateId =
+  (typeof dashboardEditorPanelTemplates)[number]['templateId'];
+export type DashboardWidgetPresetId =
+  (typeof dashboardWidgetPresets)[number]['id'];
 
 const defaultTemplateOrder: DashboardEditorTemplateId[] = [
   'notifications',
@@ -58,10 +150,13 @@ const defaultTemplateOrder: DashboardEditorTemplateId[] = [
   'performance',
   'deadlines',
   'activity',
-  'recommendations'
+  'recommendations',
 ];
 
-const defaultTemplateSizes: Record<DashboardEditorTemplateId, DashboardEditorPanelSize> = {
+const defaultTemplateSizes: Record<
+  DashboardEditorTemplateId,
+  DashboardEditorPanelSize
+> = {
   notifications: 'medium',
   progress: 'large',
   performance: 'medium',
@@ -69,10 +164,12 @@ const defaultTemplateSizes: Record<DashboardEditorTemplateId, DashboardEditorPan
   activity: 'small',
   recommendations: 'small',
   webinars: 'medium',
-  certificates: 'small'
+  certificates: 'small',
 };
 
-export function getNextPanelSize(current: DashboardEditorPanelSize): DashboardEditorPanelSize {
+export function getNextPanelSize(
+  current: DashboardEditorPanelSize,
+): DashboardEditorPanelSize {
   if (current === 'small') {
     return 'medium';
   }
@@ -84,8 +181,12 @@ export function getNextPanelSize(current: DashboardEditorPanelSize): DashboardEd
   return 'small';
 }
 
-export function createEditorPanel(templateId: DashboardEditorTemplateId): DashboardEditorPanel {
-  const template = dashboardEditorPanelTemplates.find((item) => item.templateId === templateId);
+export function createEditorPanel(
+  templateId: DashboardEditorTemplateId,
+): DashboardEditorPanel {
+  const template = dashboardEditorPanelTemplates.find(
+    (item) => item.templateId === templateId,
+  );
 
   if (!template) {
     throw new Error(`Unknown dashboard panel template: ${templateId}`);
@@ -95,8 +196,10 @@ export function createEditorPanel(templateId: DashboardEditorTemplateId): Dashbo
     ...template,
     id: `${templateId}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     widgetId: 'widget-overview',
-    size: defaultTemplateSizes[templateId]
+    size: defaultTemplateSizes[templateId],
   };
 }
 
-export const defaultEditorPanels = defaultTemplateOrder.map((templateId) => createEditorPanel(templateId));
+export const defaultEditorPanels = defaultTemplateOrder.map((templateId) =>
+  createEditorPanel(templateId),
+);
